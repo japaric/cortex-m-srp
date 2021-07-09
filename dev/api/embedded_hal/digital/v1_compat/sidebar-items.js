@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["OldOutputPin","Wrapper to allow fallible `v2::OutputPin` traits to be converted to `v1::OutputPin` traits"]]});

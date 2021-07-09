@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A fixed capacity Multiple-Producer Multiple-Consumer (MPMC) lock-free queue"><meta name="keywords" content="rust, rustlang, rust-lang, mpmc"><title>heapless::mpmc - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../heapless/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><p class="location">Module mpmc</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li></ul></div><p class="location"><a href="../index.html">heapless</a></p><div id="sidebar-vars" data-name="mpmc" data-ty="mod" data-relpath="../"></div><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">heapless</a>::<wbr><a class="mod" href="">mpmc</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../../src/heapless/mpmc.rs.html#1-580" title="goto source code">[src]</a></span></h1><div class="docblock"><p>A fixed capacity Multiple-Producer Multiple-Consumer (MPMC) lock-free queue</p>
+<p>NOTE: This module is not available on targets that do <em>not</em> support CAS operations, e.g. ARMv6-M</p>
+<h1 id="example" class="section-header"><a href="#example">Example</a></h1>
+<p>This queue can be constructed in “const context”. Placing it in a <code>static</code> variable lets <em>all</em>
+contexts (interrupts / threads / <code>main</code>) safely enqueue and dequeue items from it.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="attribute">#![<span class="ident">no_main</span>]</span>
+<span class="attribute">#![<span class="ident">no_std</span>]</span>
+
+<span class="kw">use</span> <span class="ident">panic_semihosting</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+<span class="kw">use</span> <span class="ident">cortex_m</span>::{<span class="ident">asm</span>, <span class="ident">peripheral::syst::SystClkSource</span>};
+<span class="kw">use</span> <span class="ident">cortex_m_rt</span>::{<span class="ident">entry</span>, <span class="ident">exception</span>};
+<span class="kw">use</span> <span class="ident">cortex_m_semihosting::hprintln</span>;
+<span class="kw">use</span> <span class="ident">heapless::mpmc::Q2</span>;
+
+<span class="kw">static</span> <span class="ident">Q</span>: <span class="ident">Q2</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Q2::new</span>();
+
+<span class="attribute">#[<span class="ident">entry</span>]</span>
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">p</span>) <span class="op">=</span> <span class="ident">cortex_m::Peripherals::take</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">syst</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">SYST</span>;
+
+        <span class="comment">// configures the system timer to trigger a SysTick exception every second</span>
+        <span class="ident">syst</span>.<span class="ident">set_clock_source</span>(<span class="ident">SystClkSource::Core</span>);
+        <span class="ident">syst</span>.<span class="ident">set_reload</span>(<span class="number">12_000_000</span>);
+        <span class="ident">syst</span>.<span class="ident">enable_counter</span>();
+        <span class="ident">syst</span>.<span class="ident">enable_interrupt</span>();
+    }
+
+    <span class="kw">loop</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="ident">Q</span>.<span class="ident">dequeue</span>() {
+            <span class="macro">hprintln!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">x</span>).<span class="ident">ok</span>();
+        } <span class="kw">else</span> {
+            <span class="ident">asm::wfi</span>();
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">exception</span>]</span>
+<span class="kw">fn</span> <span class="ident">SysTick</span>() {
+    <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">COUNT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0</span>;
+
+    <span class="ident">Q</span>.<span class="ident">enqueue</span>(<span class="kw-2">*</span><span class="ident">COUNT</span>).<span class="ident">ok</span>();
+    <span class="kw-2">*</span><span class="ident">COUNT</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+}</pre></div>
+<h1 id="benchmark" class="section-header"><a href="#benchmark">Benchmark</a></h1>
+<p>Measured on a ARM Cortex-M3 core running at 8 MHz and with zero Flash wait cycles</p>
+<table><thead><tr><th>N</th><th><code>Q8::&lt;u8&gt;::enqueue().ok()</code> (<code>z</code>)</th><th><code>Q8::&lt;u8&gt;::dequeue()</code> (<code>z</code>)</th></tr></thead><tbody>
+<tr><td>0</td><td>34</td><td>35</td></tr>
+<tr><td>1</td><td>52</td><td>53</td></tr>
+<tr><td>2</td><td>69</td><td>71</td></tr>
+</tbody></table>
+<ul>
+<li><code>N</code> denotes the number of <em>interruptions</em>. On Cortex-M, an interruption consists of an
+interrupt handler preempting the would-be atomic section of the <code>enqueue</code> / <code>dequeue</code>
+operation. Note that it does <em>not</em> matter if the higher priority handler uses the queue or
+not.</li>
+<li>All execution times are in clock cycles. 1 clock cycle = 125 ns.</li>
+<li>Execution time is <em>dependent</em> of <code>mem::size_of::&lt;T&gt;()</code>. Both operations include one
+<code>memcpy(T)</code> in their successful path.</li>
+<li>The optimization level is indicated in parentheses.</li>
+<li>The numbers reported correspond to the successful path (i.e. <code>Some</code> is returned by <code>dequeue</code>
+and <code>Ok</code> is returned by <code>enqueue</code>).</li>
+</ul>
+<h1 id="portability" class="section-header"><a href="#portability">Portability</a></h1>
+<p>This module is not exposed to architectures that lack the instructions to implement CAS loops.
+Those architectures include ARMv6-M (<code>thumbv6m-none-eabi</code>) and MSP430 (<code>msp430-none-elf</code>).</p>
+<h1 id="references" class="section-header"><a href="#references">References</a></h1>
+<p>This is an implementation of Dmitry Vyukov’s <a href="http://www.1024cores.net/home/lock-free-algorithms/queues/bounded-mpmc-queue">“Bounded MPMC queue”</a> minus the cache padding.</p>
+</div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+<table><tr class="module-item"><td><a class="struct" href="struct.Q2.html" title="heapless::mpmc::Q2 struct">Q2</a></td><td class="docblock-short"><p>MPMC queue with a capacity for 2 elements</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.Q4.html" title="heapless::mpmc::Q4 struct">Q4</a></td><td class="docblock-short"><p>MPMC queue with a capacity for 4 elements</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.Q8.html" title="heapless::mpmc::Q8 struct">Q8</a></td><td class="docblock-short"><p>MPMC queue with a capacity for 8 elements</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.Q16.html" title="heapless::mpmc::Q16 struct">Q16</a></td><td class="docblock-short"><p>MPMC queue with a capacity for 16 elements</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.Q32.html" title="heapless::mpmc::Q32 struct">Q32</a></td><td class="docblock-short"><p>MPMC queue with a capacity for 32 elements</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.Q64.html" title="heapless::mpmc::Q64 struct">Q64</a></td><td class="docblock-short"><p>MPMC queue with a capacity for 64 elements</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="heapless" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script></body></html>

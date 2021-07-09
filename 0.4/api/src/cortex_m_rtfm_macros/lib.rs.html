@@ -1,0 +1,623 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `macros/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../cortex_m_rtfm_macros/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
+<span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;128&quot;</span>]</span>
+
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">proc_macro</span>;
+
+<span class="kw">use</span> <span class="ident">proc_macro::TokenStream</span>;
+<span class="kw">use</span> <span class="ident">syn::parse_macro_input</span>;
+
+<span class="kw">mod</span> <span class="ident">analyze</span>;
+<span class="kw">mod</span> <span class="ident">check</span>;
+<span class="kw">mod</span> <span class="ident">codegen</span>;
+<span class="kw">mod</span> <span class="ident">syntax</span>;
+
+<span class="doccomment">/// Attribute used to declare a RTFM application</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This attribute must be applied to a `const` item of type `()`. The `const` item is effectively</span>
+<span class="doccomment">/// used as a `mod` item: its value must be a block that contains items commonly found in modules,</span>
+<span class="doccomment">/// like functions and `static` variables.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute has one mandatory argument:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `device = &lt;path&gt;`. The path must point to a device crate generated using [`svd2rust`]</span>
+<span class="doccomment">/// **v0.14.x**.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`svd2rust`]: https://crates.io/crates/svd2rust</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The items allowed in the block value of the `const` item are specified below:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # 1. `static [mut]` variables</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// These variables are used as *resources*. Resources can be owned by tasks or shared between them.</span>
+<span class="doccomment">/// Tasks can get `&amp;mut` (exclusives) references to `static mut` resources, but only `&amp;` (shared)</span>
+<span class="doccomment">/// references to `static` resources. Lower priority tasks will need a [`lock`] to get a `&amp;mut`</span>
+<span class="doccomment">/// reference to a `static mut` resource shared with higher priority tasks.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`lock`]: ../rtfm/trait.Mutex.html#method.lock</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `static mut` resources that are shared by tasks that run at *different* priorities need to</span>
+<span class="doccomment">/// implement the [`Send`] trait. Similarly, `static` resources that are shared by tasks that run at</span>
+<span class="doccomment">/// *different* priorities need to implement the [`Sync`] trait.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`Send`]: https://doc.rust-lang.org/core/marker/trait.Send.html</span>
+<span class="doccomment">/// [`Sync`]: https://doc.rust-lang.org/core/marker/trait.Sync.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Resources can be initialized at runtime by assigning them `()` (the unit value) as their initial</span>
+<span class="doccomment">/// value in their declaration. These &quot;late&quot; resources need to be initialized an the end of the</span>
+<span class="doccomment">/// `init` function.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute will inject a `resources` module in the root of the crate. This module</span>
+<span class="doccomment">/// contains proxy `struct`s that implement the [`Mutex`] trait. The `struct` are named after the</span>
+<span class="doccomment">/// `static mut` resources. For example, `static mut FOO: u32 = 0` will map to a `resources::FOO`</span>
+<span class="doccomment">/// `struct` that implements the `Mutex&lt;Data = u32&gt;` trait.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`Mutex`]: ../rtfm/trait.Mutex.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # 2. `fn`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Functions must contain *one* of the following attributes: `init`, `idle`, `interrupt`,</span>
+<span class="doccomment">/// `exception` or `task`. The attribute defines the role of the function in the application.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## a. `#[init]`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This attribute indicates that the function is to be used as the *initialization function*. There</span>
+<span class="doccomment">/// must be exactly one instance of the `init` attribute inside the `app` pseudo-module. The</span>
+<span class="doccomment">/// signature of the `init` function must be `[unsafe] fn ()`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `init` function runs after memory (RAM) is initialized and runs with interrupts disabled.</span>
+<span class="doccomment">/// Interrupts are re-enabled after `init` returns.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `init` attribute accepts the following optional arguments:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources = [RESOURCE_A, RESOURCE_B, ..]`. This is the list of resources this function has</span>
+<span class="doccomment">/// access to.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule = [task_a, task_b, ..]`. This is the list of *software* tasks that this function can</span>
+<span class="doccomment">/// schedule to run in the future. *IMPORTANT*: This argument is accepted only if the `timer-queue`</span>
+<span class="doccomment">/// feature has been enabled.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn = [task_a, task_b, ..]`. This is the list of *software* tasks that this function can</span>
+<span class="doccomment">/// immediately spawn.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute will injected a *context* into this function that comprises the following</span>
+<span class="doccomment">/// variables:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `core: rtfm::Peripherals`. Exclusive access to core peripherals. See [`rtfm::Peripherals`] for</span>
+<span class="doccomment">/// more details.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`rtfm::Peripherals`]: ../rtfm/struct.Peripherals.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `device: &lt;device-path&gt;::Peripherals`. Exclusive access to device-specific peripherals.</span>
+<span class="doccomment">/// `&lt;device-path&gt;` is the path to the device crate declared in the top `app` attribute.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `start: rtfm::Instant`. The `start` time of the system: `Instant(0 /* cycles */)`. **NOTE**:</span>
+<span class="doccomment">/// only present if the `timer-queue` feature is enabled.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources: _`. An opaque `struct` that contains all the resources assigned to this function.</span>
+<span class="doccomment">/// The resource maybe appear by value (`impl Singleton`), by references (`&amp;[mut]`) or by proxy</span>
+<span class="doccomment">/// (`impl Mutex`).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule: init::Schedule`. A `struct` that can be used to schedule *software* tasks.</span>
+<span class="doccomment">/// **NOTE**: only present if the `timer-queue` feature is enabled.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn: init::Spawn`. A `struct` that can be used to spawn *software* tasks.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Other properties / constraints:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `init` function can **not** be called from software.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `static mut` variables declared at the beginning of this function will be transformed into</span>
+<span class="doccomment">/// `&amp;&#39;static mut` references that are safe to access. For example, `static mut FOO: u32 = 0` will</span>
+<span class="doccomment">/// become `FOO: &amp;&#39;static mut u32`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - Assignments (e.g. `FOO = 0`) at the end of this function can be used to initialize *late*</span>
+<span class="doccomment">/// resources.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## b. `#[idle]`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This attribute indicates that the function is to be used as the *idle task*. There can be at</span>
+<span class="doccomment">/// most once instance of the `idle` attribute inside the `app` pseudo-module. The signature of the</span>
+<span class="doccomment">/// `idle` function must be `fn() -&gt; !`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `idle` task is a special task that always runs in the background. The `idle` task runs at</span>
+<span class="doccomment">/// the lowest priority of `0`. If the `idle` task is not defined then the runtime sets the</span>
+<span class="doccomment">/// [SLEEPONEXIT] bit after executing `init`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [SLEEPONEXIT]: https://developer.arm.com/products/architecture/cpu-architecture/m-profile/docs/100737/0100/power-management/sleep-mode/sleep-on-exit-bit</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `idle` attribute accepts the following optional arguments:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources = (..)`. Same meaning / function as [`#[init].resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule = (..)`. Same meaning / function as [`#[init].schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn = (..)`. Same meaning / function as [`#[init].spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute will injected a *context* into this function that comprises the following</span>
+<span class="doccomment">/// variables:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources: _`. Same meaning / function as [`init.resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule: idle::Schedule`. Same meaning / function as [`init.schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn: idle::Spawn`. Same meaning / function as [`init.spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Other properties / constraints:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `idle` function can **not** be called from software.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `static mut` variables declared at the beginning of this function will be transformed into</span>
+<span class="doccomment">/// `&amp;&#39;static mut` references that are safe to access. For example, `static mut FOO: u32 = 0` will</span>
+<span class="doccomment">/// become `FOO: &amp;&#39;static mut u32`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## c. `#[exception]`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This attribute indicates that the function is to be used as an *exception handler*, a type of</span>
+<span class="doccomment">/// hardware task. The signature of `exception` handlers must be `[unsafe] fn()`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The name of the function must match one of the Cortex-M exceptions that has [configurable</span>
+<span class="doccomment">/// priority][system-handler].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [system-handler]: ../cortex_m/peripheral/scb/enum.SystemHandler.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `exception` attribute accepts the following optional arguments.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `priority = &lt;integer&gt;`. This is the static priority of the exception handler. The value must</span>
+<span class="doccomment">/// be in the range `1..=(1 &lt;&lt; &lt;device-path&gt;::NVIC_PRIO_BITS)` where `&lt;device-path&gt;` is the path to</span>
+<span class="doccomment">/// the device crate declared in the top `app` attribute. If this argument is omitted the priority</span>
+<span class="doccomment">/// is assumed to be 1.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources = (..)`. Same meaning / function as [`#[init].resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule = (..)`. Same meaning / function as [`#[init].schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn = (..)`. Same meaning / function as [`#[init].spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute will injected a *context* into this function that comprises the following</span>
+<span class="doccomment">/// variables:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `start: rtfm::Instant`. The time at which this handler started executing. **NOTE**: only</span>
+<span class="doccomment">/// present if the `timer-queue` feature is enabled.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources: _`. Same meaning / function as [`init.resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule: &lt;exception-name&gt;::Schedule`. Same meaning / function as [`init.schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn: &lt;exception-name&gt;::Spawn`.  Same meaning / function as [`init.spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Other properties / constraints:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `exception` handlers can **not** be called from software.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `static mut` variables declared at the beginning of this function will be transformed into</span>
+<span class="doccomment">/// `&amp;mut` references that are safe to access. For example, `static mut FOO: u32 = 0` will</span>
+<span class="doccomment">/// become `FOO: &amp;mut u32`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## d. `#[interrupt]`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This attribute indicates that the function is to be used as an *interrupt handler*, a type of</span>
+<span class="doccomment">/// hardware task. The signature of `interrupt` handlers must be `[unsafe] fn()`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The name of the function must match one of the device specific interrupts. See your device crate</span>
+<span class="doccomment">/// documentation (`Interrupt` enum) for more details.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `interrupt` attribute accepts the following optional arguments.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `priority = (..)`. Same meaning / function as [`#[exception].priority`](#b-exception).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources = (..)`. Same meaning / function as [`#[init].resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule = (..)`. Same meaning / function as [`#[init].schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn = (..)`. Same meaning / function as [`#[init].spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute will injected a *context* into this function that comprises the following</span>
+<span class="doccomment">/// variables:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `start: rtfm::Instant`. Same meaning / function as [`exception.start`](#b-exception).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources: _`. Same meaning / function as [`init.resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule: &lt;interrupt-name&gt;::Schedule`. Same meaning / function as [`init.schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn: &lt;interrupt-name&gt;::Spawn`.  Same meaning / function as [`init.spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Other properties / constraints:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `interrupt` handlers can **not** be called from software, but they can be [`pend`]-ed by the</span>
+<span class="doccomment">/// software from any context.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`pend`]: ../rtfm/fn.pend.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `static mut` variables declared at the beginning of this function will be transformed into</span>
+<span class="doccomment">/// `&amp;mut` references that are safe to access. For example, `static mut FOO: u32 = 0` will</span>
+<span class="doccomment">/// become `FOO: &amp;mut u32`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## e. `#[task]`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This attribute indicates that the function is to be used as a *software task*. The signature of</span>
+<span class="doccomment">/// software `task`s must be `[unsafe] fn(&lt;inputs&gt;)`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `task` attribute accepts the following optional arguments.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `capacity = &lt;integer&gt;`. The maximum number of instances of this task that can be queued onto</span>
+<span class="doccomment">/// the task scheduler for execution. The value must be in the range `1..=255`. If the `capacity`</span>
+<span class="doccomment">/// argument is omitted then the capacity will be inferred.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `priority = &lt;integer&gt;`. Same meaning / function as [`#[exception].priority`](#b-exception).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources = (..)`. Same meaning / function as [`#[init].resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule = (..)`. Same meaning / function as [`#[init].schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn = (..)`. Same meaning / function as [`#[init].spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `app` attribute will injected a *context* into this function that comprises the following</span>
+<span class="doccomment">/// variables:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `scheduled: rtfm::Instant`. The time at which this task was scheduled to run. **NOTE**: Only</span>
+<span class="doccomment">/// present if `timer-queue` is enabled.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `resources: _`. Same meaning / function as [`init.resources`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `schedule: &lt;interrupt-name&gt;::Schedule`. Same meaning / function as [`init.schedule`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `spawn: &lt;interrupt-name&gt;::Spawn`.  Same meaning / function as [`init.spawn`](#a-init).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Other properties / constraints:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - Software `task`s can **not** be called from software, but they can be `spawn`-ed and</span>
+<span class="doccomment">/// `schedule`-d by the software from any context.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `static mut` variables declared at the beginning of this function will be transformed into</span>
+<span class="doccomment">/// `&amp;mut` references that are safe to access. For example, `static mut FOO: u32 = 0` will</span>
+<span class="doccomment">/// become `FOO: &amp;mut u32`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # 3. `extern` block</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This `extern` block contains a list of interrupts which are *not* used by the application as</span>
+<span class="doccomment">/// hardware tasks. These interrupts will be used to dispatch software tasks. Each interrupt will be</span>
+<span class="doccomment">/// used to dispatch *multiple* software tasks *at the same priority level*.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This `extern` block must only contain functions with signature `fn ()`. The names of these</span>
+<span class="doccomment">/// functions must match the names of the target device interrupts.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Importantly, attributes can be applied to the functions inside this block. These attributes will</span>
+<span class="doccomment">/// be forwarded to the interrupt handlers generated by the `app` attribute.</span>
+<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">app</span>(<span class="ident">args</span>: <span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="comment">// Parse</span>
+    <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">args</span> <span class="kw">as</span> <span class="ident">syntax::AppArgs</span>);
+    <span class="kw">let</span> <span class="ident">items</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">syntax::Input</span>).<span class="ident">items</span>;
+
+    <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">syntax::App::parse</span>(<span class="ident">items</span>, <span class="ident">args</span>) {
+        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">e</span>.<span class="ident">to_compile_error</span>().<span class="ident">into</span>(),
+        <span class="prelude-val">Ok</span>(<span class="ident">app</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">app</span>,
+    };
+
+    <span class="comment">// Check the specification</span>
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">check::app</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>) {
+        <span class="kw">return</span> <span class="ident">e</span>.<span class="ident">to_compile_error</span>().<span class="ident">into</span>();
+    }
+
+    <span class="comment">// Ceiling analysis</span>
+    <span class="kw">let</span> <span class="ident">analysis</span> <span class="op">=</span> <span class="ident">analyze::app</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>);
+
+    <span class="comment">// Code generation</span>
+    <span class="ident">codegen::app</span>(<span class="kw-2">&amp;</span><span class="ident">app</span>, <span class="kw-2">&amp;</span><span class="ident">analysis</span>).<span class="ident">into</span>()
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cortex_m_rtfm_macros" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

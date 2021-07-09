@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VolatileCell","Just like `Cell` but with volatile read / write operations"]]});

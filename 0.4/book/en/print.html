@@ -1,0 +1,2050 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Real Time For the Masses</title>
+                <meta name="robots" content="noindex" />
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+                <link rel="stylesheet" href="css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">Preface</a></li><li class="chapter-item expanded "><a href="by-example.html"><strong aria-hidden="true">1.</strong> RTFM by example</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="by-example/app.html"><strong aria-hidden="true">1.1.</strong> The app attribute</a></li><li class="chapter-item expanded "><a href="by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Resources</a></li><li class="chapter-item expanded "><a href="by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Tasks</a></li><li class="chapter-item expanded "><a href="by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Timer queue</a></li><li class="chapter-item expanded "><a href="by-example/singletons.html"><strong aria-hidden="true">1.5.</strong> Singletons</a></li><li class="chapter-item expanded "><a href="by-example/types-send-sync.html"><strong aria-hidden="true">1.6.</strong> Types, Send and Sync</a></li><li class="chapter-item expanded "><a href="by-example/new.html"><strong aria-hidden="true">1.7.</strong> Starting a new project</a></li><li class="chapter-item expanded "><a href="by-example/tips.html"><strong aria-hidden="true">1.8.</strong> Tips &amp; tricks</a></li></ol></li><li class="chapter-item expanded "><a href="internals.html"><strong aria-hidden="true">2.</strong> Under the hood</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="internals/ceilings.html"><strong aria-hidden="true">2.1.</strong> Ceiling analysis</a></li><li class="chapter-item expanded "><a href="internals/tasks.html"><strong aria-hidden="true">2.2.</strong> Task dispatcher</a></li><li class="chapter-item expanded "><a href="internals/timer-queue.html"><strong aria-hidden="true">2.3.</strong> Timer queue</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real Time For the Masses</h1>
+
+                    <div class="right-buttons">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 align="center">Real Time For the Masses</h1>
+<p align="center">A concurrency framework for building real time systems</p>
+<h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
+<p>This book contains user level documentation for the Real Time For the Masses
+(RTFM) framework. The API reference can be found
+<a href="../../api/rtfm/index.html">here</a>.</p>
+<p>There is a translation of this book in <a href="../ru/index.html">Russian</a>.</p>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li>
+<p><strong>Tasks</strong> as the unit of concurrency <sup class="footnote-reference"><a href="#1">1</a></sup>. Tasks can be <em>event triggered</em>
+(fired in response to asynchronous stimuli) or spawned by the application on
+demand.</p>
+</li>
+<li>
+<p><strong>Message passing</strong> between tasks. Specifically, messages can be passed to
+software tasks at spawn time.</p>
+</li>
+<li>
+<p><strong>A timer queue</strong> <sup class="footnote-reference"><a href="#2">2</a></sup>. Software tasks can be scheduled to run at some time
+in the future. This feature can be used to implement periodic tasks.</p>
+</li>
+<li>
+<p>Support for prioritization of tasks and, thus, <strong>preemptive multitasking</strong>.</p>
+</li>
+<li>
+<p><strong>Efficient and data race free memory sharing</strong> through fine grained <em>priority
+based</em> critical sections <sup class="footnote-reference"><a href="#1">1</a></sup>.</p>
+</li>
+<li>
+<p><strong>Deadlock free execution</strong> guaranteed at compile time. This is an stronger
+guarantee than what's provided by <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html">the standard <code>Mutex</code>
+abstraction</a>.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><strong>Minimal scheduling overhead</strong>. The task scheduler has minimal software
+footprint; the hardware does the bulk of the scheduling.</p>
+</li>
+<li>
+<p><strong>Highly efficient memory usage</strong>: All the tasks share a single call stack and
+there's no hard dependency on a dynamic memory allocator.</p>
+</li>
+<li>
+<p><strong>All Cortex-M devices are supported</strong>. The core features of RTFM are
+supported on all Cortex-M devices. The timer queue is currently only supported
+on ARMv7-M devices.</p>
+</li>
+<li>
+<p>This task model is amenable to known WCET (Worst Case Execution Time) analysis
+and scheduling analysis techniques. (Though we haven't yet developed Rust
+friendly tooling for that.)</p>
+</li>
+</ul>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<ul>
+<li>
+<p>Rust 1.36.0+</p>
+</li>
+<li>
+<p>Applications must be written using the 2018 edition.</p>
+</li>
+</ul>
+<h2 id="acknowledgments"><a class="header" href="#acknowledgments">Acknowledgments</a></h2>
+<p>This crate is based on <a href="http://www.rtfm-lang.org/">the RTFM language</a> created by the Embedded
+Systems group at <a href="https://www.ltu.se/?l=en">Luleå University of Technology</a>, led by <a href="https://www.ltu.se/staff/p/pln-1.11258?l=en">Prof. Per
+Lindgren</a>.</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Eriksson, J., Häggström, F., Aittamaa, S., Kruglyak, A., &amp; Lindgren, P.
+(2013, June). Real-time for the masses, step 1: Programming API and static
+priority SRP kernel primitives. In Industrial Embedded Systems (SIES), 2013
+8th IEEE International Symposium on (pp. 110-113). IEEE.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Lindgren, P., Fresk, E., Lindner, M., Lindner, A., Pereira, D., &amp; Pinho,
+L. M. (2016). Abstract timers and their implementation onto the arm cortex-m
+family of mcus. ACM SIGBED Review, 13(1), 48-53.</p>
+</div>
+<h2 id="license"><a class="header" href="#license">License</a></h2>
+<p>All source code (including code snippets) is licensed under either of</p>
+<ul>
+<li>Apache License, Version 2.0 (<a href="LICENSE-APACHE">LICENSE-APACHE</a> or
+<a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a>)</li>
+<li>MIT license (<a href="LICENSE-MIT">LICENSE-MIT</a> or
+<a href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a>)</li>
+</ul>
+<p>at your option.</p>
+<p>The written prose contained within the book is licensed under the terms of the
+Creative Commons CC-BY-SA v4.0 license (<a href="LICENSE-CC-BY-SA">LICENSE-CC-BY-SA</a> or
+<a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">https://creativecommons.org/licenses/by-sa/4.0/legalcode</a>).</p>
+<h3 id="contribution"><a class="header" href="#contribution">Contribution</a></h3>
+<p>Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+licensed as above, without any additional terms or conditions.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rtfm-by-example"><a class="header" href="#rtfm-by-example">RTFM by example</a></h1>
+<p>This part of the book introduces the Real Time For the Masses (RTFM) framework
+to new users by walking them through examples of increasing complexity.</p>
+<p>All examples in this part of the book can be found in the GitHub <a href="https://github.com/japaric/cortex-m-rtfm">repository</a> of
+the project, and most of the examples can be run on QEMU so no special hardware
+is required to follow along.</p>
+<p>To run the examples on your laptop / PC you'll need the <code>qemu-system-arm</code>
+program. Check <a href="https://rust-embedded.github.io/book/intro/install.html">the embedded Rust book</a> for instructions on how to set up an
+embedded development environment that includes QEMU.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-app-attribute"><a class="header" href="#the-app-attribute">The <code>app</code> attribute</a></h1>
+<p>This is the smallest possible RTFM application:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/smallest.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+// panic-handler crate
+extern crate panic_semihosting;
+
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {}
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>All RTFM applications use the <a href="by-example/../../api/cortex_m_rtfm_macros/attr.app.html"><code>app</code></a> attribute (<code>#[app(..)]</code>). This attribute
+must be applied to a <code>const</code> item that contains items. The <code>app</code> attribute has
+a mandatory <code>device</code> argument that takes a <em>path</em> as a value. This path must
+point to a <em>peripheral access crate</em> (PAC) generated using <a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a>
+<strong>v0.14.x</strong>. The <code>app</code> attribute will expand into a suitable entry point so it's
+not required to use the <a href="by-example/../../api/cortex_m_rt_macros/attr.entry.html"><code>cortex_m_rt::entry</code></a> attribute.</p>
+<blockquote>
+<p><strong>ASIDE</strong>: Some of you may be wondering why we are using a <code>const</code> item as a
+module and not a proper <code>mod</code> item. The reason is that using attributes on
+modules requires a feature gate, which requires a nightly toolchain. To make
+RTFM work on stable we use the <code>const</code> item instead. When more parts of macros
+1.2 are stabilized we'll move from a <code>const</code> item to a <code>mod</code> item and
+eventually to a crate level attribute (<code>#![app]</code>).</p>
+</blockquote>
+<h2 id="init"><a class="header" href="#init"><code>init</code></a></h2>
+<p>Within the pseudo-module the <code>app</code> attribute expects to find an initialization
+function marked with the <code>init</code> attribute. This function must have signature
+<code>[unsafe] fn()</code>.</p>
+<p>This initialization function will be the first part of the application to run.
+The <code>init</code> function will run <em>with interrupts disabled</em> and has exclusive access
+to Cortex-M and device specific peripherals through the <code>core</code> and <code>device</code>
+variables, which are injected in the scope of <code>init</code> by the <code>app</code> attribute. Not
+all Cortex-M peripherals are available in <code>core</code> because the RTFM runtime takes
+ownership of some of them -- for more details see the <a href="by-example/../../api/rtfm/struct.Peripherals.html"><code>rtfm::Peripherals</code></a>
+struct.</p>
+<p><code>static mut</code> variables declared at the beginning of <code>init</code> will be transformed
+into <code>&amp;'static mut</code> references that are safe to access.</p>
+<p>The example below shows the types of the <code>core</code> and <code>device</code> variables and
+showcases safe access to a <code>static mut</code> variable.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/init.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        static mut X: u32 = 0;
+
+        // Cortex-M peripherals
+        let _core: rtfm::Peripherals = core;
+
+        // Device specific peripherals
+        let _device: lm3s6965::Peripherals = device;
+
+        // Safe access to local `static mut` variable
+        let _x: &amp;'static mut u32 = X;
+
+        hprintln!(&quot;init&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Running the example will print <code>init</code> to the console and then exit the QEMU
+process.</p>
+<pre><code class="language-console">$ cargo run --example init
+init
+</code></pre>
+<h2 id="idle"><a class="header" href="#idle"><code>idle</code></a></h2>
+<p>A function marked with the <code>idle</code> attribute can optionally appear in the
+pseudo-module. This function is used as the special <em>idle task</em> and must have
+signature <code>[unsafe] fn() - &gt; !</code>.</p>
+<p>When present, the runtime will execute the <code>idle</code> task after <code>init</code>. Unlike
+<code>init</code>, <code>idle</code> will run <em>with interrupts enabled</em> and it's not allowed to return
+so it runs forever.</p>
+<p>When no <code>idle</code> function is declared, the runtime sets the <a href="https://developer.arm.com/products/architecture/cpu-architecture/m-profile/docs/100737/0100/power-management/sleep-mode/sleep-on-exit-bit">SLEEPONEXIT</a> bit and
+then sends the microcontroller to sleep after running <code>init</code>.</p>
+<p>Like in <code>init</code>, <code>static mut</code> variables will be transformed into <code>&amp;'static mut</code>
+references that are safe to access.</p>
+<p>The example below shows that <code>idle</code> runs after <code>init</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/idle.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        hprintln!(&quot;init&quot;).unwrap();
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        static mut X: u32 = 0;
+
+        // Safe access to local `static mut` variable
+        let _x: &amp;'static mut u32 = X;
+
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {}
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example idle
+init
+idle
+</code></pre>
+<h2 id="interrupt--exception"><a class="header" href="#interrupt--exception"><code>interrupt</code> / <code>exception</code></a></h2>
+<p>Just like you would do with the <code>cortex-m-rt</code> crate you can use the <code>interrupt</code>
+and <code>exception</code> attributes within the <code>app</code> pseudo-module to declare interrupt
+and exception handlers. In RTFM, we refer to interrupt and exception handlers as
+<em>hardware</em> tasks.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/interrupt.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        // Pends the UART0 interrupt but its handler won't run until *after*
+        // `init` returns because interrupts are disabled
+        rtfm::pend(Interrupt::UART0);
+
+        hprintln!(&quot;init&quot;).unwrap();
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        // interrupts are enabled again; the `UART0` handler runs at this point
+
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        rtfm::pend(Interrupt::UART0);
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {}
+    }
+
+    #[interrupt]
+    fn UART0() {
+        static mut TIMES: u32 = 0;
+
+        // Safe access to local `static mut` variable
+        *TIMES += 1;
+
+        hprintln!(
+            &quot;UART0 called {} time{}&quot;,
+            *TIMES,
+            if *TIMES &gt; 1 { &quot;s&quot; } else { &quot;&quot; }
+        )
+        .unwrap();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example interrupt
+init
+UART0 called 1 time
+idle
+UART0 called 2 times
+</code></pre>
+<p>So far all the RTFM applications we have seen look no different that the
+applications one can write using only the <code>cortex-m-rt</code> crate. In the next
+section we start introducing features unique to RTFM.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<p>One of the limitations of the attributes provided by the <code>cortex-m-rt</code> crate is
+that sharing data (or peripherals) between interrupts, or between an interrupt
+and the <code>entry</code> function, requires a <code>cortex_m::interrupt::Mutex</code>, which
+<em>always</em> requires disabling <em>all</em> interrupts to access the data. Disabling all
+the interrupts is not always required for memory safety but the compiler doesn't
+have enough information to optimize the access to the shared data.</p>
+<p>The <code>app</code> attribute has a full view of the application thus it can optimize
+access to <code>static</code> variables. In RTFM we refer to the <code>static</code> variables
+declared inside the <code>app</code> pseudo-module as <em>resources</em>. To access a resource the
+context (<code>init</code>, <code>idle</code>, <code>interrupt</code> or <code>exception</code>) must first declare the
+resource in the <code>resources</code> argument of its attribute.</p>
+<p>In the example below two interrupt handlers access the same resource. No <code>Mutex</code>
+is required in this case because the two handlers run at the same priority and
+no preemption is possible. The <code>SHARED</code> resource can only be accessed by these
+two handlers.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/resource.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    // A resource
+    static mut SHARED: u32 = 0;
+
+    #[init]
+    fn init() {
+        rtfm::pend(Interrupt::UART0);
+        rtfm::pend(Interrupt::UART1);
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        debug::exit(debug::EXIT_SUCCESS);
+
+        // error: `SHARED` can't be accessed from this context
+        // SHARED += 1;
+
+        loop {}
+    }
+
+    // `SHARED` can be access from this context
+    #[interrupt(resources = [SHARED])]
+    fn UART0() {
+        *resources.SHARED += 1;
+
+        hprintln!(&quot;UART0: SHARED = {}&quot;, resources.SHARED).unwrap();
+    }
+
+    // `SHARED` can be access from this context
+    #[interrupt(resources = [SHARED])]
+    fn UART1() {
+        *resources.SHARED += 1;
+
+        hprintln!(&quot;UART1: SHARED = {}&quot;, resources.SHARED).unwrap();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example resource
+UART0: SHARED = 1
+UART1: SHARED = 2
+</code></pre>
+<h2 id="priorities"><a class="header" href="#priorities">Priorities</a></h2>
+<p>The priority of each handler can be declared in the <code>interrupt</code> and <code>exception</code>
+attributes. It's not possible to set the priority in any other way because the
+runtime takes ownership of the <code>NVIC</code> peripheral; it's also not possible to
+change the priority of a handler / task at runtime. Thanks to this restriction
+the framework has knowledge about the <em>static</em> priorities of all interrupt and
+exception handlers.</p>
+<p>Interrupts and exceptions can have priorities in the range <code>1..=(1 &lt;&lt; NVIC_PRIO_BITS)</code> where <code>NVIC_PRIO_BITS</code> is a constant defined in the <code>device</code>
+crate. The <code>idle</code> task has a priority of <code>0</code>, the lowest priority.</p>
+<p>Resources that are shared between handlers that run at different priorities
+require critical sections for memory safety. The framework ensures that critical
+sections are used but <em>only where required</em>: for example, no critical section is
+required by the highest priority handler that has access to the resource.</p>
+<p>The critical section API provided by the RTFM framework (see <a href="by-example/../../api/rtfm/trait.Mutex.html"><code>Mutex</code></a>) is
+based on dynamic priorities rather than on disabling interrupts. The consequence
+is that these critical sections will prevent <em>some</em> handlers, including all the
+ones that contend for the resource, from <em>starting</em> but will let higher priority
+handlers, that don't contend for the resource, run.</p>
+<p>In the example below we have three interrupt handlers with priorities ranging
+from one to three. The two handlers with the lower priorities contend for the
+<code>SHARED</code> resource. The lowest priority handler needs to <a href="by-example/../../api/rtfm/trait.Mutex.html#method.lock"><code>lock</code></a> the
+<code>SHARED</code> resource to access its data, whereas the mid priority handler can
+directly access its data. The highest priority handler is free to preempt
+the critical section created by the lowest priority handler.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/lock.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static mut SHARED: u32 = 0;
+
+    #[init]
+    fn init() {
+        rtfm::pend(Interrupt::GPIOA);
+    }
+
+    // when omitted priority is assumed to be `1`
+    #[interrupt(resources = [SHARED])]
+    fn GPIOA() {
+        hprintln!(&quot;A&quot;).unwrap();
+
+        // the lower priority task requires a critical section to access the data
+        resources.SHARED.lock(|shared| {
+            // data can only be modified within this critical section (closure)
+            *shared += 1;
+
+            // GPIOB will *not* run right now due to the critical section
+            rtfm::pend(Interrupt::GPIOB);
+
+            hprintln!(&quot;B - SHARED = {}&quot;, *shared).unwrap();
+
+            // GPIOC does not contend for `SHARED` so it's allowed to run now
+            rtfm::pend(Interrupt::GPIOC);
+        });
+
+        // critical section is over: GPIOB can now start
+
+        hprintln!(&quot;E&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[interrupt(priority = 2, resources = [SHARED])]
+    fn GPIOB() {
+        // the higher priority task does *not* need a critical section
+        *resources.SHARED += 1;
+
+        hprintln!(&quot;D - SHARED = {}&quot;, *resources.SHARED).unwrap();
+    }
+
+    #[interrupt(priority = 3)]
+    fn GPIOC() {
+        hprintln!(&quot;C&quot;).unwrap();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example lock
+A
+B - SHARED = 1
+C
+D - SHARED = 2
+E
+</code></pre>
+<p>One more note about priorities: choosing a priority higher than what the device
+supports (that is <code>1 &lt;&lt; NVIC_PRIO_BITS</code>) will result in a compile error. Due to
+limitations in the language the error is currently far from helpful: it will say
+something along the lines of &quot;evaluation of constant value failed&quot; and the span
+of the error will <em>not</em> point out to the problematic interrupt value -- we are
+sorry about this!</p>
+<h2 id="late-resources"><a class="header" href="#late-resources">Late resources</a></h2>
+<p>Unlike normal <code>static</code> variables, which need to be assigned an initial value
+when declared, resources can be initialized at runtime. We refer to these
+runtime initialized resources as <em>late resources</em>. Late resources are useful for
+<em>moving</em> (as in transferring ownership) peripherals initialized in <code>init</code> into
+interrupt and exception handlers.</p>
+<p>Late resources are declared like normal resources but that are given an initial
+value of <code>()</code> (the unit value). <code>init</code> must return the initial values of all
+late resources packed in a <code>struct</code> of type <code>init::LateResources</code>.</p>
+<p>The example below uses late resources to stablish a lockless, one-way channel
+between the <code>UART0</code> interrupt handler and the <code>idle</code> function. A single producer
+single consumer <a href="by-example/../../api/heapless/spsc/struct.Queue.html"><code>Queue</code></a> is used as the channel. The queue is split into
+consumer and producer end points in <code>init</code> and then each end point is stored
+in a different resource; <code>UART0</code> owns the producer resource and <code>idle</code> owns
+the consumer resource.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/late.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use heapless::{
+    consts::*,
+    spsc::{Consumer, Producer, Queue},
+};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    // Late resources
+    static mut P: Producer&lt;'static, u32, U4&gt; = ();
+    static mut C: Consumer&lt;'static, u32, U4&gt; = ();
+
+    #[init]
+    fn init() -&gt; init::LateResources {
+        // NOTE: we use `Option` here to work around the lack of
+        // a stable `const` constructor
+        static mut Q: Option&lt;Queue&lt;u32, U4&gt;&gt; = None;
+
+        *Q = Some(Queue::new());
+        let (p, c) = Q.as_mut().unwrap().split();
+
+        // Initialization of late resources
+        init::LateResources { P: p, C: c }
+    }
+
+    #[idle(resources = [C])]
+    fn idle() -&gt; ! {
+        loop {
+            if let Some(byte) = resources.C.dequeue() {
+                hprintln!(&quot;received message: {}&quot;, byte).unwrap();
+
+                debug::exit(debug::EXIT_SUCCESS);
+            } else {
+                rtfm::pend(Interrupt::UART0);
+            }
+        }
+    }
+
+    #[interrupt(resources = [P])]
+    fn UART0() {
+        resources.P.enqueue(42).unwrap();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example late
+received message: 42
+</code></pre>
+<h2 id="static-resources"><a class="header" href="#static-resources"><code>static</code> resources</a></h2>
+<p><code>static</code> variables can also be used as resources. Tasks can only get <code>&amp;</code>
+(shared) references to these resources but locks are never required to access
+their data. You can think of <code>static</code> resources as plain <code>static</code> variables that
+can be initialized at runtime and have better scoping rules: you can control
+which tasks can access the variable, instead of the variable being visible to
+all the functions in the scope it was declared in.</p>
+<p>In the example below a key is loaded (or created) at runtime and then used from
+two tasks that run at different priorities.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/static.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static KEY: u32 = ();
+
+    #[init]
+    fn init() -&gt; init::LateResources {
+        rtfm::pend(Interrupt::UART0);
+        rtfm::pend(Interrupt::UART1);
+
+        init::LateResources { KEY: 0xdeadbeef }
+    }
+
+    #[interrupt(resources = [KEY])]
+    fn UART0() {
+        hprintln!(&quot;UART0(KEY = {:#x})&quot;, resources.KEY).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[interrupt(priority = 2, resources = [KEY])]
+    fn UART1() {
+        hprintln!(&quot;UART1(KEY = {:#x})&quot;, resources.KEY).unwrap();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example static
+UART1(KEY = 0xdeadbeef)
+UART0(KEY = 0xdeadbeef)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="software-tasks"><a class="header" href="#software-tasks">Software tasks</a></h1>
+<p>RTFM treats interrupt and exception handlers as <em>hardware</em> tasks. Hardware tasks
+are invoked by the hardware in response to events, like pressing a button. RTFM
+also supports <em>software</em> tasks which can be spawned by the software from any
+execution context.</p>
+<p>Software tasks can also be assigned priorities and are dispatched from interrupt
+handlers. RTFM requires that free interrupts are declared in an <code>extern</code> block
+when using software tasks; these free interrupts will be used to dispatch the
+software tasks. An advantage of software tasks over hardware tasks is that many
+tasks can be mapped to a single interrupt handler.</p>
+<p>Software tasks are declared by applying the <code>task</code> attribute to functions. To be
+able to spawn a software task the name of the task must appear in the <code>spawn</code>
+argument of the context attribute (<code>init</code>, <code>idle</code>, <code>interrupt</code>, etc.).</p>
+<p>The example below showcases three software tasks that run at 2 different
+priorities. The three tasks map to 2 interrupts handlers.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/task.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [foo])]
+    fn init() {
+        spawn.foo().unwrap();
+    }
+
+    #[task(spawn = [bar, baz])]
+    fn foo() {
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        // spawns `bar` onto the task scheduler
+        // `foo` and `bar` have the same priority so `bar` will not run until
+        // after `foo` terminates
+        spawn.bar().unwrap();
+
+        // spawns `baz` onto the task scheduler
+        // `baz` has higher priority than `foo` so it immediately preempts `foo`
+        spawn.baz().unwrap();
+    }
+
+    #[task]
+    fn bar() {
+        hprintln!(&quot;bar&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(priority = 2)]
+    fn baz() {
+        hprintln!(&quot;baz&quot;).unwrap();
+    }
+
+    // Interrupt handlers used to dispatch software tasks
+    extern &quot;C&quot; {
+        fn UART0();
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example task
+foo
+baz
+bar
+</code></pre>
+<h2 id="message-passing"><a class="header" href="#message-passing">Message passing</a></h2>
+<p>The other advantage of software tasks is that messages can be passed to these
+tasks when spawning them. The type of the message payload must be specified in
+the signature of the task handler.</p>
+<p>The example below showcases three tasks, two of them expect a message.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/message.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [foo])]
+    fn init() {
+        spawn.foo(/* no message */).unwrap();
+    }
+
+    #[task(spawn = [bar])]
+    fn foo() {
+        static mut COUNT: u32 = 0;
+
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        spawn.bar(*COUNT).unwrap();
+        *COUNT += 1;
+    }
+
+    #[task(spawn = [baz])]
+    fn bar(x: u32) {
+        hprintln!(&quot;bar({})&quot;, x).unwrap();
+
+        spawn.baz(x + 1, x + 2).unwrap();
+    }
+
+    #[task(spawn = [foo])]
+    fn baz(x: u32, y: u32) {
+        hprintln!(&quot;baz({}, {})&quot;, x, y).unwrap();
+
+        if x + y &gt; 4 {
+            debug::exit(debug::EXIT_SUCCESS);
+        }
+
+        spawn.foo().unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example message
+foo
+bar(0)
+baz(1, 2)
+foo
+bar(1)
+baz(2, 3)
+</code></pre>
+<h2 id="capacity"><a class="header" href="#capacity">Capacity</a></h2>
+<p>Task dispatchers do <em>not</em> use any dynamic memory allocation. The memory required
+to store messages is statically reserved. The framework will reserve enough
+space for every context to be able to spawn each task at most once. This is a
+sensible default but the &quot;inbox&quot; capacity of each task can be controlled using
+the <code>capacity</code> argument of the <code>task</code> attribute.</p>
+<p>The example below sets the capacity of the software task <code>foo</code> to 4. If the
+capacity is not specified then the second <code>spawn.foo</code> call in <code>UART0</code> would
+fail.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/capacity.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        rtfm::pend(Interrupt::UART0);
+    }
+
+    #[interrupt(spawn = [foo, bar])]
+    fn UART0() {
+        spawn.foo(0).unwrap();
+        spawn.foo(1).unwrap();
+        spawn.foo(2).unwrap();
+        spawn.foo(3).unwrap();
+
+        spawn.bar().unwrap();
+    }
+
+    #[task(capacity = 4)]
+    fn foo(x: u32) {
+        hprintln!(&quot;foo({})&quot;, x).unwrap();
+    }
+
+    #[task]
+    fn bar() {
+        hprintln!(&quot;bar&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    // Interrupt handlers used to dispatch software tasks
+    extern &quot;C&quot; {
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example capacity
+foo(0)
+foo(1)
+foo(2)
+foo(3)
+bar
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="timer-queue"><a class="header" href="#timer-queue">Timer queue</a></h1>
+<p>When the <code>timer-queue</code> feature is enabled the RTFM framework includes a <em>global
+timer queue</em> that applications can use to <em>schedule</em> software tasks to run at
+some time in the future.</p>
+<blockquote>
+<p><strong>NOTE</strong>: The timer-queue feature can't be enabled when the target is
+<code>thumbv6m-none-eabi</code> because there's no timer queue support for ARMv6-M. This
+may change in the future.</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong>: When the <code>timer-queue</code> feature is enabled you will <em>not</em> be able to
+use the <code>SysTick</code> exception as a hardware task because the runtime uses it to
+implement the global timer queue.</p>
+</blockquote>
+<p>To be able to schedule a software task the name of the task must appear in the
+<code>schedule</code> argument of the context attribute. When scheduling a task the
+<a href="by-example/../../api/rtfm/struct.Instant.html"><code>Instant</code></a> at which the task should be executed must be passed as the first
+argument of the <code>schedule</code> invocation.</p>
+<p>The RTFM runtime includes a monotonic, non-decreasing, 32-bit timer which can be
+queried using the <code>Instant::now</code> constructor. A <a href="by-example/../../api/rtfm/struct.Duration.html"><code>Duration</code></a> can be added to
+<code>Instant::now()</code> to obtain an <code>Instant</code> into the future. The monotonic timer is
+disabled while <code>init</code> runs so <code>Instant::now()</code> always returns the value
+<code>Instant(0 /* clock cycles */)</code>; the timer is enabled right before the
+interrupts are re-enabled and <code>idle</code> is executed.</p>
+<p>The example below schedules two tasks from <code>init</code>: <code>foo</code> and <code>bar</code>. <code>foo</code> is
+scheduled to run 8 million clock cycles in the future. Next, <code>bar</code> is scheduled
+to run 4 million clock cycles in the future. <code>bar</code> runs before <code>foo</code> since it
+was scheduled to run first.</p>
+<blockquote>
+<p><strong>IMPORTANT</strong>: The examples that use the <code>schedule</code> API or the <code>Instant</code>
+abstraction will <strong>not</strong> properly work on QEMU because the Cortex-M cycle
+counter functionality has not been implemented in <code>qemu-system-arm</code>.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/schedule.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::hprintln;
+use rtfm::{app, Instant};
+
+// NOTE: does NOT work on QEMU!
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(schedule = [foo, bar])]
+    fn init() {
+        let now = Instant::now();
+
+        hprintln!(&quot;init @ {:?}&quot;, now).unwrap();
+
+        // Schedule `foo` to run 8e6 cycles (clock cycles) in the future
+        schedule.foo(now + 8_000_000.cycles()).unwrap();
+
+        // Schedule `bar` to run 4e6 cycles in the future
+        schedule.bar(now + 4_000_000.cycles()).unwrap();
+    }
+
+    #[task]
+    fn foo() {
+        hprintln!(&quot;foo  @ {:?}&quot;, Instant::now()).unwrap();
+    }
+
+    #[task]
+    fn bar() {
+        hprintln!(&quot;bar  @ {:?}&quot;, Instant::now()).unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Running the program on real hardware produces the following output in the console:</p>
+<pre><code class="language-text">init @ Instant(0)
+bar  @ Instant(4000236)
+foo  @ Instant(8000173)
+</code></pre>
+<h2 id="periodic-tasks"><a class="header" href="#periodic-tasks">Periodic tasks</a></h2>
+<p>Software tasks have access to the <code>Instant</code> at which they were scheduled to run
+through the <code>scheduled</code> variable. This information and the <code>schedule</code> API can be
+used to implement periodic tasks as shown in the example below.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/periodic.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::hprintln;
+use rtfm::{app, Instant};
+
+const PERIOD: u32 = 8_000_000;
+
+// NOTE: does NOT work on QEMU!
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(schedule = [foo])]
+    fn init() {
+        schedule.foo(Instant::now() + PERIOD.cycles()).unwrap();
+    }
+
+    #[task(schedule = [foo])]
+    fn foo() {
+        let now = Instant::now();
+        hprintln!(&quot;foo(scheduled = {:?}, now = {:?})&quot;, scheduled, now).unwrap();
+
+        schedule.foo(scheduled + PERIOD.cycles()).unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>This is the output produced by the example. Note that there is zero drift /
+jitter even though <code>schedule.foo</code> was invoked at the <em>end</em> of <code>foo</code>. Using
+<code>Instant::now</code> instead of <code>scheduled</code> would have resulted in drift / jitter.</p>
+<pre><code class="language-text">foo(scheduled = Instant(8000000), now = Instant(8000196))
+foo(scheduled = Instant(16000000), now = Instant(16000196))
+foo(scheduled = Instant(24000000), now = Instant(24000196))
+</code></pre>
+<h2 id="baseline"><a class="header" href="#baseline">Baseline</a></h2>
+<p>For the tasks scheduled from <code>init</code> we have exact information about their
+<code>scheduled</code> time. For hardware tasks there's no <code>scheduled</code> time because these
+tasks are asynchronous in nature. For hardware tasks the runtime provides a
+<code>start</code> time, which indicates the time at which the task handler started
+executing.</p>
+<p>Note that <code>start</code> is <strong>not</strong> equal to the arrival time of the event that fired
+the task. Depending on the priority of the task and the load of the system the
+<code>start</code> time could be very far off from the event arrival time.</p>
+<p>What do you think will be the value of <code>scheduled</code> for software tasks that are
+<em>spawned</em> instead of scheduled? The answer is that spawned tasks inherit the
+<em>baseline</em> time of the context that spawned it. The baseline of hardware tasks
+is <code>start</code>, the baseline of software tasks is <code>scheduled</code> and the baseline of
+<code>init</code> is <code>start = Instant(0)</code>. <code>idle</code> doesn't really have a baseline but tasks
+spawned from it will use <code>Instant::now()</code> as their baseline time.</p>
+<p>The example below showcases the different meanings of the <em>baseline</em>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/baseline.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+// NOTE: does NOT properly work on QEMU
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [foo])]
+    fn init() {
+        hprintln!(&quot;init(baseline = {:?})&quot;, start).unwrap();
+
+        // `foo` inherits the baseline of `init`: `Instant(0)`
+        spawn.foo().unwrap();
+    }
+
+    #[task(schedule = [foo])]
+    fn foo() {
+        static mut ONCE: bool = true;
+
+        hprintln!(&quot;foo(baseline = {:?})&quot;, scheduled).unwrap();
+
+        if *ONCE {
+            *ONCE = false;
+
+            rtfm::pend(Interrupt::UART0);
+        } else {
+            debug::exit(debug::EXIT_SUCCESS);
+        }
+    }
+
+    #[interrupt(spawn = [foo])]
+    fn UART0() {
+        hprintln!(&quot;UART0(baseline = {:?})&quot;, start).unwrap();
+
+        // `foo` inherits the baseline of `UART0`: its `start` time
+        spawn.foo().unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Running the program on real hardware produces the following output in the console:</p>
+<pre><code class="language-text">init(baseline = Instant(0))
+foo(baseline = Instant(0))
+UART0(baseline = Instant(904))
+foo(baseline = Instant(904))
+</code></pre>
+<h2 id="caveats"><a class="header" href="#caveats">Caveats</a></h2>
+<p>The <code>Instant</code> and <code>Duration</code> APIs are meant to be exclusively used with the
+<code>schedule</code> API to schedule tasks <em>with a precision of a single core clock
+cycle</em>. These APIs are <em>not</em>, for example, meant to be used to time external
+events like a user pressing a button.</p>
+<p>The timer queue feature internally uses the system timer, <code>SysTick</code>. This timer
+is a 24-bit counter and it's clocked at the core clock frequency so tasks
+scheduled more than <code>(1 &lt;&lt; 24).cycles()</code> in the future will incur in additional
+overhead, proportional to the size of their <code>Duration</code>, compared to task
+scheduled with <code>Duration</code>s below that threshold.</p>
+<p>If you need periodic tasks with periods greater than <code>(1 &lt;&lt; 24).cycles()</code> you
+likely don't need a timer with a resolution of one core clock cycle so we advise
+you instead use a device timer with an appropriate prescaler.</p>
+<p>We can't stop you from using <code>Instant</code> to measure external events so please be
+aware that <code>Instant.sub</code> / <code>Instant.elapsed</code> will never return a <code>Duration</code>
+equal or greater than <code>(1 &lt;&lt; 31).cycles()</code> so you won't be able to measure
+events that last more than <code>1 &lt;&lt; 31</code> core clock cycles (e.g. seconds).</p>
+<p>Adding a <code>Duration</code> equal or greater than <code>(1 &lt;&lt; 31).cycles()</code> to an <code>Instant</code>
+will effectively overflow it so it's not possible to schedule a task more than
+<code>(1 &lt;&lt; 31).cycles()</code> in the future. There are some debug assertions in place to
+catch this kind of user error but it's not possible to prevent it with 100%
+success rate because one can always write <code>(instant + duration) + duration</code> and
+bypass the runtime checks.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="singletons"><a class="header" href="#singletons">Singletons</a></h1>
+<p>The <code>app</code> attribute is aware of <a href="by-example/../../api/owned_singleton/index.html"><code>owned-singleton</code></a> crate and its <a href="by-example/../../api/owned_singleton_macros/attr.Singleton.html"><code>Singleton</code></a>
+attribute. When this attribute is applied to one of the resources the runtime
+will perform the <code>unsafe</code> initialization of the singleton for you, ensuring that
+only a single instance of the singleton is ever created.</p>
+<p>Note that when using the <code>Singleton</code> attribute you'll need to have the
+<code>owned_singleton</code> in your dependencies.</p>
+<p>Below is an example that uses the <code>Singleton</code> attribute on a chunk of memory
+and then uses the singleton instance as a fixed-size memory pool using one of
+the <a href="https://crates.io/crates/alloc-singleton"><code>alloc-singleton</code></a> abstractions.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/singleton.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use alloc_singleton::stable::pool::{Box, Pool};
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[Singleton(Send)]
+    static mut M: [u32; 2] = [0; 2];
+
+    static mut P: Pool&lt;M&gt; = ();
+
+    #[init(resources = [M])]
+    fn init() -&gt; init::LateResources {
+        rtfm::pend(Interrupt::I2C0);
+
+        init::LateResources {
+            P: Pool::new(resources.M),
+        }
+    }
+
+    #[interrupt(
+        priority = 2,
+        resources = [P],
+        spawn = [foo, bar],
+    )]
+    fn I2C0() {
+        spawn.foo(resources.P.alloc(1).unwrap()).unwrap();
+        spawn.bar(resources.P.alloc(2).unwrap()).unwrap();
+    }
+
+    #[task(resources = [P])]
+    fn foo(x: Box&lt;M&gt;) {
+        hprintln!(&quot;foo({})&quot;, x).unwrap();
+
+        resources.P.lock(|p| p.dealloc(x));
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(priority = 2, resources = [P])]
+    fn bar(x: Box&lt;M&gt;) {
+        hprintln!(&quot;bar({})&quot;, x).unwrap();
+
+        resources.P.dealloc(x);
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example singleton
+bar(2)
+foo(1)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="types-send-and-sync"><a class="header" href="#types-send-and-sync">Types, Send and Sync</a></h1>
+<p>The <code>app</code> attribute injects a context, a collection of variables, into every
+function. All these variables have predictable, non-anonymous types so you can
+write plain functions that take them as arguments.</p>
+<p>The API reference specifies how these types are generated from the input. You
+can also generate documentation for you binary crate (<code>cargo doc --bin &lt;name&gt;</code>);
+in the documentation you'll find <code>Context</code> structs (e.g. <code>init::Context</code> and
+<code>idle::Context</code>) whose fields represent the variables injected into each
+function.</p>
+<p>The example below shows the different types generates by the <code>app</code> attribute.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/types.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::debug;
+use rtfm::{app, Exclusive, Instant};
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static mut SHARED: u32 = 0;
+
+    #[init(schedule = [foo], spawn = [foo])]
+    fn init() {
+        let _: Instant = start;
+        let _: rtfm::Peripherals = core;
+        let _: lm3s6965::Peripherals = device;
+        let _: init::Schedule = schedule;
+        let _: init::Spawn = spawn;
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[exception(schedule = [foo], spawn = [foo])]
+    fn SVCall() {
+        let _: Instant = start;
+        let _: SVCall::Schedule = schedule;
+        let _: SVCall::Spawn = spawn;
+    }
+
+    #[interrupt(resources = [SHARED], schedule = [foo], spawn = [foo])]
+    fn UART0() {
+        let _: Instant = start;
+        let _: resources::SHARED = resources.SHARED;
+        let _: UART0::Schedule = schedule;
+        let _: UART0::Spawn = spawn;
+    }
+
+    #[task(priority = 2, resources = [SHARED], schedule = [foo], spawn = [foo])]
+    fn foo() {
+        let _: Instant = scheduled;
+        let _: Exclusive&lt;u32&gt; = resources.SHARED;
+        let _: foo::Resources = resources;
+        let _: foo::Schedule = schedule;
+        let _: foo::Spawn = spawn;
+    }
+
+    extern &quot;C&quot; {
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="send"><a class="header" href="#send"><code>Send</code></a></h2>
+<p><a href="https://doc.rust-lang.org/core/marker/trait.Send.html"><code>Send</code></a> is a marker trait for &quot;types that can be transferred across thread
+boundaries&quot;, according to its definition in <code>core</code>. In the context of RTFM the
+<code>Send</code> trait is only required where it's possible to transfer a value between
+tasks that run at <em>different</em> priorities. This occurs in a few places: in message
+passing, in shared <code>static mut</code> resources and in the initialization of late
+resources.</p>
+<p>The <code>app</code> attribute will enforce that <code>Send</code> is implemented where required so
+you don't need to worry much about it. It's more important to know where you do
+<em>not</em> need the <code>Send</code> trait: on types that are transferred between tasks that
+run at the <em>same</em> priority. This occurs in two places: in message passing and in
+shared <code>static mut</code> resources.</p>
+<p>The example below shows where a type that doesn't implement <code>Send</code> can be used.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! `examples/not-send.rs`
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_halt;
+
+use core::marker::PhantomData;
+
+use cortex_m_semihosting::debug;
+use rtfm::app;
+
+pub struct NotSend {
+    _0: PhantomData&lt;*const ()&gt;,
+}
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static mut SHARED: Option&lt;NotSend&gt; = None;
+
+    #[init(spawn = [baz, quux])]
+    fn init() {
+        spawn.baz().unwrap();
+        spawn.quux().unwrap();
+    }
+
+    #[task(spawn = [bar])]
+    fn foo() {
+        // scenario 1: message passed to task that runs at the same priority
+        spawn.bar(NotSend { _0: PhantomData }).ok();
+    }
+
+    #[task]
+    fn bar(_x: NotSend) {
+        // scenario 1
+    }
+
+    #[task(priority = 2, resources = [SHARED])]
+    fn baz() {
+        // scenario 2: resource shared between tasks that run at the same priority
+        *resources.SHARED = Some(NotSend { _0: PhantomData });
+    }
+
+    #[task(priority = 2, resources = [SHARED])]
+    fn quux() {
+        // scenario 2
+        let _not_send = resources.SHARED.take().unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>It's important to note that late initialization of resources is effectively a
+send operation where the initial value is sent from <code>idle</code>, which has the lowest
+priority of <code>0</code>, to a task with will run with a priority greater than or equal
+to <code>1</code>. Thus all late resources need to implement the <code>Send</code> trait.</p>
+<p>Sharing a resource with <code>init</code> can be used to implement late initialization, see
+example below. For that reason, resources shared with <code>init</code> must also implement
+the <code>Send</code> trait.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! `examples/shared-with-init.rs`
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_halt;
+
+use cortex_m_semihosting::debug;
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+pub struct MustBeSend;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static mut SHARED: Option&lt;MustBeSend&gt; = None;
+
+    #[init(resources = [SHARED])]
+    fn init() {
+        // this `message` will be sent to task `UART0`
+        let message = MustBeSend;
+        *resources.SHARED = Some(message);
+
+        rtfm::pend(Interrupt::UART0);
+    }
+
+    #[interrupt(resources = [SHARED])]
+    fn UART0() {
+        if let Some(message) = resources.SHARED.take() {
+            // `message` has been received
+            drop(message);
+
+            debug::exit(debug::EXIT_SUCCESS);
+        }
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="sync"><a class="header" href="#sync"><code>Sync</code></a></h2>
+<p>Similarly, <a href="https://doc.rust-lang.org/core/marker/trait.Sync.html"><code>Sync</code></a> is a marker trait for &quot;types for which it is safe to share
+references between threads&quot;, according to its definition in <code>core</code>. In the
+context of RTFM the <code>Sync</code> trait is only required where it's possible for two,
+or more, tasks that run at different priority to hold a shared reference to a
+resource. This only occurs with shared <code>static</code> resources.</p>
+<p>The <code>app</code> attribute will enforce that <code>Sync</code> is implemented where required but
+it's important to know where the <code>Sync</code> bound is not required: in <code>static</code>
+resources shared between tasks that run at the <em>same</em> priority.</p>
+<p>The example below shows where a type that doesn't implement <code>Sync</code> can be used.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! `examples/not-sync.rs`
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_halt;
+
+use core::marker::PhantomData;
+
+use cortex_m_semihosting::debug;
+use rtfm::app;
+
+pub struct NotSync {
+    _0: PhantomData&lt;*const ()&gt;,
+}
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static SHARED: NotSync = NotSync { _0: PhantomData };
+
+    #[init]
+    fn init() {
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(resources = [SHARED])]
+    fn foo() {
+        let _: &amp;NotSync = resources.SHARED;
+    }
+
+    #[task(resources = [SHARED])]
+    fn bar() {
+        let _: &amp;NotSync = resources.SHARED;
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="starting-a-new-project"><a class="header" href="#starting-a-new-project">Starting a new project</a></h1>
+<p>Now that you have learned about the main features of the RTFM framework you can
+try it out on your hardware by following these instructions.</p>
+<ol>
+<li>Instantiate the <a href="https://github.com/rust-embedded/cortex-m-quickstart#cortex-m-quickstart"><code>cortex-m-quickstart</code></a> template.</li>
+</ol>
+<pre><code class="language-console">$ # for example using `cargo-generate`
+$ cargo generate \
+    --git https://github.com/rust-embedded/cortex-m-quickstart \
+    --name app
+
+$ # follow the rest of the instructions
+</code></pre>
+<ol start="2">
+<li>Add a peripheral access crate (PAC) that was generated using <a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a>
+<strong>v0.14.x</strong>, or a board support crate that depends on one such PAC as a
+dependency. Make sure that the <code>rt</code> feature of the crate is enabled.</li>
+</ol>
+<p>In this example, I'll use the <a href="https://crates.io/crates/lm3s6965"><code>lm3s6965</code></a> device crate. This device crate
+doesn't have an <code>rt</code> Cargo feature; that feature is always enabled.</p>
+<p>This device crate provides a linker script with the memory layout of the target
+device so <code>memory.x</code> and <code>build.rs</code> need to be removed.</p>
+<pre><code class="language-console">$ cargo add lm3s6965 --vers 0.1.3
+
+$ rm memory.x build.rs
+</code></pre>
+<ol start="3">
+<li>Add the <code>cortex-m-rtfm</code> crate as a dependency and, if you need it, enable the
+<code>timer-queue</code> feature.</li>
+</ol>
+<pre><code class="language-console">$ cargo add cortex-m-rtfm
+</code></pre>
+<ol start="4">
+<li>Write your RTFM application.</li>
+</ol>
+<p>Here I'll use the <code>init</code> example from the <code>cortex-m-rtfm</code> crate.</p>
+<pre><code class="language-console">$ curl \
+    -L https://github.com/japaric/cortex-m-rtfm/raw/v0.4.0/examples/init.rs \
+    &gt; src/main.rs
+</code></pre>
+<p>That example depends on the <code>panic-semihosting</code> crate:</p>
+<pre><code class="language-console">$ cargo add panic-semihosting
+</code></pre>
+<ol start="5">
+<li>Build it, flash it and run it.</li>
+</ol>
+<pre><code class="language-console">$ # NOTE: I have uncommented the `runner` option in `.cargo/config`
+$ cargo run
+init
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tips--tricks"><a class="header" href="#tips--tricks">Tips &amp; tricks</a></h1>
+<h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
+<p>Resources shared between two or more tasks implement the <code>Mutex</code> trait in <em>all</em>
+contexts, even on those where a critical section is not required to access the
+data. This lets you easily write generic code that operates on resources and can
+be called from different tasks. Here's one such example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/generics.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::{app, Mutex};
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    static mut SHARED: u32 = 0;
+
+    #[init]
+    fn init() {
+        rtfm::pend(Interrupt::UART0);
+        rtfm::pend(Interrupt::UART1);
+    }
+
+    #[interrupt(resources = [SHARED])]
+    fn UART0() {
+        static mut STATE: u32 = 0;
+
+        hprintln!(&quot;UART0(STATE = {})&quot;, *STATE).unwrap();
+
+        advance(STATE, resources.SHARED);
+
+        rtfm::pend(Interrupt::UART1);
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[interrupt(priority = 2, resources = [SHARED])]
+    fn UART1() {
+        static mut STATE: u32 = 0;
+
+        hprintln!(&quot;UART1(STATE = {})&quot;, *STATE).unwrap();
+
+        // just to show that `SHARED` can be accessed directly and ..
+        *resources.SHARED += 0;
+        // .. also through a (no-op) `lock`
+        resources.SHARED.lock(|shared| *shared += 0);
+
+        advance(STATE, resources.SHARED);
+    }
+};
+
+fn advance(state: &amp;mut u32, mut shared: impl Mutex&lt;T = u32&gt;) {
+    *state += 1;
+
+    let (old, new) = shared.lock(|shared| {
+        let old = *shared;
+        *shared += *state;
+        (old, *shared)
+    });
+
+    hprintln!(&quot;SHARED: {} -&gt; {}&quot;, old, new).unwrap();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example generics
+UART1(STATE = 0)
+SHARED: 0 -&gt; 1
+UART0(STATE = 0)
+SHARED: 1 -&gt; 2
+UART1(STATE = 1)
+SHARED: 2 -&gt; 4
+</code></pre>
+<p>This also lets you change the static priorities of tasks without having to
+rewrite code. If you consistently use <code>lock</code>s to access the data behind shared
+resources then your code will continue to compile when you change the priority
+of tasks.</p>
+<h2 id="conditional-compilation"><a class="header" href="#conditional-compilation">Conditional compilation</a></h2>
+<p>You can use conditional compilation (<code>#[cfg]</code>) on resources (<code>static [mut]</code>
+items) and tasks (<code>fn</code> items). The effect of using <code>#[cfg]</code> attributes is that
+the resource / task will <em>not</em> be injected into the prelude of tasks that use
+them (see <code>resources</code>, <code>spawn</code> and <code>schedule</code>) if the condition doesn't hold.</p>
+<p>The example below logs a message whenever the <code>foo</code> task is spawned, but only if
+the program has been compiled using the <code>dev</code> profile.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/cfg.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+#[cfg(debug_assertions)]
+use cortex_m_semihosting::hprintln;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[cfg(debug_assertions)] // &lt;- `true` when using the `dev` profile
+    static mut COUNT: u32 = 0;
+
+    #[init]
+    fn init() {
+        // ..
+    }
+
+    #[task(priority = 3, resources = [COUNT], spawn = [log])]
+    fn foo() {
+        #[cfg(debug_assertions)]
+        {
+            *resources.COUNT += 1;
+
+            spawn.log(*resources.COUNT).ok();
+        }
+
+        // this wouldn't compile in `release` mode
+        // *resources.COUNT += 1;
+
+        // ..
+    }
+
+    #[cfg(debug_assertions)]
+    #[task]
+    fn log(n: u32) {
+        hprintln!(
+            &quot;foo has been called {} time{}&quot;,
+            n,
+            if n == 1 { &quot;&quot; } else { &quot;s&quot; }
+        )
+        .ok();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="running-tasks-from-ram"><a class="header" href="#running-tasks-from-ram">Running tasks from RAM</a></h2>
+<p>The main goal of moving the specification of RTFM applications to attributes in
+RTFM v0.4.x was to allow inter-operation with other attributes. For example, the
+<code>link_section</code> attribute can be applied to tasks to place them in RAM; this can
+improve performance in some cases.</p>
+<blockquote>
+<p><strong>IMPORTANT</strong>: In general, the <code>link_section</code>, <code>export_name</code> and <code>no_mangle</code>
+attributes are very powerful but also easy to misuse. Incorrectly using any of
+these attributes can cause undefined behavior; you should always prefer to use
+safe, higher level attributes around them like <code>cortex-m-rt</code>'s <code>interrupt</code> and
+<code>exception</code> attributes.</p>
+<p>In the particular case of RAM functions there's no
+safe abstraction for it in <code>cortex-m-rt</code> v0.6.5 but there's an <a href="https://github.com/rust-embedded/cortex-m-rt/pull/100">RFC</a> for
+adding a <code>ramfunc</code> attribute in a future release.</p>
+</blockquote>
+<p>The example below shows how to place the higher priority task, <code>bar</code>, in RAM.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/ramfunc.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [bar])]
+    fn init() {
+        spawn.bar().unwrap();
+    }
+
+    #[inline(never)]
+    #[task]
+    fn foo() {
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    // run this task from RAM
+    #[inline(never)]
+    #[link_section = &quot;.data.bar&quot;]
+    #[task(priority = 2, spawn = [foo])]
+    fn bar() {
+        spawn.foo().unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+
+        // run the task dispatcher from RAM
+        #[link_section = &quot;.data.UART1&quot;]
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Running this program produces the expected output.</p>
+<pre><code class="language-console">$ cargo run --example ramfunc
+foo
+</code></pre>
+<p>One can look at the output of <code>cargo-nm</code> to confirm that <code>bar</code> ended in RAM
+(<code>0x2000_0000</code>), whereas <code>foo</code> ended in Flash (<code>0x0000_0000</code>).</p>
+<pre><code class="language-console">$ cargo nm --example ramfunc --release | grep ' foo::'
+20000100 B foo::FREE_QUEUE::ujkptet2nfdw5t20
+200000dc B foo::INPUTS::thvubs85b91dg365
+000002c6 T foo::sidaht420cg1mcm8
+</code></pre>
+<pre><code class="language-console">$ cargo nm --example ramfunc --release | grep ' bar::'
+20000100 B bar::FREE_QUEUE::lk14244m263eivix
+200000dc B bar::INPUTS::mi89534s44r1mnj1
+20000000 T bar::ns9009yhw2dc2y25
+</code></pre>
+<h2 id="binds"><a class="header" href="#binds"><code>binds</code></a></h2>
+<p><strong>NOTE</strong>: Requires RTFM ~0.4.2</p>
+<p>You can give hardware tasks more task-like names using the <code>binds</code> argument: you
+name the function as you wish and specify the name of the interrupt / exception
+in the <code>binds</code> argument. Types like <code>Spawn</code> will be placed in a module named
+after the function, not the interrupt / exception. Example below:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/binds.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+// `examples/interrupt.rs` rewritten to use `binds`
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        rtfm::pend(Interrupt::UART0);
+
+        hprintln!(&quot;init&quot;).unwrap();
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        rtfm::pend(Interrupt::UART0);
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {}
+    }
+
+    #[interrupt(binds = UART0)]
+    fn foo() {
+        static mut TIMES: u32 = 0;
+
+        *TIMES += 1;
+
+        hprintln!(
+            &quot;foo called {} time{}&quot;,
+            *TIMES,
+            if *TIMES &gt; 1 { &quot;s&quot; } else { &quot;&quot; }
+        )
+        .unwrap();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example binds
+init
+foo called 1 time
+idle
+foo called 2 times
+</code></pre>
+<h2 id="indirection-for-faster-message-passing"><a class="header" href="#indirection-for-faster-message-passing">Indirection for faster message passing</a></h2>
+<p>Message passing always involves copying the payload from the sender into a
+static variable and then from the static variable into the receiver. Thus
+sending a large buffer, like a <code>[u8; 128]</code>, as a message involves two expensive
+<code>memcpy</code>s. To minimize the message passing overhead one can use indirection:
+instead of sending the buffer by value, one can send an owning pointer into the
+buffer.</p>
+<p>One can use a global allocator to achieve indirection (<code>alloc::Box</code>,
+<code>alloc::Rc</code>, etc.), which requires using the nightly channel as of Rust v1.34.0,
+or one can use a statically allocated memory pool like <a href="https://docs.rs/heapless/0.4.3/heapless/pool/index.html"><code>heapless::Pool</code></a>.</p>
+<p>Here's an example where <code>heapless::Pool</code> is used to &quot;box&quot; buffers of 128 bytes.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/pool.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use heapless::{
+    pool,
+    pool::singleton::{Box, Pool},
+};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+// Declare a pool of 128-byte memory blocks
+pool!(P: [u8; 128]);
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        static mut MEMORY: [u8; 512] = [0; 512];
+
+        // Increase the capacity of the memory pool by ~4
+        P::grow(MEMORY);
+
+        rtfm::pend(Interrupt::I2C0);
+    }
+
+    #[interrupt(priority = 2, spawn = [foo, bar])]
+    fn I2C0() {
+        // claim a memory block, leave it uninitialized and ..
+        let x = P::alloc().unwrap().freeze();
+
+        // .. send it to the `foo` task
+        spawn.foo(x).ok().unwrap();
+
+        // send another block to the task `bar`
+        spawn.bar(P::alloc().unwrap().freeze()).ok().unwrap();
+    }
+
+    #[task]
+    fn foo(x: Box&lt;P&gt;) {
+        hprintln!(&quot;foo({:?})&quot;, x.as_ptr()).unwrap();
+
+        // explicitly return the block to the pool
+        drop(x);
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(priority = 2)]
+    fn bar(x: Box&lt;P&gt;) {
+        hprintln!(&quot;bar({:?})&quot;, x.as_ptr()).unwrap();
+
+        // this is done automatically so we can omit the call to `drop`
+        // drop(x);
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example binds
+bar(0x2000008c)
+foo(0x20000110)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="under-the-hood"><a class="header" href="#under-the-hood">Under the hood</a></h1>
+<p>This section describes the internals of the RTFM framework at a <em>high level</em>.
+Low level details like the parsing and code generation done by the procedural
+macro (<code>#[app]</code>) will not be explained here. The focus will be the analysis of
+the user specification and the data structures used by the runtime.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ceiling-analysis"><a class="header" href="#ceiling-analysis">Ceiling analysis</a></h1>
+<p><strong>TODO</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="task-dispatcher"><a class="header" href="#task-dispatcher">Task dispatcher</a></h1>
+<p><strong>TODO</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="timer-queue-1"><a class="header" href="#timer-queue-1">Timer queue</a></h1>
+<p><strong>TODO</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+                        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+                
+    </body>
+</html>

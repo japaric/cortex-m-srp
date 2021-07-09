@@ -1,0 +1,537 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Атрибут app - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Введение</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTIC в примерах</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html" class="active"><strong aria-hidden="true">1.1.</strong> Атрибут app</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Ресурсы</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Очередь таймера</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Типы, Send и Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.6.</strong> Создание нового проекта</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Советы и хитрости</a></li></ol></li><li class="chapter-item expanded "><a href="../migration.html"><strong aria-hidden="true">2.</strong> Инструкции по миграции</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../migration/migration_v5.html"><strong aria-hidden="true">2.1.</strong> v0.5.x на v0.6.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_v4.html"><strong aria-hidden="true">2.2.</strong> v0.4.x на v0.5.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_rtic.html"><strong aria-hidden="true">2.3.</strong> RTFM на RTIC</a></li></ol></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">3.</strong> Под капотом</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../internals/interrupt-configuration.html"><strong aria-hidden="true">3.1.</strong> Настройка прерываний</a></li><li class="chapter-item expanded "><a href="../internals/non-reentrancy.html"><strong aria-hidden="true">3.2.</strong> Нереентерабельнось</a></li><li class="chapter-item expanded "><a href="../internals/access.html"><strong aria-hidden="true">3.3.</strong> Контроль доступа</a></li><li class="chapter-item expanded "><a href="../internals/late-resources.html"><strong aria-hidden="true">3.4.</strong> Поздние ресурсы</a></li><li class="chapter-item expanded "><a href="../internals/critical-sections.html"><strong aria-hidden="true">3.5.</strong> Критические секции</a></li><li class="chapter-item expanded "><a href="../internals/ceilings.html"><strong aria-hidden="true">3.6.</strong> Анализ приоритетов</a></li><li class="chapter-item expanded "><a href="../internals/tasks.html"><strong aria-hidden="true">3.7.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="../internals/timer-queue.html"><strong aria-hidden="true">3.8.</strong> Очередь таймера</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Атрибут-app"><a class="header" href="#Атрибут-app">Атрибут <code>app</code></a></h1>
+<p>Это простейшая из возможных программ на RTIC:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/smallest.rs
+
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _; // panic handler
+use rtic::app;
+
+#[app(device = lm3s6965)]
+mod app {
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        (Shared {}, Local {}, init::Monotonics {})
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Все программы на RTIC используют атрибут <a href="../../../api/cortex_m_rtic_macros/attr.app.html"><code>app</code></a> (<code>#[app(..)]</code>). Этот атрибут
+должен применяться к элементу <code>mod</code>. Атрибут <code>app</code> имеет обязательный аргумент <code>device</code>,
+который принимает <em>путь</em> как значение. Это должен быть полный путь, указывающий на
+<em>крейт доступа к периферии</em> (PAC), сгенерированный с помощью <a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a> версии <strong>v0.14.x</strong>
+или новее. Более подробно в разделе <a href="./new.html">Создание нового проекта</a>.</p>
+<p>Атрибут <code>app</code> будет раскрыт в подходящую точку входа программы, поэтому
+атрибут <a href="../../../api/cortex_m_rt_macros/attr.entry.html"><code>cortex_m_rt::entry</code></a> не нужен.</p>
+<h2 id="init"><a class="header" href="#init"><code>init</code></a></h2>
+<p>Внутри модуля <code>app</code> атрибут ожидает найти функцию инициализации, помеченную
+атрибутом <code>init</code>. Эта функция должна иметь сигнатуру
+<code>fn(init::Context) [-&gt; init::LateResources]</code> (возвращаемый тип нужен не всегда).</p>
+<p>Эта функция инициализации будет первой частью программы, выполняемой при запуске.
+Функция <code>init</code> будет запущена <em>с отключенными прерываниями</em> и будет иметь эксклюзивный доступ
+к Cortex-M, в котором токен <code>bare_metal::CriticalSection</code> доступен как <code>cs</code>.
+Опционально, устройство-специфичные периферия доступна через поля <code>core</code> и <code>device</code> структуры
+<code>init::Context</code>.</p>
+<p><code>static mut</code> переменные, определенные в начале <code>init</code> будут преобразованы в
+<code>&amp;'static mut</code> ссылки, безопасные для доступа. Обратите внимание, данная возможность может
+быть удалена в следующем релизе, см. <code>task_local</code> ресурсы.</p>
+<p>Пример ниже показывает типы полей <code>core</code>, <code>device</code> и <code>cs</code>, и демонстрирует
+безопасный доступ к <code>static mut</code> переменной. Поле <code>device</code> доступно только
+когда аргумент <code>peripherals</code> установлен в <code>true</code> (по умолчанию).
+В редких случаях, когда вы захотите создать приложение с минимальным потреблением ресурсов,
+можно явно установить <code>peripherals</code> в <code>false</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/init.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965, peripherals = true)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init(local = [x: u32 = 0])]
+    fn init(cx: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        // Cortex-M peripherals
+        let _core: cortex_m::Peripherals = cx.core;
+
+        // Device specific peripherals
+        let _device: lm3s6965::Peripherals = cx.device;
+
+        // Locals in `init` have 'static lifetime
+        let _x: &amp;'static mut u32 = cx.local.x;
+
+        // Access to the critical section token,
+        // to indicate that this is a critical seciton
+        let _cs_token: bare_metal::CriticalSection = cx.cs;
+
+        hprintln!(&quot;init&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Запуск примера напечатате <code>init</code> в консоли, а затем завершит процесс QEMU.</p>
+<pre><code class="language-console">$ cargo run --example init
+init
+</code></pre>
+<h2 id="idle"><a class="header" href="#idle"><code>idle</code></a></h2>
+<p>Функцию, помеченную атрибутом <code>idle</code> может опционально добавить в модуль.
+Эта функция используется как специальная <em>задача ожидания</em> и должна иметь сигнатуру
+<code>fn(idle::Context) - &gt; !</code>.</p>
+<p>Если она присутствует, задача <code>idle</code> будет запущена после <code>init</code>. В отличие от
+<code>init</code>, <code>idle</code> будет запущена <em>с включенными прерываниями</em> и она не может вернуть результат,
+а значит должна работать вечно.</p>
+<p>Если функция <code>idle</code> не определена, среда вполнения устанавливает бит <a href="https://developer.arm.com/docs/100737/0100/power-management/sleep-mode/sleep-on-exit-bit">SLEEPONEXIT</a>, а затем
+отправляет микроконтроллер в сон после запуска <code>init</code>.</p>
+<p>Как и в  <code>init</code>, <code>static mut</code> переменные будут трансформированы в <code>&amp;'static mut</code> ссылки,
+безопасные для доступа. Обратите внимание, данная возможность может
+быть удалена в следующем релизе, см. <code>task_local</code> ресурсы.</p>
+<p>Пример ниже показывает, что <code>idle</code> запускается после <code>init</code>.</p>
+<p><strong>Примечание:</strong> Цикл <code>loop {}</code> в функци ожидания не может быть пустым, так как это сломает
+микроконтроллер, из-за того, что LLVM компилирует пустые циклы в инструкцию <code>UDF</code> в release mode.
+Чтобы избежать неопределенного поведения, цикл должен включать &quot;side-effect&quot;
+путем вставки ассемблерной инструкции (например, <code>WFI</code>) или ключевого слова <code>continue</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/idle.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        hprintln!(&quot;init&quot;).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[idle(local = [x: u32 = 0])]
+    fn idle(cx: idle::Context) -&gt; ! {
+        // Locals in idle have lifetime 'static
+        let _x: &amp;'static mut u32 = cx.local.x;
+
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {
+            cortex_m::asm::nop();
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example idle
+init
+idle
+</code></pre>
+<h2 id="Аппаратные-задачи"><a class="header" href="#Аппаратные-задачи">Аппаратные задачи</a></h2>
+<p>Чтобы объявить обработчик прерывания, фреймворк предоставляет атрибут <code>#[task]</code>,
+который можно применять к функциям. Этот атрибут берет аргумент <code>binds</code>, чье значение -
+это имя прерывания, которому будет назначен обработчик;
+функция, декорированная этим атрибутом становится обработчиком прерывания.
+В фреймворке такие типы задач именуются <em>аппаратными</em>, потому что они начинают
+выполняться в ответ на аппаратное событие.</p>
+<p>Пример ниже демонстрирует использование атрибута <code>#[task]</code>, чтобы объявить
+обработчик прерывания. Как и в случае с <code>#[init]</code> и <code>#[idle]</code> локальные  <code>static mut</code> переменные безопасны для использования с аппаратной задачей.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/hardware.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        // Pends the UART0 interrupt but its handler won't run until *after*
+        // `init` returns because interrupts are disabled
+        rtic::pend(Interrupt::UART0); // equivalent to NVIC::pend
+
+        hprintln!(&quot;init&quot;).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[idle]
+    fn idle(_: idle::Context) -&gt; ! {
+        // interrupts are enabled again; the `UART0` handler runs at this point
+
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        rtic::pend(Interrupt::UART0);
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {
+            cortex_m::asm::nop();
+        }
+    }
+
+    #[task(binds = UART0, local = [times: u32 = 0])]
+    fn uart0(cx: uart0::Context) {
+        // Safe access to local `static mut` variable
+        *cx.local.times += 1;
+
+        hprintln!(
+            &quot;UART0 called {} time{}&quot;,
+            *cx.local.times,
+            if *cx.local.times &gt; 1 { &quot;s&quot; } else { &quot;&quot; }
+        )
+        .unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example hardware
+init
+UART0 called 1 time
+idle
+UART0 called 2 times
+</code></pre>
+<p>До сих пор все программы на RTIC, которые мы видели, не отличались от программ,
+которые можно написать, используя лишь крейт <code>cortex-m-rt</code>. С этого момента мы
+начинаем представлять возможности, уникальные для RTIC.</p>
+<h2 id="Приоритеты"><a class="header" href="#Приоритеты">Приоритеты</a></h2>
+<p>Статический приоритет каждого обработчика можно оределить в атрибуте <code>task</code>, используя
+аргумент <code>priority</code>. Задачи могут иметь приоритет в диапазоне <code>1..=(1 &lt;&lt; NVIC_PRIO_BITS)</code>,
+где <code>NVIC_PRIO_BITS</code> - это константа, определенная в крейте <code>устройства</code>.
+Когда аргумент <code>priority</code> не указан, предполагается, что приоритет равен <code>1</code>.
+Задача <code>idle</code> имеет ненастраиваемый приоритет <code>0</code>, наименьший из возможных.</p>
+<blockquote>
+<p>Более высокое значение означает более высокий приоритет в RTIC, что противоположно тому,
+что указано в периферии NVIC Cortex-M.
+Точнее, это значит, что число <code>10</code> обозначает приоритет <strong>выше</strong>, чем число <code>9</code>.</p>
+</blockquote>
+<p>Когда несколько задач готовы к запуску, задача с самым большим статическим
+приоритетом будет запущена первой. Приоритезацию задач можно рассматривать по
+такому сценарию: сигнал прерывания приходит во время выполнения задачи с низким приоритетом;
+сигнал переключает задачу с высоким приоритетом в режим ожидания.
+Разница в приоритетах приводи к тому, что задача с высоким приоритетом вытесняет задачу с низким:
+выполнение задачи с низким приоритетом замораживается и задача с высоким приоритетом выполняется,
+пока не будет завершена. Как только задача с высоким приоритетом будет остановлена,
+продолжится выполнение задачи с низким приоритетом.</p>
+<p>Следующий пример демонстрирует диспетчеризацию на основе приоритетов задач.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/preempt.rs
+
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+use rtic::app;
+
+#[app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::GPIOA);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = GPIOA, priority = 1)]
+    fn gpioa(_: gpioa::Context) {
+        hprintln!(&quot;GPIOA - start&quot;).unwrap();
+        rtic::pend(Interrupt::GPIOC);
+        hprintln!(&quot;GPIOA - end&quot;).unwrap();
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = GPIOB, priority = 2)]
+    fn gpiob(_: gpiob::Context) {
+        hprintln!(&quot; GPIOB&quot;).unwrap();
+    }
+
+    #[task(binds = GPIOC, priority = 2)]
+    fn gpioc(_: gpioc::Context) {
+        hprintln!(&quot; GPIOC - start&quot;).unwrap();
+        rtic::pend(Interrupt::GPIOB);
+        hprintln!(&quot; GPIOC - end&quot;).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example preempt
+GPIOA - start
+ GPIOC - start
+ GPIOC - end
+ GPIOB
+GPIOA - end
+</code></pre>
+<p>Заметьте, что задача <code>gpiob</code> <em>не</em> вытесняет задачу <code>gpioc</code>, потому что ее приоритет
+<em>такой же</em>, как и у <code>gpioc</code>. Однако, как только <code>gpioc</code> возвращает результат,
+выполненяется задача <code>gpiob</code>, как более приоритетная по сравнению с <code>gpioa</code>.
+Выполнение <code>gpioa</code> возобновляется только после выхода из <code>gpiob</code>.</p>
+<p>Еще одно замечание по поводу приоритетов: выбор приоритета большего, чем поддерживает устройство
+(а именно <code>1 &lt;&lt; NVIC_PRIO_BITS</code>) приведет к ошибке компиляции.
+Из-за ограничений языка, сообщение об ошибке далеко от понимания:
+вам скажут что-то похожее на &quot;evaluation of constant value failed&quot;, а указатель на ошибку
+<em>не</em> покажет на проблемное значение прерывания --
+мы извиняемся за это!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../by-example.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../by-example/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../by-example.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../by-example/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

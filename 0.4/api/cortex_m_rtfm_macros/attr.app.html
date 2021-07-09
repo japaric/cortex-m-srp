@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Attribute used to declare a RTFM application"><meta name="keywords" content="rust, rustlang, rust-lang, app"><title>app in cortex_m_rtfm_macros - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc attr"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../cortex_m_rtfm_macros/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><div class="sidebar-elems"><p class="location"><a href="index.html">cortex_m_rtfm_macros</a></p><div id="sidebar-vars" data-name="app" data-ty="attr" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Attribute Macro <a href="index.html">cortex_m_rtfm_macros</a>::<wbr><a class="attr" href="">app</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/cortex_m_rtfm_macros/lib.rs.html#288-308" title="goto source code">[src]</a></span></h1><pre class="rust attr">#[app]</pre><div class="docblock"><p>Attribute used to declare a RTFM application</p>
+<p>This attribute must be applied to a <code>const</code> item of type <code>()</code>. The <code>const</code> item is effectively
+used as a <code>mod</code> item: its value must be a block that contains items commonly found in modules,
+like functions and <code>static</code> variables.</p>
+<p>The <code>app</code> attribute has one mandatory argument:</p>
+<ul>
+<li><code>device = &lt;path&gt;</code>. The path must point to a device crate generated using <a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a>
+<strong>v0.14.x</strong>.</li>
+</ul>
+<p>The items allowed in the block value of the <code>const</code> item are specified below:</p>
+<h1 id="1-static-mut-variables" class="section-header"><a href="#1-static-mut-variables">1. <code>static [mut]</code> variables</a></h1>
+<p>These variables are used as <em>resources</em>. Resources can be owned by tasks or shared between them.
+Tasks can get <code>&amp;mut</code> (exclusives) references to <code>static mut</code> resources, but only <code>&amp;</code> (shared)
+references to <code>static</code> resources. Lower priority tasks will need a <a href="../rtfm/trait.Mutex.html#method.lock"><code>lock</code></a> to get a <code>&amp;mut</code>
+reference to a <code>static mut</code> resource shared with higher priority tasks.</p>
+<p><code>static mut</code> resources that are shared by tasks that run at <em>different</em> priorities need to
+implement the <a href="https://doc.rust-lang.org/core/marker/trait.Send.html"><code>Send</code></a> trait. Similarly, <code>static</code> resources that are shared by tasks that run at
+<em>different</em> priorities need to implement the <a href="https://doc.rust-lang.org/core/marker/trait.Sync.html"><code>Sync</code></a> trait.</p>
+<p>Resources can be initialized at runtime by assigning them <code>()</code> (the unit value) as their initial
+value in their declaration. These “late” resources need to be initialized an the end of the
+<code>init</code> function.</p>
+<p>The <code>app</code> attribute will inject a <code>resources</code> module in the root of the crate. This module
+contains proxy <code>struct</code>s that implement the <a href="../rtfm/trait.Mutex.html"><code>Mutex</code></a> trait. The <code>struct</code> are named after the
+<code>static mut</code> resources. For example, <code>static mut FOO: u32 = 0</code> will map to a <code>resources::FOO</code>
+<code>struct</code> that implements the <code>Mutex&lt;Data = u32&gt;</code> trait.</p>
+<h1 id="2-fn" class="section-header"><a href="#2-fn">2. <code>fn</code></a></h1>
+<p>Functions must contain <em>one</em> of the following attributes: <code>init</code>, <code>idle</code>, <code>interrupt</code>,
+<code>exception</code> or <code>task</code>. The attribute defines the role of the function in the application.</p>
+<h2 id="a-init" class="section-header"><a href="#a-init">a. <code>#[init]</code></a></h2>
+<p>This attribute indicates that the function is to be used as the <em>initialization function</em>. There
+must be exactly one instance of the <code>init</code> attribute inside the <code>app</code> pseudo-module. The
+signature of the <code>init</code> function must be <code>[unsafe] fn ()</code>.</p>
+<p>The <code>init</code> function runs after memory (RAM) is initialized and runs with interrupts disabled.
+Interrupts are re-enabled after <code>init</code> returns.</p>
+<p>The <code>init</code> attribute accepts the following optional arguments:</p>
+<ul>
+<li>
+<p><code>resources = [RESOURCE_A, RESOURCE_B, ..]</code>. This is the list of resources this function has
+access to.</p>
+</li>
+<li>
+<p><code>schedule = [task_a, task_b, ..]</code>. This is the list of <em>software</em> tasks that this function can
+schedule to run in the future. <em>IMPORTANT</em>: This argument is accepted only if the <code>timer-queue</code>
+feature has been enabled.</p>
+</li>
+<li>
+<p><code>spawn = [task_a, task_b, ..]</code>. This is the list of <em>software</em> tasks that this function can
+immediately spawn.</p>
+</li>
+</ul>
+<p>The <code>app</code> attribute will injected a <em>context</em> into this function that comprises the following
+variables:</p>
+<ul>
+<li><code>core: rtfm::Peripherals</code>. Exclusive access to core peripherals. See <a href="../rtfm/struct.Peripherals.html"><code>rtfm::Peripherals</code></a> for
+more details.</li>
+</ul>
+<ul>
+<li>
+<p><code>device: &lt;device-path&gt;::Peripherals</code>. Exclusive access to device-specific peripherals.
+<code>&lt;device-path&gt;</code> is the path to the device crate declared in the top <code>app</code> attribute.</p>
+</li>
+<li>
+<p><code>start: rtfm::Instant</code>. The <code>start</code> time of the system: <code>Instant(0 /* cycles */)</code>. <strong>NOTE</strong>:
+only present if the <code>timer-queue</code> feature is enabled.</p>
+</li>
+<li>
+<p><code>resources: _</code>. An opaque <code>struct</code> that contains all the resources assigned to this function.
+The resource maybe appear by value (<code>impl Singleton</code>), by references (<code>&amp;[mut]</code>) or by proxy
+(<code>impl Mutex</code>).</p>
+</li>
+<li>
+<p><code>schedule: init::Schedule</code>. A <code>struct</code> that can be used to schedule <em>software</em> tasks.
+<strong>NOTE</strong>: only present if the <code>timer-queue</code> feature is enabled.</p>
+</li>
+<li>
+<p><code>spawn: init::Spawn</code>. A <code>struct</code> that can be used to spawn <em>software</em> tasks.</p>
+</li>
+</ul>
+<p>Other properties / constraints:</p>
+<ul>
+<li>
+<p>The <code>init</code> function can <strong>not</strong> be called from software.</p>
+</li>
+<li>
+<p>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;'static mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;'static mut u32</code>.</p>
+</li>
+<li>
+<p>Assignments (e.g. <code>FOO = 0</code>) at the end of this function can be used to initialize <em>late</em>
+resources.</p>
+</li>
+</ul>
+<h2 id="b-idle" class="section-header"><a href="#b-idle">b. <code>#[idle]</code></a></h2>
+<p>This attribute indicates that the function is to be used as the <em>idle task</em>. There can be at
+most once instance of the <code>idle</code> attribute inside the <code>app</code> pseudo-module. The signature of the
+<code>idle</code> function must be <code>fn() -&gt; !</code>.</p>
+<p>The <code>idle</code> task is a special task that always runs in the background. The <code>idle</code> task runs at
+the lowest priority of <code>0</code>. If the <code>idle</code> task is not defined then the runtime sets the
+<a href="https://developer.arm.com/products/architecture/cpu-architecture/m-profile/docs/100737/0100/power-management/sleep-mode/sleep-on-exit-bit">SLEEPONEXIT</a> bit after executing <code>init</code>.</p>
+<p>The <code>idle</code> attribute accepts the following optional arguments:</p>
+<ul>
+<li>
+<p><code>resources = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].spawn</code></a>.</p>
+</li>
+</ul>
+<p>The <code>app</code> attribute will injected a <em>context</em> into this function that comprises the following
+variables:</p>
+<ul>
+<li>
+<p><code>resources: _</code>. Same meaning / function as <a href="#a-init"><code>init.resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule: idle::Schedule</code>. Same meaning / function as <a href="#a-init"><code>init.schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn: idle::Spawn</code>. Same meaning / function as <a href="#a-init"><code>init.spawn</code></a>.</p>
+</li>
+</ul>
+<p>Other properties / constraints:</p>
+<ul>
+<li>
+<p>The <code>idle</code> function can <strong>not</strong> be called from software.</p>
+</li>
+<li>
+<p>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;'static mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;'static mut u32</code>.</p>
+</li>
+</ul>
+<h2 id="c-exception" class="section-header"><a href="#c-exception">c. <code>#[exception]</code></a></h2>
+<p>This attribute indicates that the function is to be used as an <em>exception handler</em>, a type of
+hardware task. The signature of <code>exception</code> handlers must be <code>[unsafe] fn()</code>.</p>
+<p>The name of the function must match one of the Cortex-M exceptions that has <a href="../cortex_m/peripheral/scb/enum.SystemHandler.html">configurable
+priority</a>.</p>
+<p>The <code>exception</code> attribute accepts the following optional arguments.</p>
+<ul>
+<li>
+<p><code>priority = &lt;integer&gt;</code>. This is the static priority of the exception handler. The value must
+be in the range <code>1..=(1 &lt;&lt; &lt;device-path&gt;::NVIC_PRIO_BITS)</code> where <code>&lt;device-path&gt;</code> is the path to
+the device crate declared in the top <code>app</code> attribute. If this argument is omitted the priority
+is assumed to be 1.</p>
+</li>
+<li>
+<p><code>resources = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].spawn</code></a>.</p>
+</li>
+</ul>
+<p>The <code>app</code> attribute will injected a <em>context</em> into this function that comprises the following
+variables:</p>
+<ul>
+<li>
+<p><code>start: rtfm::Instant</code>. The time at which this handler started executing. <strong>NOTE</strong>: only
+present if the <code>timer-queue</code> feature is enabled.</p>
+</li>
+<li>
+<p><code>resources: _</code>. Same meaning / function as <a href="#a-init"><code>init.resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule: &lt;exception-name&gt;::Schedule</code>. Same meaning / function as <a href="#a-init"><code>init.schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn: &lt;exception-name&gt;::Spawn</code>.  Same meaning / function as <a href="#a-init"><code>init.spawn</code></a>.</p>
+</li>
+</ul>
+<p>Other properties / constraints:</p>
+<ul>
+<li>
+<p><code>exception</code> handlers can <strong>not</strong> be called from software.</p>
+</li>
+<li>
+<p>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;mut u32</code>.</p>
+</li>
+</ul>
+<h2 id="d-interrupt" class="section-header"><a href="#d-interrupt">d. <code>#[interrupt]</code></a></h2>
+<p>This attribute indicates that the function is to be used as an <em>interrupt handler</em>, a type of
+hardware task. The signature of <code>interrupt</code> handlers must be <code>[unsafe] fn()</code>.</p>
+<p>The name of the function must match one of the device specific interrupts. See your device crate
+documentation (<code>Interrupt</code> enum) for more details.</p>
+<p>The <code>interrupt</code> attribute accepts the following optional arguments.</p>
+<ul>
+<li>
+<p><code>priority = (..)</code>. Same meaning / function as <a href="#b-exception"><code>#[exception].priority</code></a>.</p>
+</li>
+<li>
+<p><code>resources = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].spawn</code></a>.</p>
+</li>
+</ul>
+<p>The <code>app</code> attribute will injected a <em>context</em> into this function that comprises the following
+variables:</p>
+<ul>
+<li>
+<p><code>start: rtfm::Instant</code>. Same meaning / function as <a href="#b-exception"><code>exception.start</code></a>.</p>
+</li>
+<li>
+<p><code>resources: _</code>. Same meaning / function as <a href="#a-init"><code>init.resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule: &lt;interrupt-name&gt;::Schedule</code>. Same meaning / function as <a href="#a-init"><code>init.schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn: &lt;interrupt-name&gt;::Spawn</code>.  Same meaning / function as <a href="#a-init"><code>init.spawn</code></a>.</p>
+</li>
+</ul>
+<p>Other properties / constraints:</p>
+<ul>
+<li><code>interrupt</code> handlers can <strong>not</strong> be called from software, but they can be <a href="../rtfm/fn.pend.html"><code>pend</code></a>-ed by the
+software from any context.</li>
+</ul>
+<ul>
+<li>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;mut u32</code>.</li>
+</ul>
+<h2 id="e-task" class="section-header"><a href="#e-task">e. <code>#[task]</code></a></h2>
+<p>This attribute indicates that the function is to be used as a <em>software task</em>. The signature of
+software <code>task</code>s must be <code>[unsafe] fn(&lt;inputs&gt;)</code>.</p>
+<p>The <code>task</code> attribute accepts the following optional arguments.</p>
+<ul>
+<li>
+<p><code>capacity = &lt;integer&gt;</code>. The maximum number of instances of this task that can be queued onto
+the task scheduler for execution. The value must be in the range <code>1..=255</code>. If the <code>capacity</code>
+argument is omitted then the capacity will be inferred.</p>
+</li>
+<li>
+<p><code>priority = &lt;integer&gt;</code>. Same meaning / function as <a href="#b-exception"><code>#[exception].priority</code></a>.</p>
+</li>
+<li>
+<p><code>resources = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].spawn</code></a>.</p>
+</li>
+</ul>
+<p>The <code>app</code> attribute will injected a <em>context</em> into this function that comprises the following
+variables:</p>
+<ul>
+<li>
+<p><code>scheduled: rtfm::Instant</code>. The time at which this task was scheduled to run. <strong>NOTE</strong>: Only
+present if <code>timer-queue</code> is enabled.</p>
+</li>
+<li>
+<p><code>resources: _</code>. Same meaning / function as <a href="#a-init"><code>init.resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule: &lt;interrupt-name&gt;::Schedule</code>. Same meaning / function as <a href="#a-init"><code>init.schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn: &lt;interrupt-name&gt;::Spawn</code>.  Same meaning / function as <a href="#a-init"><code>init.spawn</code></a>.</p>
+</li>
+</ul>
+<p>Other properties / constraints:</p>
+<ul>
+<li>
+<p>Software <code>task</code>s can <strong>not</strong> be called from software, but they can be <code>spawn</code>-ed and
+<code>schedule</code>-d by the software from any context.</p>
+</li>
+<li>
+<p>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;mut u32</code>.</p>
+</li>
+</ul>
+<h1 id="3-extern-block" class="section-header"><a href="#3-extern-block">3. <code>extern</code> block</a></h1>
+<p>This <code>extern</code> block contains a list of interrupts which are <em>not</em> used by the application as
+hardware tasks. These interrupts will be used to dispatch software tasks. Each interrupt will be
+used to dispatch <em>multiple</em> software tasks <em>at the same priority level</em>.</p>
+<p>This <code>extern</code> block must only contain functions with signature <code>fn ()</code>. The names of these
+functions must match the names of the target device interrupts.</p>
+<p>Importantly, attributes can be applied to the functions inside this block. These attributes will
+be forwarded to the interrupt handlers generated by the <code>app</code> attribute.</p>
+</div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="cortex_m_rtfm_macros" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+    <script src="../main.js"></script></body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Init","Initialized type state"],["Uninit","Uninitialized type state"]],"mod":[["singleton","`Pool` as a global singleton"]],"struct":[["Box","A memory block"],["Node","Unfortunate implementation detail required to use the `Pool.grow_exact` method"],["Pool","A lock-free memory pool"]]});

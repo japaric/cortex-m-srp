@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["as_slice","byteorder","cortex_m_rt","cortex_m_rt_macros","cortex_m_rtfm_macros","generic_array","hash32","heapless","owned_singleton","owned_singleton_macros","r0","rand","rtfm","stable_deref_trait","typenum"];

@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Советы и хитрости - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Введение</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTIC в примерах</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html"><strong aria-hidden="true">1.1.</strong> Атрибут app</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Ресурсы</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Задачи</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Очередь таймера</a></li><li class="chapter-item expanded "><a href="../by-example/singletons.html"><strong aria-hidden="true">1.5.</strong> Одиночки</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.6.</strong> Типы, Send и Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.7.</strong> Создание нового проекта</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html" class="active"><strong aria-hidden="true">1.8.</strong> Советы и хитрости</a></li></ol></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">2.</strong> Под капотом</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../internals/ceilings.html"><strong aria-hidden="true">2.1.</strong> Ceiling analysis</a></li><li class="chapter-item expanded "><a href="../internals/tasks.html"><strong aria-hidden="true">2.2.</strong> Диспетчер задач</a></li><li class="chapter-item expanded "><a href="../internals/timer-queue.html"><strong aria-hidden="true">2.3.</strong> Очередь таймера</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Советы-и-хитрости"><a class="header" href="#Советы-и-хитрости">Советы и хитрости</a></h1>
+<h2 id="Обобщенное-программирование-generics"><a class="header" href="#Обобщенное-программирование-generics">Обобщенное программирование (Generics)</a></h2>
+<p>Ресурсы, совместно используемые двумя или более задачами, реализуют трейт <code>Mutex</code>
+во <em>всех</em> контекстах, даже в тех, где для доступа к данным не требуются
+критические секции. Это позволяет легко писать обобщенный код оперирующий
+ресурсами, который можно вызывать из различных задач. Вот такой пример:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/generics.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use panic_semihosting as _;
+use rtic::{Exclusive, Mutex};
+
+#[rtic::app(device = lm3s6965)]
+const APP: () = {
+    struct Resources {
+        #[init(0)]
+        shared: u32,
+    }
+
+    #[init]
+    fn init(_: init::Context) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+    }
+
+    #[task(binds = UART0, resources = [shared])]
+    fn uart0(c: uart0::Context) {
+        static mut STATE: u32 = 0;
+
+        hprintln!(&quot;UART0(STATE = {})&quot;, *STATE).unwrap();
+
+        // second argument has type `resources::shared`
+        advance(STATE, c.resources.shared);
+
+        rtic::pend(Interrupt::UART1);
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = UART1, priority = 2, resources = [shared])]
+    fn uart1(c: uart1::Context) {
+        static mut STATE: u32 = 0;
+
+        hprintln!(&quot;UART1(STATE = {})&quot;, *STATE).unwrap();
+
+        // just to show that `shared` can be accessed directly
+        *c.resources.shared += 0;
+
+        // second argument has type `Exclusive&lt;u32&gt;`
+        advance(STATE, Exclusive(c.resources.shared));
+    }
+};
+
+// the second parameter is generic: it can be any type that implements the `Mutex` trait
+fn advance(state: &amp;mut u32, mut shared: impl Mutex&lt;T = u32&gt;) {
+    *state += 1;
+
+    let (old, new) = shared.lock(|shared: &amp;mut u32| {
+        let old = *shared;
+        *shared += *state;
+        (old, *shared)
+    });
+
+    hprintln!(&quot;shared: {} -&gt; {}&quot;, old, new).unwrap();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example generics
+UART1(STATE = 0)
+shared: 0 -&gt; 1
+UART0(STATE = 0)
+shared: 1 -&gt; 2
+UART1(STATE = 1)
+shared: 2 -&gt; 4```
+
+Это также позволяет Вам изменять статические приоритеты задач без
+переписывания кода. Если Вы единообразно используете `lock`-и для доступа
+к данным в разделяемых ресурсах, тогда Ваш код продолжит компилироваться,
+когда Вы измените приоритет задач.
+
+## Запуск задач из ОЗУ
+
+Главной целью переноса описания программы на RTIC в атрибуты в
+RTIC v0.4.x была возможность взаимодействия с другими атрибутами.
+Напримерe, атрибут `link_section` можно применять к задачам, чтобы разместить
+их в ОЗУ; это может улучшить производительность в некоторых случаях.
+
+&gt; **ВАЖНО**: Обычно атрибуты `link_section`, `export_name` и `no_mangle`
+&gt; очень мощные, но их легко использовать неправильно. Неверное использование
+&gt; любого из этих атрибутов может вызвать неопределенное поведение;
+&gt; Вам следует всегда предпочитать использование безопасных, высокоуровневых
+&gt; атрибутов вокруг них, таких как атрибуты `interrupt` и `exception`
+&gt; из `cortex-m-rt`.
+&gt;
+&gt; В особых случаях функций RAM нет безопасной абстракции в `cortex-m-rt`
+&gt; v0.6.5 но создано [RFC] для добавления атрибута `ramfunc` в будущем релизе.
+
+[RFC]: https://github.com/rust-embedded/cortex-m-rt/pull/100
+
+В примере ниже показано как разместить высокоприоритетную задачу `bar` в ОЗУ.
+
+``` rust
+//! examples/ramfunc.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::{debug, hprintln};
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [bar])]
+    fn init(c: init::Context) {
+        c.spawn.bar().unwrap();
+    }
+
+    #[inline(never)]
+    #[task]
+    fn foo(_: foo::Context) {
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    // run this task from RAM
+    #[inline(never)]
+    #[link_section = &quot;.data.bar&quot;]
+    #[task(priority = 2, spawn = [foo])]
+    fn bar(c: bar::Context) {
+        c.spawn.foo().unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+
+        // run the task dispatcher from RAM
+        #[link_section = &quot;.data.UART1&quot;]
+        fn UART1();
+    }
+};
+</code></pre>
+<p>Запуск этой программы произведет ожидаемый вывод.</p>
+<pre><code class="language-console">$ cargo run --example ramfunc
+foo```
+
+Можно посмотреть на вывод `cargo-nm`, чтобы убедиться, что `bar` расположен в ОЗУ
+(`0x2000_0000`), тогда как `foo` расположен во Flash (`0x0000_0000`).
+
+``` console
+$ cargo nm --example ramfunc --release | grep ' foo::'
+00000162 t ramfunc::foo::h30e7789b08c08e19```
+
+``` console
+$ cargo nm --example ramfunc --release | grep ' bar::'
+20000000 t ramfunc::bar::h9d6714fe5a3b0c89```
+
+## `binds`
+
+**ПРИМЕЧАНИЕ**: Требуется RTIC не ниже 0.4.2
+
+Вы можете давать аппаратным задачам имена похожие на имена обычных задач.
+Для этого нужно использовать аргумент `binds`: Вы называете функцию
+по своему желанию и назначаете ей прерывание / исключение
+через аргумент `binds`. `Spawn` и другие служебные типы будут размещены в модуле,
+названном в соответствии с названием функции, а не прерывания / исключения.
+Давайте посмотрим пример:
+
+``` rust
+//! examples/binds.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use panic_semihosting as _;
+
+// `examples/interrupt.rs` rewritten to use `binds`
+#[rtic::app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init(_: init::Context) {
+        rtic::pend(Interrupt::UART0);
+
+        hprintln!(&quot;init&quot;).unwrap();
+    }
+
+    #[idle]
+    fn idle(_: idle::Context) -&gt; ! {
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        rtic::pend(Interrupt::UART0);
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {}
+    }
+
+    #[task(binds = UART0)]
+    fn foo(_: foo::Context) {
+        static mut TIMES: u32 = 0;
+
+        *TIMES += 1;
+
+        hprintln!(
+            &quot;foo called {} time{}&quot;,
+            *TIMES,
+            if *TIMES &gt; 1 { &quot;s&quot; } else { &quot;&quot; }
+        )
+        .unwrap();
+    }
+};
+</code></pre>
+<pre><code class="language-console">$ cargo run --example binds
+init
+foo called 1 time
+idle
+foo called 2 times```</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../by-example/new.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../internals.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../by-example/new.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../internals.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

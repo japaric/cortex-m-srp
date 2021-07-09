@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["MODE_0","Helper for CPOL = 0, CPHA = 0"],["MODE_1","Helper for CPOL = 0, CPHA = 1"],["MODE_2","Helper for CPOL = 1, CPHA = 0"],["MODE_3","Helper for CPOL = 1, CPHA = 1"]],"enum":[["Phase","Clock phase"],["Polarity","Clock polarity"]],"struct":[["Mode","SPI mode"]],"trait":[["FullDuplex","Full duplex (master mode)"]]});

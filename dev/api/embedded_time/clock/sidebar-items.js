@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Potential `Clock` errors"]],"trait":[["Clock","The `Clock` trait provides an abstraction for hardware-specific timer peripherals, external timer devices, RTCs, etc."]]});

@@ -1,0 +1,787 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../rtfm/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! Real Time For the Masses (RTFM) framework for ARM Cortex-M microcontrollers</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! **IMPORTANT**: This crate is published as [`cortex-m-rtfm`] on crates.io but the name of the</span>
+<span class="doccomment">//! library is `rtfm`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [`cortex-m-rtfm`]: https://crates.io/crates/cortex-m-rtfm</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The user level documentation can be found [here].</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [here]: https://japaric.github.io/cortex-m-rtfm/book/en/</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Don&#39;t forget to check the documentation of the [`#[app]`] attribute, which is the main component</span>
+<span class="doccomment">//! of the framework.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [`#[app]`]: ../cortex_m_rtfm_macros/attr.app.html</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Minimum Supported Rust Version (MSRV)</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate is guaranteed to compile on stable Rust 1.36 (2018 edition) and up. It *might*</span>
+<span class="doccomment">//! compile on older versions but that may change in any new patch release.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Semantic Versioning</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Like the Rust project, this crate adheres to [SemVer]: breaking changes in the API and semantics</span>
+<span class="doccomment">//! require a *semver bump* (a new minor version release), with the exception of breaking changes</span>
+<span class="doccomment">//! that fix soundness issues -- those are considered bug fixes and can be landed in a new patch</span>
+<span class="doccomment">//! release.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [SemVer]: https://semver.org/spec/v2.0.0.html</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Cargo features</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! - `timer-queue`. This opt-in feature enables the `schedule` API which can be used to schedule</span>
+<span class="doccomment">//! tasks to run in the future. Also see [`Instant`] and [`Duration`].</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [`Instant`]: struct.Instant.html</span>
+<span class="doccomment">//! [`Duration`]: struct.Duration.html</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! - `nightly`. Enabling this opt-in feature makes RTFM internally use the unstable</span>
+<span class="doccomment">//! `core::mem::MaybeUninit` API and unstable `const_fn` language feature to reduce static memory</span>
+<span class="doccomment">//! usage, runtime overhead and initialization overhead. This feature requires a nightly compiler</span>
+<span class="doccomment">//! and may stop working at any time!</span>
+
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>, <span class="ident">feature</span>(<span class="ident">maybe_uninit_extra</span>))]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
+<span class="attribute">#![<span class="ident">no_std</span>]</span>
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident">core::cmp::Ordering</span>;
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">fmt</span>, <span class="ident">ops</span>};
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>))]</span>
+<span class="kw">use</span> <span class="ident">cortex_m::peripheral::SYST</span>;
+<span class="kw">use</span> <span class="ident">cortex_m</span>::{
+    <span class="ident">interrupt::Nr</span>,
+    <span class="ident">peripheral</span>::{<span class="ident">CBP</span>, <span class="ident">CPUID</span>, <span class="ident">DCB</span>, <span class="ident">DWT</span>, <span class="ident">FPB</span>, <span class="ident">FPU</span>, <span class="ident">ITM</span>, <span class="ident">MPU</span>, <span class="ident">NVIC</span>, <span class="ident">SCB</span>, <span class="ident">TPIU</span>},
+};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cortex_m_rtfm_macros::app</span>;
+
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">export</span>;
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tq</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>, <span class="ident">armv6m</span>))]</span>
+<span class="macro">compile_error!</span>(
+    <span class="string">&quot;The `timer-queue` feature is currently not supported on ARMv6-M (`thumbv6m-none-eabi`)&quot;</span>
+);
+
+<span class="doccomment">/// Core peripherals</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is `cortex_m::Peripherals` minus the peripherals that the RTFM runtime uses</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - The `NVIC` field is never present.</span>
+<span class="doccomment">/// - When the `timer-queue` feature is enabled the following fields are *not* present: `DWT` and</span>
+<span class="doccomment">/// `SYST`.</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Peripherals</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Cache and branch predictor maintenance operations (not present on Cortex-M0 variants)</span>
+    <span class="kw">pub</span> <span class="ident">CBP</span>: <span class="ident">CBP</span>,
+
+    <span class="doccomment">/// CPUID</span>
+    <span class="kw">pub</span> <span class="ident">CPUID</span>: <span class="ident">CPUID</span>,
+
+    <span class="doccomment">/// Debug Control Block (by value if the `timer-queue` feature is disabled)</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">DCB</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">DCB</span>,
+
+    <span class="doccomment">/// Debug Control Block (borrowed if the `timer-queue` feature is enabled)</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">DCB</span>: <span class="ident">DCB</span>,
+
+    <span class="doccomment">/// Data Watchpoint and Trace unit (not present if the `timer-queue` feature is enabled)</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">DWT</span>: <span class="ident">DWT</span>,
+
+    <span class="doccomment">/// Flash Patch and Breakpoint unit (not present on Cortex-M0 variants)</span>
+    <span class="kw">pub</span> <span class="ident">FPB</span>: <span class="ident">FPB</span>,
+
+    <span class="doccomment">/// Floating Point Unit (only present on `thumbv7em-none-eabihf`)</span>
+    <span class="kw">pub</span> <span class="ident">FPU</span>: <span class="ident">FPU</span>,
+
+    <span class="doccomment">/// Instrumentation Trace Macrocell (not present on Cortex-M0 variants)</span>
+    <span class="kw">pub</span> <span class="ident">ITM</span>: <span class="ident">ITM</span>,
+
+    <span class="doccomment">/// Memory Protection Unit</span>
+    <span class="kw">pub</span> <span class="ident">MPU</span>: <span class="ident">MPU</span>,
+
+    <span class="comment">// Nested Vector Interrupt Controller</span>
+    <span class="comment">// pub NVIC: NVIC,</span>
+    <span class="doccomment">/// System Control Block</span>
+    <span class="kw">pub</span> <span class="ident">SCB</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">SCB</span>,
+
+    <span class="doccomment">/// SysTick: System Timer (not present if the `timer-queue` is enabled)</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">SYST</span>: <span class="ident">SYST</span>,
+
+    <span class="doccomment">/// Trace Port Interface Unit (not present on Cortex-M0 variants)</span>
+    <span class="kw">pub</span> <span class="ident">TPIU</span>: <span class="ident">TPIU</span>,
+}
+
+<span class="doccomment">/// A measurement of a monotonically nondecreasing clock. Opaque and useful only with `Duration`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This data type is only available when the `timer-queue` feature is enabled</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// **NOTE:** Both `Instant` and `Duration` are only meant to be used with the `schedule` API.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// We can&#39;t stop you from using `Instant.sub` to measure things so please be aware that you won&#39;t</span>
+<span class="doccomment">/// be able to measure events that span longer than `(1 &lt;&lt; 31) - 1` core clock cycles.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Also note that adding a duration equal or greater than `(1 &lt;&lt; 31).cycles()` to an `Instant` will</span>
+<span class="doccomment">/// effectively overflow it. There&#39;s a debug assertion in place to prevent this user error but it&#39;s</span>
+<span class="doccomment">/// not possible to catch this error with 100% success rate because one can write `(instant +</span>
+<span class="doccomment">/// duration) + duration` to bypass runtime checks.&lt;Paste&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Instant</span>(<span class="ident">i32</span>);
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">Instant</span> {
+    <span class="doccomment">/// IMPLEMENTATION DETAIL. DO NOT USE</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">artificial</span>(<span class="ident">timestamp</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Instant</span>(<span class="ident">timestamp</span>)
+    }
+
+    <span class="doccomment">/// Returns an instant corresponding to &quot;now&quot;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Instant</span>(<span class="ident">DWT::get_cycle_count</span>() <span class="kw">as</span> <span class="ident">i32</span>)
+    }
+
+    <span class="doccomment">/// Returns the amount of time elapsed since this instant was created.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">elapsed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+        <span class="ident">Instant::now</span>() <span class="op">-</span> <span class="kw-2">*</span><span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Returns the amount of time elapsed from another instant to this one.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+        <span class="kw">let</span> <span class="ident">diff</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">-</span> <span class="ident">earlier</span>.<span class="number">0</span>;
+        <span class="macro">assert!</span>(<span class="ident">diff</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>, <span class="string">&quot;second instant is later than self&quot;</span>);
+        <span class="ident">Duration</span>(<span class="ident">diff</span> <span class="kw">as</span> <span class="ident">u32</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::AddAssign</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">add_assign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="ident">Duration</span>) {
+        <span class="macro">debug_assert!</span>(<span class="ident">dur</span>.<span class="number">0</span> <span class="op">&lt;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>));
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_add</span>(<span class="ident">dur</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">i32</span>);
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::Add</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span> <span class="op">+</span><span class="op">=</span> <span class="ident">dur</span>;
+        <span class="self">self</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::SubAssign</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">sub_assign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="ident">Duration</span>) {
+        <span class="comment">// XXX should this be a non-debug assertion?</span>
+        <span class="macro">debug_assert!</span>(<span class="ident">dur</span>.<span class="number">0</span> <span class="op">&lt;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>));
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_sub</span>(<span class="ident">dur</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">i32</span>);
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::Sub</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span> <span class="op">-</span><span class="op">=</span> <span class="ident">dur</span>;
+        <span class="self">self</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::Sub</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Duration</span>;
+
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+        <span class="self">self</span>.<span class="ident">duration_since</span>(<span class="ident">other</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">wrapping_sub</span>(<span class="ident">rhs</span>.<span class="number">0</span>).<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="number">0</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">rhs</span>))
+    }
+}
+
+<span class="doccomment">/// A `Duration` type to represent a span of time.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This data type is only available when the `timer-queue` feature is enabled</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// **NOTE:** Both `Instant` and `Duration` are only meant to be used with the `schedule` API.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `Duration` has a resolution of 1 core clock cycle and an effective (half-open) range of `0..(1</span>
+<span class="doccomment">/// &lt;&lt; 31)` (end not included) *core clock cycles*.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Be aware that scheduling a (periodic) task more than `(1 &lt;&lt; 24).cycles()` in the future will</span>
+<span class="doccomment">/// incur in additional overhead proportional to the value of the `Duration`. If you need periodic</span>
+<span class="doccomment">/// tasks with periods greater than `1 &lt;&lt; 24` (e.g. with periods in seconds) you likely don&#39;t a</span>
+<span class="doccomment">/// resolution of one core clock cycle so we suggest you use a hardware timer with an appropriate</span>
+<span class="doccomment">/// prescaler.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">Eq</span>, <span class="ident">Ord</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Duration</span>(<span class="ident">u32</span>);
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">Duration</span> {
+    <span class="doccomment">/// Returns the total number of clock cycles contained by this `Duration`</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_cycles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+        <span class="self">self</span>.<span class="number">0</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::AddAssign</span> <span class="kw">for</span> <span class="ident">Duration</span> {
+    <span class="kw">fn</span> <span class="ident">add_assign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="ident">Duration</span>) {
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">+</span><span class="op">=</span> <span class="ident">dur</span>.<span class="number">0</span>;
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::Add</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Duration</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Duration</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">other</span>.<span class="number">0</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::SubAssign</span> <span class="kw">for</span> <span class="ident">Duration</span> {
+    <span class="kw">fn</span> <span class="ident">sub_assign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Duration</span>) {
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">-</span><span class="op">=</span> <span class="ident">rhs</span>.<span class="number">0</span>;
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ops::Sub</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Duration</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Duration</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="number">0</span>)
+    }
+}
+
+<span class="doccomment">/// Adds the `cycles` method to the `u32` type</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This trait is only available when the `timer-queue` feature is enabled</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">U32Ext</span> {
+    <span class="doccomment">/// Converts the `u32` value into clock cycles</span>
+    <span class="kw">fn</span> <span class="ident">cycles</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span>;
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;timer-queue&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">U32Ext</span> <span class="kw">for</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">cycles</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+        <span class="ident">Duration</span>(<span class="self">self</span>)
+    }
+}
+
+<span class="doccomment">/// Memory safe access to shared resources</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In RTFM, locks are implemented as critical sections that prevent other tasks from *starting*.</span>
+<span class="doccomment">/// These critical sections are implemented by temporarily increasing the dynamic priority (see</span>
+<span class="doccomment">/// [BASEPRI]) of the current context. Entering and leaving these critical sections is always done</span>
+<span class="doccomment">/// in constant time (a few instructions).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [BASEPRI]: https://developer.arm.com/products/architecture/cpu-architecture/m-profile/docs/100701/latest/special-purpose-mask-registers</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Mutex</span> {
+    <span class="doccomment">/// Data protected by the mutex</span>
+    <span class="kw">type</span> <span class="ident">T</span>;
+
+    <span class="doccomment">/// Creates a critical section and grants temporary access to the protected data</span>
+    <span class="kw">fn</span> <span class="ident">lock</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>;
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">M</span><span class="op">&gt;</span> <span class="ident">Mutex</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">M</span>
+<span class="kw">where</span>
+    <span class="ident">M</span>: <span class="ident">Mutex</span>,
+{
+    <span class="kw">type</span> <span class="ident">T</span> <span class="op">=</span> <span class="ident">M::T</span>;
+
+    <span class="kw">fn</span> <span class="ident">lock</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
+    {
+        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">lock</span>(<span class="ident">f</span>)
+    }
+}
+
+<span class="doccomment">/// Newtype over `&amp;&#39;a mut T` that implements the `Mutex` trait</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `Mutex` implementation for this type is a no-op, no critical section is created</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Exclusive</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Mutex</span> <span class="kw">for</span> <span class="ident">Exclusive</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">T</span> <span class="op">=</span> <span class="ident">T</span>;
+
+    <span class="kw">fn</span> <span class="ident">lock</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
+    {
+        <span class="ident">f</span>(<span class="self">self</span>.<span class="number">0</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Exclusive</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">T</span>: <span class="ident">fmt::Debug</span>,
+{
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Exclusive</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">T</span>: <span class="ident">fmt::Display</span>,
+{
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ops::Deref</span> <span class="kw">for</span> <span class="ident">Exclusive</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">T</span>;
+
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
+        <span class="self">self</span>.<span class="number">0</span>
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ops::DerefMut</span> <span class="kw">for</span> <span class="ident">Exclusive</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+        <span class="self">self</span>.<span class="number">0</span>
+    }
+}
+
+<span class="doccomment">/// Sets the given `interrupt` as pending</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is a convenience function around</span>
+<span class="doccomment">/// [`NVIC::pend`](../cortex_m/peripheral/struct.NVIC.html#method.pend)</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pend</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">interrupt</span>: <span class="ident">I</span>)
+<span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">Nr</span>,
+{
+    <span class="ident">NVIC::pend</span>(<span class="ident">interrupt</span>)
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rtfm" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

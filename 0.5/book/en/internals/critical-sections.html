@@ -1,0 +1,717 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Critical sections - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Preface</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTIC by example</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html"><strong aria-hidden="true">1.1.</strong> The app attribute</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Software tasks</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Timer queue</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Types, Send and Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.6.</strong> Starting a new project</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Tips &amp; tricks</a></li></ol></li><li class="chapter-item expanded "><a href="../migration.html"><strong aria-hidden="true">2.</strong> Migrating from v0.4.x to v0.5.0</a></li><li class="chapter-item expanded "><a href="../migration_rtic.html"><strong aria-hidden="true">3.</strong> Migrating from RTFM to RTIC</a></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">4.</strong> Under the hood</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../internals/interrupt-configuration.html"><strong aria-hidden="true">4.1.</strong> Interrupt configuration</a></li><li class="chapter-item expanded "><a href="../internals/non-reentrancy.html"><strong aria-hidden="true">4.2.</strong> Non-reentrancy</a></li><li class="chapter-item expanded "><a href="../internals/access.html"><strong aria-hidden="true">4.3.</strong> Access control</a></li><li class="chapter-item expanded "><a href="../internals/late-resources.html"><strong aria-hidden="true">4.4.</strong> Late resources</a></li><li class="chapter-item expanded "><a href="../internals/critical-sections.html" class="active"><strong aria-hidden="true">4.5.</strong> Critical sections</a></li><li class="chapter-item expanded "><a href="../internals/ceilings.html"><strong aria-hidden="true">4.6.</strong> Ceiling analysis</a></li><li class="chapter-item expanded "><a href="../internals/tasks.html"><strong aria-hidden="true">4.7.</strong> Software tasks</a></li><li class="chapter-item expanded "><a href="../internals/timer-queue.html"><strong aria-hidden="true">4.8.</strong> Timer queue</a></li></ol></li><li class="chapter-item expanded "><a href="../homogeneous.html"><strong aria-hidden="true">5.</strong> Homogeneous multi-core support</a></li><li class="chapter-item expanded "><a href="../heterogeneous.html"><strong aria-hidden="true">6.</strong> Heterogeneous multi-core support</a></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="critical-sections"><a class="header" href="#critical-sections">Critical sections</a></h1>
+<p>When a resource (static variable) is shared between two, or more, tasks that run
+at different priorities some form of mutual exclusion is required to mutate the
+memory in a data race free manner. In RTIC we use priority-based critical
+sections to guarantee mutual exclusion (see the <a href="https://en.wikipedia.org/wiki/Priority_ceiling_protocol">Immediate Ceiling Priority
+Protocol</a>).</p>
+<p>The critical section consists of temporarily raising the <em>dynamic</em> priority of
+the task. While a task is within this critical section all the other tasks that
+may request the resource are <em>not allowed to start</em>.</p>
+<p>How high must the dynamic priority be to ensure mutual exclusion on a particular
+resource? The <a href="ceilings.html">ceiling analysis</a> is in charge of
+answering that question and will be discussed in the next section. This section
+will focus on the implementation of the critical section.</p>
+<h2 id="resource-proxy"><a class="header" href="#resource-proxy">Resource proxy</a></h2>
+<p>For simplicity, let's look at a resource shared by two tasks that run at
+different priorities. Clearly one of the task can preempt the other; to prevent
+a data race the <em>lower priority</em> task must use a critical section when it needs
+to modify the shared memory. On the other hand, the higher priority task can
+directly modify the shared memory because it can't be preempted by the lower
+priority task. To enforce the use of a critical section on the lower priority
+task we give it a <em>resource proxy</em>, whereas we give a unique reference
+(<code>&amp;mut-</code>) to the higher priority task.</p>
+<p>The example below shows the different types handed out to each task:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+const APP: () = {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x])]
+    fn foo(c: foo::Context) {
+        // resource proxy
+        let mut x: resources::x = c.resources.x;
+
+        x.lock(|x: &amp;mut u64| {
+            // critical section
+            *x += 1
+        });
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: bar::Context) {
+        let mut x: &amp;mut u64 = c.resources.x;
+
+        *x += 1;
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now let's see how these types are created by the framework.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // .. user code ..
+}
+
+fn bar(c: bar::Context) {
+    // .. user code ..
+}
+
+pub mod resources {
+    pub struct x {
+        // ..
+    }
+}
+
+pub mod foo {
+    pub struct Resources {
+        pub x: resources::x,
+    }
+
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+}
+
+pub mod bar {
+    pub struct Resources&lt;'a&gt; {
+        pub x: &amp;'a mut u64,
+    }
+
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+}
+
+const APP: () = {
+    static mut x: u64 = 0;
+
+    impl rtic::Mutex for resources::x {
+        type T = u64;
+
+        fn lock&lt;R&gt;(&amp;mut self, f: impl FnOnce(&amp;mut u64) -&gt; R) -&gt; R {
+            // we'll check this in detail later
+        }
+    }
+
+    #[no_mangle]
+    unsafe fn UART0() {
+        foo(foo::Context {
+            resources: foo::Resources {
+                x: resources::x::new(/* .. */),
+            },
+            // ..
+        })
+    }
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        bar(bar::Context {
+            resources: bar::Resources {
+                x: &amp;mut x,
+            },
+            // ..
+        })
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="lock"><a class="header" href="#lock"><code>lock</code></a></h2>
+<p>Let's now zoom into the critical section itself. In this example, we have to
+raise the dynamic priority to at least <code>2</code> to prevent a data race. On the
+Cortex-M architecture the dynamic priority can be changed by writing to the
+<code>BASEPRI</code> register.</p>
+<p>The semantics of the <code>BASEPRI</code> register are as follows:</p>
+<ul>
+<li>Writing a value of <code>0</code> to <code>BASEPRI</code> disables its functionality.</li>
+<li>Writing a non-zero value to <code>BASEPRI</code> changes the priority level required for
+interrupt preemption. However, this only has an effect when the written value
+is <em>lower</em> than the priority level of current execution context, but note that
+a lower hardware priority level means higher logical priority</li>
+</ul>
+<p>Thus the dynamic priority at any point in time can be computed as</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>dynamic_priority = max(hw2logical(BASEPRI), hw2logical(static_priority))
+<span class="boring">}
+</span></code></pre></pre>
+<p>Where <code>static_priority</code> is the priority programmed in the NVIC for the current
+interrupt, or a logical <code>0</code> when the current context is <code>idle</code>.</p>
+<p>In this particular example we could implement the critical section as follows:</p>
+<blockquote>
+<p><strong>NOTE:</strong> this is a simplified implementation</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl rtic::Mutex for resources::x {
+    type T = u64;
+
+    fn lock&lt;R, F&gt;(&amp;mut self, f: F) -&gt; R
+    where
+        F: FnOnce(&amp;mut u64) -&gt; R,
+    {
+        unsafe {
+            // start of critical section: raise dynamic priority to `2`
+            asm!(&quot;msr BASEPRI, 192&quot; : : : &quot;memory&quot; : &quot;volatile&quot;);
+
+            // run user code within the critical section
+            let r = f(&amp;mut x);
+
+            // end of critical section: restore dynamic priority to its static value (`1`)
+            asm!(&quot;msr BASEPRI, 0&quot; : : : &quot;memory&quot; : &quot;volatile&quot;);
+
+            r
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here it's important to use the <code>&quot;memory&quot;</code> clobber in the <code>asm!</code> block. It
+prevents the compiler from reordering memory operations across it. This is
+important because accessing the variable <code>x</code> outside the critical section would
+result in a data race.</p>
+<p>It's important to note that the signature of the <code>lock</code> method prevents nesting
+calls to it. This is required for memory safety, as nested calls would produce
+multiple unique references (<code>&amp;mut-</code>) to <code>x</code> breaking Rust aliasing rules. See
+below:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[interrupt(binds = UART0, priority = 1, resources = [x])]
+fn foo(c: foo::Context) {
+    // resource proxy
+    let mut res: resources::x = c.resources.x;
+
+    res.lock(|x: &amp;mut u64| {
+        res.lock(|alias: &amp;mut u64| {
+            //~^ error: `res` has already been uniquely borrowed (`&amp;mut-`)
+            // ..
+        });
+    });
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="nesting"><a class="header" href="#nesting">Nesting</a></h2>
+<p>Nesting calls to <code>lock</code> on the <em>same</em> resource must be rejected by the compiler
+for memory safety but nesting <code>lock</code> calls on <em>different</em> resources is a valid
+operation. In that case we want to make sure that nesting critical sections
+never results in lowering the dynamic priority, as that would be unsound, and we
+also want to optimize the number of writes to the <code>BASEPRI</code> register and
+compiler fences. To that end we'll track the dynamic priority of the task using
+a stack variable and use that to decide whether to write to <code>BASEPRI</code> or not. In
+practice, the stack variable will be optimized away by the compiler but it still
+provides extra information to the compiler.</p>
+<p>Consider this program:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+const APP: () = {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+        #[init(0)]
+        y: u64,
+    }
+
+    #[init]
+    fn init() {
+        rtic::pend(Interrupt::UART0);
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x, y])]
+    fn foo(c: foo::Context) {
+        let mut x = c.resources.x;
+        let mut y = c.resources.y;
+
+        y.lock(|y| {
+            *y += 1;
+
+            *x.lock(|x| {
+                x += 1;
+            });
+
+            *y += 1;
+        });
+
+        // mid-point
+
+        x.lock(|x| {
+            *x += 1;
+
+            y.lock(|y| {
+                *y += 1;
+            });
+
+            *x += 1;
+        })
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: foo::Context) {
+        // ..
+    }
+
+    #[interrupt(binds = UART2, priority = 3, resources = [y])]
+    fn baz(c: foo::Context) {
+        // ..
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>The code generated by the framework looks like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// omitted: user code
+
+pub mod resources {
+    pub struct x&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+    }
+
+    impl&lt;'a&gt; x&lt;'a&gt; {
+        pub unsafe fn new(priority: &amp;'a Cell&lt;u8&gt;) -&gt; Self {
+            x { priority }
+        }
+
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            self.priority
+        }
+    }
+
+    // repeat for `y`
+}
+
+pub mod foo {
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+
+    pub struct Resources&lt;'a&gt; {
+        pub x: resources::x&lt;'a&gt;,
+        pub y: resources::y&lt;'a&gt;,
+    }
+}
+
+const APP: () = {
+    use cortex_m::register::basepri;
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        // the static priority of this interrupt (as specified by the user)
+        const PRIORITY: u8 = 2;
+
+        // take a snashot of the BASEPRI
+        let initial = basepri::read();
+
+        let priority = Cell::new(PRIORITY);
+        bar(bar::Context {
+            resources: bar::Resources::new(&amp;priority),
+            // ..
+        });
+
+        // roll back the BASEPRI to the snapshot value we took before
+        basepri::write(initial); // same as the `asm!` block we saw before
+    }
+
+    // similarly for `UART0` / `foo` and `UART2` / `baz`
+
+    impl&lt;'a&gt; rtic::Mutex for resources::x&lt;'a&gt; {
+        type T = u64;
+
+        fn lock&lt;R&gt;(&amp;mut self, f: impl FnOnce(&amp;mut u64) -&gt; R) -&gt; R {
+            unsafe {
+                // the priority ceiling of this resource
+                const CEILING: u8 = 2;
+
+                let current = self.priority().get();
+                if current &lt; CEILING {
+                    // raise dynamic priority
+                    self.priority().set(CEILING);
+                    basepri::write(logical2hw(CEILING));
+
+                    let r = f(&amp;mut y);
+
+                    // restore dynamic priority
+                    basepri::write(logical2hw(current));
+                    self.priority().set(current);
+
+                    r
+                } else {
+                    // dynamic priority is high enough
+                    f(&amp;mut y)
+                }
+            }
+        }
+    }
+
+    // repeat for resource `y`
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>At the end the compiler will optimize the function <code>foo</code> into something like
+this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // NOTE: BASEPRI contains the value `0` (its reset value) at this point
+
+    // raise dynamic priority to `3`
+    unsafe { basepri::write(160) }
+
+    // the two operations on `y` are merged into one
+    y += 2;
+
+    // BASEPRI is not modified to access `x` because the dynamic priority is high enough
+    x += 1;
+
+    // lower (restore) the dynamic priority to `1`
+    unsafe { basepri::write(224) }
+
+    // mid-point
+
+    // raise dynamic priority to `2`
+    unsafe { basepri::write(192) }
+
+    x += 1;
+
+    // raise dynamic priority to `3`
+    unsafe { basepri::write(160) }
+
+    y += 1;
+
+    // lower (restore) the dynamic priority to `2`
+    unsafe { basepri::write(192) }
+
+    // NOTE: it would be sound to merge this operation on `x` with the previous one but
+    // compiler fences are coarse grained and prevent such optimization
+    x += 1;
+
+    // lower (restore) the dynamic priority to `1`
+    unsafe { basepri::write(224) }
+
+    // NOTE: BASEPRI contains the value `224` at this point
+    // the UART0 handler will restore the value to `0` before returning
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="the-basepri-invariant"><a class="header" href="#the-basepri-invariant">The BASEPRI invariant</a></h2>
+<p>An invariant that the RTIC framework has to preserve is that the value of the
+BASEPRI at the start of an <em>interrupt</em> handler must be the same value it has
+when the interrupt handler returns. BASEPRI may change during the execution of
+the interrupt handler but running an interrupt handler from start to finish
+should not result in an observable change of BASEPRI.</p>
+<p>This invariant needs to be preserved to avoid raising the dynamic priority of a
+handler through preemption. This is best observed in the following example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+const APP: () = {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+    }
+
+    #[init]
+    fn init() {
+        // `foo` will run right after `init` returns
+        rtic::pend(Interrupt::UART0);
+    }
+
+    #[task(binds = UART0, priority = 1)]
+    fn foo() {
+        // BASEPRI is `0` at this point; the dynamic priority is currently `1`
+
+        // `bar` will preempt `foo` at this point
+        rtic::pend(Interrupt::UART1);
+
+        // BASEPRI is `192` at this point (due to a bug); the dynamic priority is now `2`
+        // this function returns to `idle`
+    }
+
+    #[task(binds = UART1, priority = 2, resources = [x])]
+    fn bar() {
+        // BASEPRI is `0` (dynamic priority = 2)
+
+        x.lock(|x| {
+            // BASEPRI is raised to `160` (dynamic priority = 3)
+
+            // ..
+        });
+
+        // BASEPRI is restored to `192` (dynamic priority = 2)
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        // BASEPRI is `192` (due to a bug); dynamic priority = 2
+
+        // this has no effect due to the BASEPRI value
+        // the task `foo` will never be executed again
+        rtic::pend(Interrupt::UART0);
+
+        loop {
+            // ..
+        }
+    }
+
+    #[task(binds = UART2, priority = 3, resources = [x])]
+    fn baz() {
+        // ..
+    }
+
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>IMPORTANT: let's say we <em>forget</em> to roll back <code>BASEPRI</code> in <code>UART1</code> -- this would
+be a bug in the RTIC code generator.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// code generated by RTIC
+
+const APP: () = {
+    // ..
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        // the static priority of this interrupt (as specified by the user)
+        const PRIORITY: u8 = 2;
+
+        // take a snashot of the BASEPRI
+        let initial = basepri::read();
+
+        let priority = Cell::new(PRIORITY);
+        bar(bar::Context {
+            resources: bar::Resources::new(&amp;priority),
+            // ..
+        });
+
+        // BUG: FORGOT to roll back the BASEPRI to the snapshot value we took before
+        basepri::write(initial);
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>The consequence is that <code>idle</code> will run at a dynamic priority of <code>2</code> and in fact
+the system will never again run at a dynamic priority lower than <code>2</code>. This
+doesn't compromise the memory safety of the program but affects task scheduling:
+in this particular case tasks with a priority of <code>1</code> will never get a chance to
+run.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../internals/late-resources.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../internals/ceilings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../internals/late-resources.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../internals/ceilings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Q16","MPMC queue with a capacity for 16 elements"],["Q2","MPMC queue with a capacity for 2 elements"],["Q32","MPMC queue with a capacity for 32 elements"],["Q4","MPMC queue with a capacity for 4 elements"],["Q64","MPMC queue with a capacity for 64 elements"],["Q8","MPMC queue with a capacity for 8 elements"]]});

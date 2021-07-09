@@ -1,0 +1,557 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Очередь таймера - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Введение</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTIC в примерах</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html"><strong aria-hidden="true">1.1.</strong> Атрибут app</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Ресурсы</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Очередь таймера</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Типы, Send и Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.6.</strong> Создание нового проекта</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Советы и хитрости</a></li></ol></li><li class="chapter-item expanded "><a href="../migration.html"><strong aria-hidden="true">2.</strong> Инструкции по миграции</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../migration/migration_v5.html"><strong aria-hidden="true">2.1.</strong> v0.5.x на v0.6.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_v4.html"><strong aria-hidden="true">2.2.</strong> v0.4.x на v0.5.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_rtic.html"><strong aria-hidden="true">2.3.</strong> RTFM на RTIC</a></li></ol></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">3.</strong> Под капотом</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../internals/interrupt-configuration.html"><strong aria-hidden="true">3.1.</strong> Настройка прерываний</a></li><li class="chapter-item expanded "><a href="../internals/non-reentrancy.html"><strong aria-hidden="true">3.2.</strong> Нереентерабельнось</a></li><li class="chapter-item expanded "><a href="../internals/access.html"><strong aria-hidden="true">3.3.</strong> Контроль доступа</a></li><li class="chapter-item expanded "><a href="../internals/late-resources.html"><strong aria-hidden="true">3.4.</strong> Поздние ресурсы</a></li><li class="chapter-item expanded "><a href="../internals/critical-sections.html"><strong aria-hidden="true">3.5.</strong> Критические секции</a></li><li class="chapter-item expanded "><a href="../internals/ceilings.html"><strong aria-hidden="true">3.6.</strong> Анализ приоритетов</a></li><li class="chapter-item expanded "><a href="../internals/tasks.html"><strong aria-hidden="true">3.7.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="../internals/timer-queue.html" class="active"><strong aria-hidden="true">3.8.</strong> Очередь таймера</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Очередь-таймера"><a class="header" href="#Очередь-таймера">Очередь таймера</a></h1>
+<p>Функциональность очередь таймера позволяет пользователю планировать задачи на запуск
+в опреленное время в будущем. Неудивительно, что эта функция также реализуется с помощью очереди:
+очередь приоритетов, где запланированные задачи сортируются в порядке аозрастания времени.
+Эта функция требует таймер, способный устанавливать прерывания истечения времени.
+Таймер используется для пуска прерывания, когда настает запланированное время задачи;
+в этот момент задача удаляется из очереди таймера и помещается в очередь готовности.</p>
+<p>Давайте посмотрим, как это реализовано в коде. Рассмотрим следующую программу:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    // ..
+
+    #[task(capacity = 2, schedule = [foo])]
+    fn foo(c: foo::Context, x: u32) {
+        // запланировать задачу на повторный запуск через 1 млн. тактов
+        c.schedule.foo(c.scheduled + Duration::cycles(1_000_000), x + 1).ok();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="schedule"><a class="header" href="#schedule"><code>schedule</code></a></h2>
+<p>Давайте сначала взглянем на интерфейс <code>schedule</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod foo {
+    pub struct Schedule&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+    }
+
+    impl&lt;'a&gt; Schedule&lt;'a&gt; {
+        // `unsafe` и спрятано, потому что мы не хотим, чтобы пользовать сюда вмешивался
+        #[doc(hidden)]
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            self.priority
+        }
+    }
+}
+
+mod app {
+    type Instant = &lt;path::to::user::monotonic::timer as rtic::Monotonic&gt;::Instant;
+
+    // все задачи, которые могут быть запланированы (`schedule`)
+    enum T {
+        foo,
+    }
+
+    struct NotReady {
+        index: u8,
+        instant: Instant,
+        task: T,
+    }
+
+    // Очередь таймера - двоичная куча (min-heap) задач `NotReady`
+    static mut TQ: TimerQueue&lt;U2&gt; = ..;
+    const TQ_CEILING: u8 = 1;
+
+    static mut foo_FQ: Queue&lt;u8, U2&gt; = Queue::new();
+    const foo_FQ_CEILING: u8 = 1;
+
+    static mut foo_INPUTS: [MaybeUninit&lt;u32&gt;; 2] =
+        [MaybeUninit::uninit(), MaybeUninit::uninit()];
+
+    static mut foo_INSTANTS: [MaybeUninit&lt;Instant&gt;; 2] =
+        [MaybeUninit::uninit(), MaybeUninit::uninit()];
+
+    impl&lt;'a&gt; foo::Schedule&lt;'a&gt; {
+        fn foo(&amp;self, instant: Instant, input: u32) -&gt; Result&lt;(), u32&gt; {
+            unsafe {
+                let priority = self.priority();
+                if let Some(index) = lock(priority, foo_FQ_CEILING, || {
+                    foo_FQ.split().1.dequeue()
+                }) {
+                    // `index` - владеющий укачатель на ячейки в этих буферах
+                    foo_INSTANTS[index as usize].write(instant);
+                    foo_INPUTS[index as usize].write(input);
+
+                    let nr = NotReady {
+                        index,
+                        instant,
+                        task: T::foo,
+                    };
+
+                    lock(priority, TQ_CEILING, || {
+                        TQ.enqueue_unchecked(nr);
+                    });
+                } else {
+                    // Не осталось места, чтобы разместить входные данные / instant
+                    Err(input)
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Это очень похоже на реализацию <code>Spawn</code>. На самом деле одни и те же буфер
+<code>INPUTS</code> и список сободной памяти (<code>FQ</code>) используются совместно интерфейсами
+<code>spawn</code> и <code>schedule</code>. Главное отличие между ними в том, что <code>schedule</code> также
+размещает <code>Instant</code>, момент на который задача запланирована на запуск,
+в отдельном буфере (<code>foo_INSTANTS</code> в нашем случае).</p>
+<p><code>TimerQueue::enqueue_unchecked</code> делает немного больше работы, чем
+просто добавление записи в min-heap: он также вызывает прерывание
+системного таймера (<code>SysTick</code>), если новая запись оказывается первой в очереди.</p>
+<h2 id="Системный-таймер"><a class="header" href="#Системный-таймер">Системный таймер</a></h2>
+<p>Прерывание системного таймера (<code>SysTick</code>) заботится о двух вещах:
+передаче задач, которых становятся готовыми из очереди таймера в очередь готовности
+и установке прерывания истечения времени, когда наступит запланированное
+время следующей задачи.</p>
+<p>Давайте посмотрим на соответствующий код.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod app {
+    #[no_mangle]
+    fn SysTick() {
+        const PRIORITY: u8 = 1;
+
+        let priority = &amp;Cell::new(PRIORITY);
+        while let Some(ready) = lock(priority, TQ_CEILING, || TQ.dequeue()) {
+            match ready.task {
+                T::foo =&gt; {
+                    // переместить эту задачу в очередь готовности `RQ1`
+                    lock(priority, RQ1_CEILING, || {
+                        RQ1.split().0.enqueue_unchecked(Ready {
+                           task: T1::foo,
+                           index: ready.index,
+                        })
+                    });
+
+                    // вызвать диспетчер задач
+                    rtic::pend(Interrupt::UART0);
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Выглядит похоже на диспетчер задач, за исключением того, что
+вместо запуска готовой задачи, она лишь переносится в очередь готовности,
+что ведет к ее запуску с нужным приоритетом.</p>
+<p><code>TimerQueue::dequeue</code> установит новое прерывание истечения времени, если вернет
+<code>None</code>. Он сязан с <code>TimerQueue::enqueue_unchecked</code>, который вызывает это
+прерывание; на самом деле, <code>enqueue_unchecked</code> передает задачу установки
+нового прерывание истечения времени обработчику <code>SysTick</code>.</p>
+<h2 id="Точность-и-диапазон-cyccntinstant-и-cyccntduration"><a class="header" href="#Точность-и-диапазон-cyccntinstant-и-cyccntduration">Точность и диапазон <code>cyccnt::Instant</code> и <code>cyccnt::Duration</code></a></h2>
+<p>RTIC предоставляет реализацию <code>Monotonic</code>, основанную на счетчике тактов <code>DWT</code> (Data Watchpoint and Trace). <code>Instant::now</code> возвращает снимок таймера; эти снимки
+DWT (<code>Instant</code>ы) используются для сортировки записей в очереди таймера.
+Счетчик тактов - 32-битный счетчик, работающий на частоте ядра.
+Этот счетчик обнуляется каждые <code>(1 &lt;&lt; 32)</code> тактов; у нас нет прерывания,
+ассоциированног с этим счетчиком, поэтому ничего ужасного не случится,
+когда он пройдет оборот.</p>
+<p>Чтобы упорядочить <code>Instant</code>ы в очереди, нам нужно сравнить 32-битные целые.
+Чтобы учесть обороты, мы используем разницу между двумя <code>Instant</code>ами, <code>a - b</code>,
+и рассматриваем результат как 32-битное знаковое целое.
+Если результат меньше нуля, значит <code>b</code> более поздний <code>Instant</code>;
+если результат больше нуля, значит <code>b</code> более ранний <code>Instant</code>.
+Это значит, что планирование задачи на <code>Instant</code>, который на <code>(1 &lt;&lt; 31) - 1</code> тактов
+больше, чем запланированное время (<code>Instant</code>) первой (самой ранней) записи
+в очереди приведет к тому, что задача будет помещена в неправильное
+место в очереди. У нас есть несколько debug assertions в коде, чтобы
+предотвратить эту пользовательскую ошибку, но этого нельзя избежать,
+поскольку пользователь может написать
+<code>(instant + duration_a) + duration_b</code> и переполнить <code>Instant</code>.</p>
+<p>Системный таймер, <code>SysTick</code> - 24-битный счетчик также работающий
+на частоте процессора. Когда следующая планируемая задача более, чем в
+<code>1 &lt;&lt; 24</code> тактов в будущем, прерывание устанавливается на время в пределах
+<code>1 &lt;&lt; 24</code> тактов. Этот процесс может происходить несколько раз, пока
+следующая запланированная задача не будет в диапазоне счетчика <code>SysTick</code>.</p>
+<p>Подведем итог, оба <code>Instant</code> и <code>Duration</code> имеют разрешение 1 такт ядра, и <code>Duration</code> эффективно имеет (полуоткрытый) диапазон <code>0..(1 &lt;&lt; 31)</code> (не включая максимум) тактов ядра.</p>
+<h2 id="Вместительность-очереди"><a class="header" href="#Вместительность-очереди">Вместительность очереди</a></h2>
+<p>Вместительность очереди таймера рассчитывается как сумма вместительностей
+всех планируемых (<code>schedule</code>) задач. Как и в случае очередей готовности,
+это значит, что как только мы затребовали пустую ячейку в буфере <code>INPUTS</code>,
+мы гарантируем, что способны передать задачу в очередь таймера;
+это позволяет нам опустить проверки времени выполнения.</p>
+<h2 id="Приоритет-системного-таймера"><a class="header" href="#Приоритет-системного-таймера">Приоритет системного таймера</a></h2>
+<p>Приориет системного таймера не может быть установлен пользователем;
+он выбирается фреймворком.
+Чтобы убедиться, что низкоприоритетные задачи не препятствуют
+запуску высокоприоритетных, мы выбираем приоритет системного таймера
+максимальным из всех планируемых задач.</p>
+<p>Чтобы понять, почему это нужно, рассмотрим вариант, когда две ранее
+запланированные задачи с приоритетами <code>2</code> и <code>3</code> становятся готовыми в
+примерно одинаковое время, но низкоприоритетная задача перемещается
+в очередь готовности первой.
+Если бы приоритет системного таймера был, например, равен <code>1</code>,
+тогда после перемещения низкоприоритетной (<code>2</code>) задачи, это бы привело
+к завершению (из-за того, что приоритет выше приоритета системного таймера)
+ожидания выполнения высокоприоритетной задачи (<code>3</code>).
+Чтобы избежать такого сценария, системный таймер должен работать на
+приоритете, равном наивысшему из приоритетов планируемых задач;
+в этом примере это <code>3</code>.</p>
+<h2 id="Анализ-приоритетов"><a class="header" href="#Анализ-приоритетов">Анализ приоритетов</a></h2>
+<p>Очередь таймера - это ресурс, разделяемый всеми задачами, которые могут
+планировать (<code>schedule</code>) задачи и обработчиком <code>SysTick</code>.
+Также интерфейс <code>schedule</code> соперничает с интерфейсом <code>spawn</code>
+за списки свободной памяти. Все это должно уситываться в анализе приоритетов.</p>
+<p>Чтобы проиллюстрировать, рассмотрим следующий пример:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    #[task(priority = 3, spawn = [baz])]
+    fn foo(c: foo::Context) {
+        // ..
+    }
+
+    #[task(priority = 2, schedule = [foo, baz])]
+    fn bar(c: bar::Context) {
+        // ..
+    }
+
+    #[task(priority = 1)]
+    fn baz(c: baz::Context) {
+        // ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Анализ приоритетов происходил бы вот так:</p>
+<ul>
+<li>
+<p><code>foo</code> (prio = 3) и <code>baz</code> (prio = 1) планируемые задачи, поэтому
+<code>SysTick</code> должен работать на максимальном из этих двух приоритетов, т.е. <code>3</code>.</p>
+</li>
+<li>
+<p><code>foo::Spawn</code> (prio = 3) и <code>bar::Schedule</code> (prio = 2) соперничают за
+конечный потребитель <code>baz_FQ</code>; это приводит к максимальному приоритету <code>3</code>.</p>
+</li>
+<li>
+<p><code>bar::Schedule</code> (prio = 2) имеет экслюзивный доступ к
+конечному потребителю <code>foo_FQ</code>; поэтому максимальный приоритет <code>foo_FQ</code> фактически <code>2</code>.</p>
+</li>
+<li>
+<p><code>SysTick</code> (prio = 3) и <code>bar::Schedule</code> (prio = 2)  соперничают за
+очередь таймера <code>TQ</code>; это приводит к максимальному приоритету <code>3</code>.</p>
+</li>
+<li>
+<p><code>SysTick</code> (prio = 3) и <code>foo::Spawn</code> (prio = 3) оба имеют неблокируемый
+доступ к очереди готовности <code>RQ3</code>, что хранит записи <code>foo</code>;
+поэтому максимальный приоритет <code>RQ3</code> фактически <code>3</code>.</p>
+</li>
+<li>
+<p><code>SysTick</code> имеет эксклюзивный доступ к очереди готовности <code>RQ1</code>,
+которая хранит записи <code>baz</code>; поэтому максимальный приоритет <code>RQ1</code> фактически <code>3</code>.</p>
+</li>
+</ul>
+<h2 id="Изменения-в-реализации-spawn"><a class="header" href="#Изменения-в-реализации-spawn">Изменения в реализации <code>spawn</code></a></h2>
+<p>Когда интерфейс <code>schedule</code> используется, реализация <code>spawn</code> немного
+изменяется, чтобы отслеживать baseline задач. Как можете видеть в
+реализации <code>schedule</code> есть буферы <code>INSTANTS</code>, используемые, чтобы
+хранить время, в которое задача была запланирована навыполнение;
+этот <code>Instant</code> читается диспетчером задач и передается в пользовательский
+код, как часть контекста задачи.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod app {
+    // ..
+
+    #[no_mangle]
+    unsafe UART1() {
+        const PRIORITY: u8 = 1;
+
+        let snapshot = basepri::read();
+
+        while let Some(ready) = RQ1.split().1.dequeue() {
+            match ready.task {
+                Task::baz =&gt; {
+                    let input = baz_INPUTS[ready.index as usize].read();
+                    // ADDED
+                    let instant = baz_INSTANTS[ready.index as usize].read();
+
+                    baz_FQ.split().0.enqueue_unchecked(ready.index);
+
+                    let priority = Cell::new(PRIORITY);
+                    // ИЗМЕНЕНО instant передан как часть контекста задачи
+                    baz(baz::Context::new(&amp;priority, instant), input)
+                }
+
+                Task::bar =&gt; {
+                    // выглядит также как ветка для `baz`
+                }
+
+            }
+        }
+
+        // инвариант BASEPRI
+        basepri::write(snapshot);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>И наоборот, реализации <code>spawn</code> нужно писать значение в буфер <code>INSTANTS</code>.
+Записанное значение располагается в структуре <code>Spawn</code> и это либо
+время <code>start</code> аппаратной задачи, либо время <code>scheduled</code> программной задачи.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod foo {
+    // ..
+
+    pub struct Spawn&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+        // ADDED
+        instant: Instant,
+    }
+
+    impl&lt;'a&gt; Spawn&lt;'a&gt; {
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            &amp;self.priority
+        }
+
+        // ADDED
+        pub unsafe fn instant(&amp;self) -&gt; Instant {
+            self.instant
+        }
+    }
+}
+
+mod app {
+    impl&lt;'a&gt; foo::Spawn&lt;'a&gt; {
+        /// Spawns the `baz` task
+        pub fn baz(&amp;self, message: u64) -&gt; Result&lt;(), u64&gt; {
+            unsafe {
+                match lock(self.priority(), baz_FQ_CEILING, || {
+                    baz_FQ.split().1.dequeue()
+                }) {
+                    Some(index) =&gt; {
+                        baz_INPUTS[index as usize].write(message);
+                        // ADDED
+                        baz_INSTANTS[index as usize].write(self.instant());
+
+                        lock(self.priority(), RQ1_CEILING, || {
+                            RQ1.split().1.enqueue_unchecked(Ready {
+                                task: Task::foo,
+                                index,
+                            });
+                        });
+
+                        rtic::pend(Interrupt::UART0);
+                    }
+
+                    None =&gt; {
+                        // достигнута максимальная вместительность; неудачный вызов
+                        Err(message)
+                    }
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../internals/tasks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../internals/tasks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

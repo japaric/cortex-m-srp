@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["app","Attribute used to declare a RTIC application"]]});

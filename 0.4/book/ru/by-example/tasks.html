@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Задачи - Real Time For the Masses</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Введение</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTFM в примерах</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html"><strong aria-hidden="true">1.1.</strong> Атрибут app</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Ресурсы</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html" class="active"><strong aria-hidden="true">1.3.</strong> Задачи</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Очередь таймера</a></li><li class="chapter-item expanded "><a href="../by-example/singletons.html"><strong aria-hidden="true">1.5.</strong> Одиночки</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.6.</strong> Типы, Send и Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.7.</strong> Создание нового проекта</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html"><strong aria-hidden="true">1.8.</strong> Советы и хитрости</a></li></ol></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">2.</strong> Под капотом</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../internals/ceilings.html"><strong aria-hidden="true">2.1.</strong> Ceiling analysis</a></li><li class="chapter-item expanded "><a href="../internals/tasks.html"><strong aria-hidden="true">2.2.</strong> Диспетчер задач</a></li><li class="chapter-item expanded "><a href="../internals/timer-queue.html"><strong aria-hidden="true">2.3.</strong> Очередь таймера</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real Time For the Masses</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Программные-задачи"><a class="header" href="#Программные-задачи">Программные задачи</a></h1>
+<p>RTFM обрабатывает прерывания и исключения как <em>аппаратные</em> задачи. Аппаратные
+задачи могут вызываться устройством в ответ на события, такие как нажатие кнопки.
+RTFM также поддерживает <em>программные</em> задачи, порождаемые программой из любого
+контекста выполнения.</p>
+<p>Программным задачам также можно назначать приоритет и диспетчеризовать из
+обработчиков прерываний. RTFM требует определения свободных прерываний в блоке
+<code>extern</code>, когда используются программные задачи; эти свободные прерывания будут использованы, чтобы диспетчеризовать программные задачи. Преимущество программных
+задач перед аппаратными в том, что  на один обработчик прерывания можно назначить
+множество задач.</p>
+<p>Программные задачи определяются заданием функциям атрибута <code>task</code>. Чтобы было
+возможно вызывать программные задачи, имя задачи нужно передать в аргументе
+<code>spawn</code> контекста атрибута (<code>init</code>, <code>idle</code>, <code>interrupt</code>, etc.).</p>
+<p>В примере ниже продемонстрированы три программных задачи, запускаемые на 2-х
+разных приоритетах. Трем задачам назначены 2 обработчика прерываний.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/task.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [foo])]
+    fn init() {
+        spawn.foo().unwrap();
+    }
+
+    #[task(spawn = [bar, baz])]
+    fn foo() {
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        // spawns `bar` onto the task scheduler
+        // `foo` and `bar` have the same priority so `bar` will not run until
+        // after `foo` terminates
+        spawn.bar().unwrap();
+
+        // spawns `baz` onto the task scheduler
+        // `baz` has higher priority than `foo` so it immediately preempts `foo`
+        spawn.baz().unwrap();
+    }
+
+    #[task]
+    fn bar() {
+        hprintln!(&quot;bar&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(priority = 2)]
+    fn baz() {
+        hprintln!(&quot;baz&quot;).unwrap();
+    }
+
+    // Interrupt handlers used to dispatch software tasks
+    extern &quot;C&quot; {
+        fn UART0();
+        fn UART1();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example task
+foo
+baz
+bar```
+
+## Передача сообщений
+
+Другое преимущество программных задач - возможность передавать сообщения задачам
+во время их вызова. Тип полезной нагрузки сообщения должен быть определен в
+сигнатуре обработчика задачи.
+
+Пример ниже демонстрирует три задачи, две из которых ожидают сообщения.
+
+``` rust
+//! examples/message.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init(spawn = [foo])]
+    fn init() {
+        spawn.foo(/* no message */).unwrap();
+    }
+
+    #[task(spawn = [bar])]
+    fn foo() {
+        static mut COUNT: u32 = 0;
+
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        spawn.bar(*COUNT).unwrap();
+        *COUNT += 1;
+    }
+
+    #[task(spawn = [baz])]
+    fn bar(x: u32) {
+        hprintln!(&quot;bar({})&quot;, x).unwrap();
+
+        spawn.baz(x + 1, x + 2).unwrap();
+    }
+
+    #[task(spawn = [foo])]
+    fn baz(x: u32, y: u32) {
+        hprintln!(&quot;baz({}, {})&quot;, x, y).unwrap();
+
+        if x + y &gt; 4 {
+            debug::exit(debug::EXIT_SUCCESS);
+        }
+
+        spawn.foo().unwrap();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+};
+</code></pre>
+<pre><code class="language-console">$ cargo run --example message
+foo
+bar(0)
+baz(1, 2)
+foo
+bar(1)
+baz(2, 3)```
+
+## Ёмкость
+
+Диспетчеры задач *не* используют динамическое выделение памяти. Память
+необходимая для размещения сообщений, резервируется статически. Фреймворк
+зарезервирует достаточно памяти для каждого контекста, чтобы можно было вызвать
+каждую задачу как минимум единожды. Это разумно по умолчанию, но
+&quot;внутреннюю&quot; ёмкость каждой задачи можно контролировать используя аргумент
+`capacity` атрибута `task`.
+
+В примере ниже установлена ёмкость программной задачи `foo` на 4. Если ёмкость
+не определена, тогда второй вызов `spawn.foo` в `UART0` вызовет ошибку.
+
+``` rust
+//! examples/capacity.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+extern crate panic_semihosting;
+
+use cortex_m_semihosting::{debug, hprintln};
+use lm3s6965::Interrupt;
+use rtfm::app;
+
+#[app(device = lm3s6965)]
+const APP: () = {
+    #[init]
+    fn init() {
+        rtfm::pend(Interrupt::UART0);
+    }
+
+    #[interrupt(spawn = [foo, bar])]
+    fn UART0() {
+        spawn.foo(0).unwrap();
+        spawn.foo(1).unwrap();
+        spawn.foo(2).unwrap();
+        spawn.foo(3).unwrap();
+
+        spawn.bar().unwrap();
+    }
+
+    #[task(capacity = 4)]
+    fn foo(x: u32) {
+        hprintln!(&quot;foo({})&quot;, x).unwrap();
+    }
+
+    #[task]
+    fn bar() {
+        hprintln!(&quot;bar&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    // Interrupt handlers used to dispatch software tasks
+    extern &quot;C&quot; {
+        fn UART1();
+    }
+};
+</code></pre>
+<pre><code class="language-console">$ cargo run --example capacity
+foo(0)
+foo(1)
+foo(2)
+foo(3)
+bar```
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../by-example/resources.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../by-example/timer-queue.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../by-example/resources.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../by-example/timer-queue.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

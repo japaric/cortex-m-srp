@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["Singleton","Attribute to declare an owned singleton"]]});

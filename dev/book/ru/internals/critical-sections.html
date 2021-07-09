@@ -1,0 +1,715 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Критические секции - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Введение</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTIC в примерах</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html"><strong aria-hidden="true">1.1.</strong> Атрибут app</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Ресурсы</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Очередь таймера</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Типы, Send и Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.6.</strong> Создание нового проекта</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Советы и хитрости</a></li></ol></li><li class="chapter-item expanded "><a href="../migration.html"><strong aria-hidden="true">2.</strong> Инструкции по миграции</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../migration/migration_v5.html"><strong aria-hidden="true">2.1.</strong> v0.5.x на v0.6.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_v4.html"><strong aria-hidden="true">2.2.</strong> v0.4.x на v0.5.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_rtic.html"><strong aria-hidden="true">2.3.</strong> RTFM на RTIC</a></li></ol></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">3.</strong> Под капотом</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../internals/interrupt-configuration.html"><strong aria-hidden="true">3.1.</strong> Настройка прерываний</a></li><li class="chapter-item expanded "><a href="../internals/non-reentrancy.html"><strong aria-hidden="true">3.2.</strong> Нереентерабельнось</a></li><li class="chapter-item expanded "><a href="../internals/access.html"><strong aria-hidden="true">3.3.</strong> Контроль доступа</a></li><li class="chapter-item expanded "><a href="../internals/late-resources.html"><strong aria-hidden="true">3.4.</strong> Поздние ресурсы</a></li><li class="chapter-item expanded "><a href="../internals/critical-sections.html" class="active"><strong aria-hidden="true">3.5.</strong> Критические секции</a></li><li class="chapter-item expanded "><a href="../internals/ceilings.html"><strong aria-hidden="true">3.6.</strong> Анализ приоритетов</a></li><li class="chapter-item expanded "><a href="../internals/tasks.html"><strong aria-hidden="true">3.7.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="../internals/timer-queue.html"><strong aria-hidden="true">3.8.</strong> Очередь таймера</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Критические-секции"><a class="header" href="#Критические-секции">Критические секции</a></h1>
+<p>Когда ресурсы (статические переменные) разделяются между двумя или более задачами,
+которые выполняются с разными приоритетами, некая форма запрета изменений
+необходима, чтобы изменять память без гонки данных. В RTIC мы используем
+основанные на приоритетах критические секции, чтобы гарантировать запрет изменений
+(см. <a href="https://en.wikipedia.org/wiki/Priority_ceiling_protocol">Протокол немедленного максимального приоритета</a>).</p>
+<p>Критическия секция состоит во временном увеличении <em>динамического</em> приоритета задачи.
+Пока задача находится в критической секции, все другие задачи, которые могут
+послать запрос переменной <em>не могут запуститься</em>.</p>
+<p>Насколько большим должен быть динамический приориткт, чтобы гарантировать запрет изменений
+определенного ресурса? <a href="ceilings.html">Анализ приоритетов</a> отвечает на этот вопрос
+и будет обсужден в следующем разделе. В этом разделе мы сфокусируемся
+на реализации критической секции.</p>
+<h2 id="Прокси-ресурсы"><a class="header" href="#Прокси-ресурсы">Прокси-ресурсы</a></h2>
+<p>Для упрощения, давайте взглянем на ресурс, разделяемый двумя задачами,
+запускаемыми с разными приоритетами. Очевидно, что одна задача может вытеснить
+другую; чтобы предотвратить гонку данных задача с <em>низким приоритетом</em> должна
+использовать критическую секцию, когда необходимо изменять разделяемую память.
+С другой стороны, высокоприоритетная задача может напрямую изменять
+разделяемую память, поскольку не может быть вытеснена низкоприоритетной задачей.
+Чтобы заставить использовать критическую секцию на задаче с низким приоритетом,
+мы предоставляем <em>прокси-ресурсы</em>, в которых мы отдаем уникальную ссылку
+(<code>&amp;mut-</code>) высокоприоритетной задаче.</p>
+<p>Пример ниже показывает разные типы, передаваемые каждой задаче:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mut app {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x])]
+    fn foo(c: foo::Context) {
+        // прокси-ресурс
+        let mut x: resources::x = c.resources.x;
+
+        x.lock(|x: &amp;mut u64| {
+            // критическая секция
+            *x += 1
+        });
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: bar::Context) {
+        let mut x: &amp;mut u64 = c.resources.x;
+
+        *x += 1;
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Теперь давайте посмотрим. как эти типы создаются фреймворком.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // .. пользовательский код ..
+}
+
+fn bar(c: bar::Context) {
+    // .. пользовательский код ..
+}
+
+pub mod resources {
+    pub struct x {
+        // ..
+    }
+}
+
+pub mod foo {
+    pub struct Resources {
+        pub x: resources::x,
+    }
+
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+}
+
+pub mod bar {
+    pub struct Resources&lt;'a&gt; {
+        pub x: &amp;'a mut u64,
+    }
+
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+}
+
+mod app {
+    static mut x: u64 = 0;
+
+    impl rtic::Mutex for resources::x {
+        type T = u64;
+
+        fn lock&lt;R&gt;(&amp;mut self, f: impl FnOnce(&amp;mut u64) -&gt; R) -&gt; R {
+            // мы рассмотрим это детально позднее
+        }
+    }
+
+    #[no_mangle]
+    unsafe fn UART0() {
+        foo(foo::Context {
+            resources: foo::Resources {
+                x: resources::x::new(/* .. */),
+            },
+            // ..
+        })
+    }
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        bar(bar::Context {
+            resources: bar::Resources {
+                x: &amp;mut x,
+            },
+            // ..
+        })
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="lock"><a class="header" href="#lock"><code>lock</code></a></h2>
+<p>Теперь давайте рассмотрим непосредственно критическую секцию. В этом примере мы должны
+увеличить динамический приоритет минимум до <code>2</code>, чтобы избежать гонки данных.
+В архитектуре Cortex-M динамический приоритет можно изменить записью в регистр <code>BASEPRI</code>.</p>
+<p>Семантика регистра <code>BASEPRI</code> такова:</p>
+<ul>
+<li>Запись <code>0</code> в <code>BASEPRI</code> отключает его функциональность.</li>
+<li>Запись ненулевого значения в <code>BASEPRI</code> изменяет уровень приоритета, требуемого для
+вытеснения прерывания. Однако, это имеет эффект, только когда записываемое значение
+<em>меньше</em>, чем уровень приоритета текущего контекста выполнения, но обращаем внимание, что
+более низкий уровень аппаратного приоритета означает более высокий логический приоритет</li>
+</ul>
+<p>Таким образом, динамический приоритет в любой момент времени может быть рассчитан как</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>dynamic_priority = max(hw2logical(BASEPRI), hw2logical(static_priority))
+<span class="boring">}
+</span></code></pre></pre>
+<p>Где <code>static_priority</code> - приоритет, запрограммированный в NVIC для текущего прерывания,
+или логический <code>0</code>, когда текущий контекств - это <code>idle</code>.</p>
+<p>В этом конкретном примере мы можем реализовать критическую секцию так:</p>
+<blockquote>
+<p><strong>ПРИМЕЧАНИЕ:</strong> это упрощенная реализация</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl rtic::Mutex for resources::x {
+    type T = u64;
+
+    fn lock&lt;R, F&gt;(&amp;mut self, f: F) -&gt; R
+    where
+        F: FnOnce(&amp;mut u64) -&gt; R,
+    {
+        unsafe {
+            // начать критическую секцию: увеличить динамический приоритет до `2`
+            asm!(&quot;msr BASEPRI, 192&quot; : : : &quot;memory&quot; : &quot;volatile&quot;);
+
+            // запустить пользовательский код в критической секции
+            let r = f(&amp;mut x);
+
+            // окончить критическую секцию: восстановить динамический приоритет до статического значения (`1`)
+            asm!(&quot;msr BASEPRI, 0&quot; : : : &quot;memory&quot; : &quot;volatile&quot;);
+
+            r
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>В данном случае важно указать <code>&quot;memory&quot;</code> в блоке <code>asm!</code>.
+Это не даст компилятору менять местами операции вокруг него.
+Это важно, поскольку доступ к переменной <code>x</code> вне критической секции привело бы
+к гонке данных.</p>
+<p>Важно отметить, что сигнатура метода <code>lock</code> препятствет его вложенным вызовам.
+Это необходимо для безопасности памяти, так как вложенные вызовы привели бы
+к созданию множественных уникальных ссылок (<code>&amp;mut-</code>) на <code>x</code>, ломая правила заимствования Rust.
+Смотреть ниже:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[interrupt(binds = UART0, priority = 1, resources = [x])]
+fn foo(c: foo::Context) {
+    // resource proxy
+    let mut res: resources::x = c.resources.x;
+
+    res.lock(|x: &amp;mut u64| {
+        res.lock(|alias: &amp;mut u64| {
+            //~^ ошибка: `res` уже был заимствован уникально (`&amp;mut-`)
+            // ..
+        });
+    });
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Вложенность"><a class="header" href="#Вложенность">Вложенность</a></h2>
+<p>Вложенные вызовы <code>lock</code> на <em>том же</em> ресурсе должны отклоняться компилятором
+для безопасности памяти, однако вложенные вызовы <code>lock</code> на <em>разных</em> ресурсах -
+нормальная операция. В этом случае мы хотим убедиться, что вложенные критические секции
+никогда не приведут к понижению динамического приоритета, так как это плохо,
+и мы хотим оптимизировать несколько записей в регистр <code>BASEPRI</code> и compiler fences.
+Чтобы справиться с этим, мы проследим динамический приоритет задачи, с помощью стековой
+переменной и используем ее, чтобы решить, записывать <code>BASEPRI</code> или нет.
+На практике, стековая переменная будет соптимизирована компилятором, но все еще
+будет предоставлять информацию компилятору.</p>
+<p>Рассмотрим такую программу:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+        #[init(0)]
+        y: u64,
+    }
+
+    #[init]
+    fn init() {
+        rtic::pend(Interrupt::UART0);
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x, y])]
+    fn foo(c: foo::Context) {
+        let mut x = c.resources.x;
+        let mut y = c.resources.y;
+
+        y.lock(|y| {
+            *y += 1;
+
+            *x.lock(|x| {
+                x += 1;
+            });
+
+            *y += 1;
+        });
+
+        // середина
+
+        x.lock(|x| {
+            *x += 1;
+
+            y.lock(|y| {
+                *y += 1;
+            });
+
+            *x += 1;
+        })
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: foo::Context) {
+        // ..
+    }
+
+    #[interrupt(binds = UART2, priority = 3, resources = [y])]
+    fn baz(c: foo::Context) {
+        // ..
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Код, сгенерированный фреймворком, выглядит так:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// опущено: пользовательский код
+
+pub mod resources {
+    pub struct x&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+    }
+
+    impl&lt;'a&gt; x&lt;'a&gt; {
+        pub unsafe fn new(priority: &amp;'a Cell&lt;u8&gt;) -&gt; Self {
+            x { priority }
+        }
+
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            self.priority
+        }
+    }
+
+    // repeat for `y`
+}
+
+pub mod foo {
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+
+    pub struct Resources&lt;'a&gt; {
+        pub x: resources::x&lt;'a&gt;,
+        pub y: resources::y&lt;'a&gt;,
+    }
+}
+
+mod app {
+    use cortex_m::register::basepri;
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        // статический приоритет прерывания (определено пользователем)
+        const PRIORITY: u8 = 2;
+
+        // сделать снимок BASEPRI
+        let initial = basepri::read();
+
+        let priority = Cell::new(PRIORITY);
+        bar(bar::Context {
+            resources: bar::Resources::new(&amp;priority),
+            // ..
+        });
+
+        // вернуть BASEPRI значение из снимка, сделанного ранее
+        basepri::write(initial); // то же, что и `asm!` блок, виденный ранее
+    }
+
+    // так же для `UART0` / `foo` и `UART2` / `baz`
+
+    impl&lt;'a&gt; rtic::Mutex for resources::x&lt;'a&gt; {
+        type T = u64;
+
+        fn lock&lt;R&gt;(&amp;mut self, f: impl FnOnce(&amp;mut u64) -&gt; R) -&gt; R {
+            unsafe {
+                // определение максимального приоритет ресурса
+                const CEILING: u8 = 2;
+
+                let current = self.priority().get();
+                if current &lt; CEILING {
+                    // увеличить динамический приоритет
+                    self.priority().set(CEILING);
+                    basepri::write(logical2hw(CEILING));
+
+                    let r = f(&amp;mut y);
+
+                    // восстановить динамический приоритет
+                    basepri::write(logical2hw(current));
+                    self.priority().set(current);
+
+                    r
+                } else {
+                    // динамический приоритет достаточно высок
+                    f(&amp;mut y)
+                }
+            }
+        }
+    }
+
+    // повторить для ресурса `y`
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Наконец, компилятор оптимизирует функцию  <code>foo</code> во что-то наподобие такого:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // ПРИМЕЧАНИЕ: BASEPRI содержит значение `0` (значение сброса) в этот момент
+
+    // увеличить динамический приоритет до `3`
+    unsafe { basepri::write(160) }
+
+    // две операции над `y` объединены в одну
+    y += 2;
+
+    // BASEPRI не изменяется для доступа к `x`, потому что динамический приоритет достаточно высок
+    x += 1;
+
+    // уменьшить (восстановить) динамический приоритет до `1`
+    unsafe { basepri::write(224) }
+
+    // средина
+
+    // увеличить динамический приоритет до `2`
+    unsafe { basepri::write(192) }
+
+    x += 1;
+
+    // увеличить динамический приоритет до `3`
+    unsafe { basepri::write(160) }
+
+    y += 1;
+
+    // уменьшить (восстановить) динамический приоритет до `2`
+    unsafe { basepri::write(192) }
+
+    // ПРИМЕЧАНИЕ: было вы правильно объединить эту операцию над  `x` с предыдущей, но
+    // compiler fences грубые и предотвращают оптимизацию
+    x += 1;
+
+    // уменьшить (восстановить) динамический приоритет до `1`
+    unsafe { basepri::write(224) }
+
+    // ПРИМЕЧАНИЕ: BASEPRI содержит значение `224` в этот момент
+    // обработчик UART0 восстановит значение `0` перед завершением
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Инвариант-basepri"><a class="header" href="#Инвариант-basepri">Инвариант BASEPRI</a></h2>
+<p>Инвариант, который фреймворк RTIC должен сохранять в том, что значение
+BASEPRI в начале обработчика <em>прерывания</em> должно быть таким же, как и при выходе
+из него. BASEPRI может изменяться в процессе выполнения обработчика прерывания,
+но но выполнения обработчика прерывания в начале и конце не должно вызвать
+наблюдаемого изменения BASEPRI.</p>
+<p>Этот инвариант нужен, чтобы избежать уеличения динамического приоритета до значений,
+при которых обработчик не сможет быть вытеснен. Лучше всего это видно на следующем примере:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+    }
+
+    #[init]
+    fn init() {
+        // `foo` запустится сразу после завершения `init`
+        rtic::pend(Interrupt::UART0);
+    }
+
+    #[task(binds = UART0, priority = 1)]
+    fn foo() {
+        // BASEPRI равен `0` в этот момент; динамический приоритет равен `1`
+
+        // `bar` вытеснит `foo` в этот момент
+        rtic::pend(Interrupt::UART1);
+
+        // BASEPRI равен `192` в этот момент (из-за бага); динамический приоритет равен `2`
+        // эта функция возвращается в `idle`
+    }
+
+    #[task(binds = UART1, priority = 2, resources = [x])]
+    fn bar() {
+        // BASEPRI равен `0` (динамический приоритет = 2)
+
+        x.lock(|x| {
+            // BASEPRI увеличен до `160` (динамический приоритет = 3)
+
+            // ..
+        });
+
+        // BASEPRI восстановлен до `192` (динамический приоритет = 2)
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        // BASEPRI равен `192` (из-за бага); динамический приоритет = 2
+
+        // это не оказывает эффекта, из-за значени BASEPRI
+        // задача `foo` не будет выполнена снова никогда
+        rtic::pend(Interrupt::UART0);
+
+        loop {
+            // ..
+        }
+    }
+
+    #[task(binds = UART2, priority = 3, resources = [x])]
+    fn baz() {
+        // ..
+    }
+
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>ВАЖНО: давайте например мы <em>забудем</em> восстановить <code>BASEPRI</code> в <code>UART1</code> -- из-за
+какого нибудь бага в генераторе кода RTIC.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// код, сгенерированный RTIC
+
+mod app {
+    // ..
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        // статический приоритет этого прерывания (определен пользователем)
+        const PRIORITY: u8 = 2;
+
+        // сделать снимок BASEPRI
+        let initial = basepri::read();
+
+        let priority = Cell::new(PRIORITY);
+        bar(bar::Context {
+            resources: bar::Resources::new(&amp;priority),
+            // ..
+        });
+
+        // БАГ: ЗАБЫЛИ восстановить BASEPRI на значение из снимка
+        basepri::write(initial);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>В результате, <code>idle</code> запустится на динамическом приоритете <code>2</code> и на самом деле
+система больше никогда не перейдет на динамический приоритет ниже <code>2</code>.
+Это не компромис для безопасности памяти программы, а влияет на диспетчеризацию задач:
+в этом конкретном случае задачи с приоритетом <code>1</code> никогда не получат шанс на запуск.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../internals/late-resources.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../internals/ceilings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../internals/late-resources.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../internals/ceilings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

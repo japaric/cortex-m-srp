@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["write","Writes to BASEPRI if"]]});

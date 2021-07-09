@@ -1,0 +1,425 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Migrating from v0.4.x to v0.5.0 - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+                <link rel="stylesheet" href="css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">Preface</a></li><li class="chapter-item expanded "><a href="by-example.html"><strong aria-hidden="true">1.</strong> RTIC by example</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="by-example/app.html"><strong aria-hidden="true">1.1.</strong> The app attribute</a></li><li class="chapter-item expanded "><a href="by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Resources</a></li><li class="chapter-item expanded "><a href="by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Software tasks</a></li><li class="chapter-item expanded "><a href="by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Timer queue</a></li><li class="chapter-item expanded "><a href="by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Types, Send and Sync</a></li><li class="chapter-item expanded "><a href="by-example/new.html"><strong aria-hidden="true">1.6.</strong> Starting a new project</a></li><li class="chapter-item expanded "><a href="by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Tips &amp; tricks</a></li></ol></li><li class="chapter-item expanded "><a href="migration.html" class="active"><strong aria-hidden="true">2.</strong> Migrating from v0.4.x to v0.5.0</a></li><li class="chapter-item expanded "><a href="migration_rtic.html"><strong aria-hidden="true">3.</strong> Migrating from RTFM to RTIC</a></li><li class="chapter-item expanded "><a href="internals.html"><strong aria-hidden="true">4.</strong> Under the hood</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="internals/interrupt-configuration.html"><strong aria-hidden="true">4.1.</strong> Interrupt configuration</a></li><li class="chapter-item expanded "><a href="internals/non-reentrancy.html"><strong aria-hidden="true">4.2.</strong> Non-reentrancy</a></li><li class="chapter-item expanded "><a href="internals/access.html"><strong aria-hidden="true">4.3.</strong> Access control</a></li><li class="chapter-item expanded "><a href="internals/late-resources.html"><strong aria-hidden="true">4.4.</strong> Late resources</a></li><li class="chapter-item expanded "><a href="internals/critical-sections.html"><strong aria-hidden="true">4.5.</strong> Critical sections</a></li><li class="chapter-item expanded "><a href="internals/ceilings.html"><strong aria-hidden="true">4.6.</strong> Ceiling analysis</a></li><li class="chapter-item expanded "><a href="internals/tasks.html"><strong aria-hidden="true">4.7.</strong> Software tasks</a></li><li class="chapter-item expanded "><a href="internals/timer-queue.html"><strong aria-hidden="true">4.8.</strong> Timer queue</a></li></ol></li><li class="chapter-item expanded "><a href="homogeneous.html"><strong aria-hidden="true">5.</strong> Homogeneous multi-core support</a></li><li class="chapter-item expanded "><a href="heterogeneous.html"><strong aria-hidden="true">6.</strong> Heterogeneous multi-core support</a></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="migrating-from-v04x-to-v050"><a class="header" href="#migrating-from-v04x-to-v050">Migrating from v0.4.x to v0.5.0</a></h1>
+<p>This section covers how to upgrade an application written against RTIC v0.4.x to
+the version v0.5.0 of the framework.</p>
+<h2 id="cargotoml"><a class="header" href="#cargotoml"><code>Cargo.toml</code></a></h2>
+<p>First, the version of the <code>cortex-m-rtic</code> dependency needs to be updated to
+<code>&quot;0.5.0&quot;</code>. The <code>timer-queue</code> feature needs to be removed.</p>
+<pre><code class="language-toml">[dependencies.cortex-m-rtic]
+# change this
+version = &quot;0.4.3&quot;
+
+# into this
+version = &quot;0.5.0&quot;
+
+# and remove this Cargo feature
+features = [&quot;timer-queue&quot;]
+#           ^^^^^^^^^^^^^
+</code></pre>
+<h2 id="context-argument"><a class="header" href="#context-argument"><code>Context</code> argument</a></h2>
+<p>All functions inside the <code>#[rtic::app]</code> item need to take as first argument a
+<code>Context</code> structure. This <code>Context</code> type will contain the variables that were
+magically injected into the scope of the function by version v0.4.x of the
+framework: <code>resources</code>, <code>spawn</code>, <code>schedule</code> -- these variables will become
+fields of the <code>Context</code> structure. Each function within the <code>#[rtic::app]</code> item
+gets a different <code>Context</code> type.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    // change this
+    #[task(resources = [x], spawn = [a], schedule = [b])]
+    fn foo() {
+        resources.x.lock(|x| /* .. */);
+        spawn.a(message);
+        schedule.b(baseline);
+    }
+
+    // into this
+    #[task(resources = [x], spawn = [a], schedule = [b])]
+    fn foo(mut cx: foo::Context) {
+        // ^^^^^^^^^^^^^^^^^^^^
+
+        cx.resources.x.lock(|x| /* .. */);
+    //  ^^^
+
+        cx.spawn.a(message);
+    //  ^^^
+
+        cx.schedule.b(message, baseline);
+    //  ^^^
+    }
+
+    // change this
+    #[init]
+    fn init() {
+        // ..
+    }
+
+    // into this
+    #[init]
+    fn init(cx: init::Context) {
+        //  ^^^^^^^^^^^^^^^^^
+        // ..
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<p>The syntax used to declare resources has been changed from <code>static mut</code>
+variables to a <code>struct Resources</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    // change this
+    static mut X: u32 = 0;
+    static mut Y: u32 = (); // late resource
+
+    // into this
+    struct Resources {
+        #[init(0)] // &lt;- initial value
+        X: u32, // NOTE: we suggest changing the naming style to `snake_case`
+
+        Y: u32, // late resource
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="device-peripherals"><a class="header" href="#device-peripherals">Device peripherals</a></h2>
+<p>If your application was accessing the device peripherals in <code>#[init]</code> through
+the <code>device</code> variable then you'll need to add <code>peripherals = true</code> to the
+<code>#[rtic::app]</code> attribute to continue to access the device peripherals through
+the <code>device</code> field of the <code>init::Context</code> structure.</p>
+<p>Change this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    #[init]
+    fn init() {
+        device.SOME_PERIPHERAL.write(something);
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Into this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */, peripherals = true)]
+//                    ^^^^^^^^^^^^^^^^^^
+const APP: () = {
+    #[init]
+    fn init(cx: init::Context) {
+        //  ^^^^^^^^^^^^^^^^^
+        cx.device.SOME_PERIPHERAL.write(something);
+    //  ^^^
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="interrupt-and-exception"><a class="header" href="#interrupt-and-exception"><code>#[interrupt]</code> and <code>#[exception]</code></a></h2>
+<p>The <code>#[interrupt]</code> and <code>#[exception]</code> attributes have been removed. To declare
+hardware tasks in v0.5.x use the <code>#[task]</code> attribute with the <code>binds</code> argument.</p>
+<p>Change this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    // hardware tasks
+    #[exception]
+    fn SVCall() { /* .. */ }
+
+    #[interrupt]
+    fn UART0() { /* .. */ }
+
+    // software task
+    #[task]
+    fn foo() { /* .. */ }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Into this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    #[task(binds = SVCall)]
+    //     ^^^^^^^^^^^^^^
+    fn svcall(cx: svcall::Context) { /* .. */ }
+    // ^^^^^^ we suggest you use a `snake_case` name here
+
+    #[task(binds = UART0)]
+    //     ^^^^^^^^^^^^^
+    fn uart0(cx: uart0::Context) { /* .. */ }
+
+    #[task]
+    fn foo(cx: foo::Context) { /* .. */ }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="schedule"><a class="header" href="#schedule"><code>schedule</code></a></h2>
+<p>The <code>timer-queue</code> feature has been removed. To use the <code>schedule</code> API one must
+first define the monotonic timer the runtime will use using the <code>monotonic</code>
+argument of the <code>#[rtic::app]</code> attribute. To continue using the cycle counter
+(CYCCNT) as the monotonic timer, and match the behavior of version v0.4.x, add
+the <code>monotonic = rtic::cyccnt::CYCCNT</code> argument to the <code>#[rtic::app]</code> attribute.</p>
+<p>Also, the <code>Duration</code> and <code>Instant</code> types and the <code>U32Ext</code> trait have been moved
+into the <code>rtic::cyccnt</code> module. This module is only available on ARMv7-M+
+devices. The removal of the <code>timer-queue</code> also brings back the <code>DWT</code> peripheral
+inside the core peripherals struct, this will need to be enabled by the application
+inside <code>init</code>. </p>
+<p>Change this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use rtic::{Duration, Instant, U32Ext};
+
+#[rtic::app(/* .. */)]
+const APP: () = {
+    #[task(schedule = [b])]
+    fn a() {
+        // ..
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>Into this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use rtic::cyccnt::{Duration, Instant, U32Ext};
+//        ^^^^^^^^
+
+#[rtic::app(/* .. */, monotonic = rtic::cyccnt::CYCCNT)]
+//                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+const APP: () = {
+    #[init]
+    fn init(cx: init::Context) {
+        cx.core.DWT.enable_cycle_counter();
+        // optional, configure the DWT run without a debugger connected
+        cx.core.DCB.enable_trace();
+    }
+    #[task(schedule = [b])]
+    fn a(cx: a::Context) {
+        // ..
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="by-example/tips.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="migration_rtic.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="by-example/tips.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="migration_rtic.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

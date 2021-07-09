@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegisterBlock","Register block"]]});

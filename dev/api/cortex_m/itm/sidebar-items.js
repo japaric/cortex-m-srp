@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["write_aligned","Writes a 4-byte aligned `buffer` to an ITM port."],["write_all","Writes `buffer` to an ITM port."],["write_fmt","Writes `fmt::Arguments` to the ITM `port`"],["write_str","Writes a string to the ITM `port`"]],"struct":[["Aligned","A wrapper type that aligns its contents on a 4-Byte boundary."]]});

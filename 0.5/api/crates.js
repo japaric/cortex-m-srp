@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["as_slice","byteorder","cortex_m_rt","cortex_m_rt_macros","cortex_m_rtic_macros","generic_array","hash32","hashbrown","heapless","indexmap","proc_macro2","quote","r0","rtic","rtic_core","rtic_syntax","stable_deref_trait","syn","typenum","unicode_xid"];

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Max","Max-heap"],["Min","Min-heap"]],"struct":[["BinaryHeap","A priority queue implemented with a binary heap."]],"trait":[["Kind","The binary heap kind: min-heap or max-heap"]]});

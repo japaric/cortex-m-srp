@@ -1,0 +1,561 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Resources - Real-Time Interrupt-driven Concurrency</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../preface.html">Preface</a></li><li class="chapter-item expanded "><a href="../by-example.html"><strong aria-hidden="true">1.</strong> RTIC by example</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../by-example/app.html"><strong aria-hidden="true">1.1.</strong> The app attribute</a></li><li class="chapter-item expanded "><a href="../by-example/resources.html" class="active"><strong aria-hidden="true">1.2.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Software tasks</a></li><li class="chapter-item expanded "><a href="../by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Timer queue</a></li><li class="chapter-item expanded "><a href="../by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Types, Send and Sync</a></li><li class="chapter-item expanded "><a href="../by-example/new.html"><strong aria-hidden="true">1.6.</strong> Starting a new project</a></li><li class="chapter-item expanded "><a href="../by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Tips &amp; tricks</a></li></ol></li><li class="chapter-item expanded "><a href="../migration.html"><strong aria-hidden="true">2.</strong> Migration Guides</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../migration/migration_v5.html"><strong aria-hidden="true">2.1.</strong> v0.5.x to v0.6.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_v4.html"><strong aria-hidden="true">2.2.</strong> v0.4.x to v0.5.x</a></li><li class="chapter-item expanded "><a href="../migration/migration_rtic.html"><strong aria-hidden="true">2.3.</strong> RTFM to RTIC</a></li></ol></li><li class="chapter-item expanded "><a href="../internals.html"><strong aria-hidden="true">3.</strong> Under the hood</a></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
+<p>The framework provides an abstraction to share data between any of the contexts
+we saw in the previous section (task handlers, <code>init</code> and <code>idle</code>): resources.</p>
+<p>Resources are data visible only to functions declared within the <code>#[app]</code>
+module. The framework gives the user complete control over which context
+can access which resource.</p>
+<p>All resources are declared as a single <code>struct</code> within the <code>#[app]</code>
+module. Each field in the structure corresponds to a different resource.
+The <code>struct</code> must be annotated with the following attribute: <code>#[resources]</code>.</p>
+<p>Resources can optionally be given an initial value using the <code>#[init]</code>
+attribute. Resources that are not given an initial value are referred to as
+<em>late</em> resources and are covered in more detail in a follow-up section in this
+page.</p>
+<p>Each context (task handler, <code>init</code> or <code>idle</code>) must declare the resources it
+intends to access in its corresponding metadata attribute using the <code>resources</code>
+argument. This argument takes a list of resource names as its value. The listed
+resources are made available to the context under the <code>resources</code> field of the
+<code>Context</code> structure.</p>
+<p>The example application shown below contains two interrupt handlers that share access to a resource named <code>shared</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/resource.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+
+        (Shared { shared: 0 }, Local {}, init::Monotonics())
+    }
+
+    // `shared` cannot be accessed from this context
+    #[idle]
+    fn idle(_cx: idle::Context) -&gt; ! {
+        debug::exit(debug::EXIT_SUCCESS);
+
+        // error: no `shared` field in `idle::Context`
+        // _cx.shared.shared += 1;
+
+        loop {
+            cortex_m::asm::nop();
+        }
+    }
+
+    // `shared` can be accessed from this context
+    // defaults to priority 1
+    #[task(binds = UART0, shared = [shared])]
+    fn uart0(mut cx: uart0::Context) {
+        let shared = cx.shared.shared.lock(|shared| {
+            *shared += 1;
+            *shared
+        });
+
+        hprintln!(&quot;UART0: shared = {}&quot;, shared).unwrap();
+    }
+
+    // `shared` can be accessed from this context
+    // explicitly set to priority 2
+    #[task(binds = UART1, shared = [shared], priority = 2)]
+    fn uart1(mut cx: uart1::Context) {
+        let shared = cx.shared.shared.lock(|shared| {
+            *shared += 1;
+            *shared
+        });
+
+        hprintln!(&quot;UART1: shared = {}&quot;, shared).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example resource
+UART1: shared = 1
+UART0: shared = 2
+</code></pre>
+<p>Note that the <code>shared</code> resource cannot be accessed from <code>idle</code>. Attempting to do so results in a compile error.</p>
+<h2 id="lock"><a class="header" href="#lock"><code>lock</code></a></h2>
+<p>Critical sections are required to access shared mutable data in a data race-free manner.</p>
+<p>The <code>resources</code> field of the passed <code>Context</code> implements the <a href="../../../api/rtic/trait.Mutex.html"><code>Mutex</code></a> trait for each shared resource accessible to the task.</p>
+<p>The only method on this trait, <a href="../../../api/rtic/trait.Mutex.html#method.lock"><code>lock</code></a>, runs its closure argument in a critical section.</p>
+<p>The critical section created by the <code>lock</code> API is based on dynamic priorities: it temporarily raises the dynamic priority of the context to a <em>ceiling</em> priority that prevents other tasks from preempting the critical section. This synchronization protocol is known as the <a href="https://en.wikipedia.org/wiki/Priority_ceiling_protocol">Immediate Ceiling Priority Protocol
+(ICPP)</a>, and complies with <a href="https://en.wikipedia.org/wiki/Stack_Resource_Policy">Stack Resource Policy(SRP)</a> based scheduling of RTIC.</p>
+<p>In the example below we have three interrupt handlers with priorities ranging from one to three. The two handlers with the lower priorities contend for the <code>shared</code> resource and need to lock the resource for accessing the data. The highest priority handler, which do nat access the <code>shared</code> resource, is free to preempt the critical section created by the
+lowest priority handler.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/lock.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::GPIOA);
+
+        (Shared { shared: 0 }, Local {}, init::Monotonics())
+    }
+
+    // when omitted priority is assumed to be `1`
+    #[task(binds = GPIOA, shared = [shared])]
+    fn gpioa(mut c: gpioa::Context) {
+        hprintln!(&quot;A&quot;).unwrap();
+
+        // the lower priority task requires a critical section to access the data
+        c.shared.shared.lock(|shared| {
+            // data can only be modified within this critical section (closure)
+            *shared += 1;
+
+            // GPIOB will *not* run right now due to the critical section
+            rtic::pend(Interrupt::GPIOB);
+
+            hprintln!(&quot;B - shared = {}&quot;, *shared).unwrap();
+
+            // GPIOC does not contend for `shared` so it's allowed to run now
+            rtic::pend(Interrupt::GPIOC);
+        });
+
+        // critical section is over: GPIOB can now start
+
+        hprintln!(&quot;E&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = GPIOB, priority = 2, shared = [shared])]
+    fn gpiob(mut c: gpiob::Context) {
+        // the higher priority task does still need a critical section
+        let shared = c.shared.shared.lock(|shared| {
+            *shared += 1;
+
+            *shared
+        });
+
+        hprintln!(&quot;D - shared = {}&quot;, shared).unwrap();
+    }
+
+    #[task(binds = GPIOC, priority = 3)]
+    fn gpioc(_: gpioc::Context) {
+        hprintln!(&quot;C&quot;).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example lock
+A
+B - shared = 1
+C
+D - shared = 2
+E
+</code></pre>
+<h2 id="multi-lock"><a class="header" href="#multi-lock">Multi-lock</a></h2>
+<p>As an extension to <code>lock</code>, and to reduce rightward drift, locks can be taken as tuples. The following examples shows this in use:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/mutlilock.rs
+//!
+//! The multi-lock feature example.
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared1: u32,
+        shared2: u32,
+        shared3: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::GPIOA);
+
+        (
+            Shared {
+                shared1: 0,
+                shared2: 0,
+                shared3: 0,
+            },
+            Local {},
+            init::Monotonics(),
+        )
+    }
+
+    // when omitted priority is assumed to be `1`
+    #[task(binds = GPIOA, shared = [shared1, shared2, shared3])]
+    fn locks(c: locks::Context) {
+        let mut s1 = c.shared.shared1;
+        let mut s2 = c.shared.shared2;
+        let mut s3 = c.shared.shared3;
+
+        hprintln!(&quot;Multiple single locks&quot;).unwrap();
+        s1.lock(|s1| {
+            s2.lock(|s2| {
+                s3.lock(|s3| {
+                    *s1 += 1;
+                    *s2 += 1;
+                    *s3 += 1;
+
+                    hprintln!(
+                        &quot;Multiple single locks, s1: {}, s2: {}, s3: {}&quot;,
+                        *s1,
+                        *s2,
+                        *s3
+                    )
+                    .unwrap();
+                })
+            })
+        });
+
+        hprintln!(&quot;Multilock!&quot;).unwrap();
+
+        (s1, s2, s3).lock(|s1, s2, s3| {
+            *s1 += 1;
+            *s2 += 1;
+            *s3 += 1;
+
+            hprintln!(
+                &quot;Multiple single locks, s1: {}, s2: {}, s3: {}&quot;,
+                *s1,
+                *s2,
+                *s3
+            )
+            .unwrap();
+        });
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="late-resources"><a class="header" href="#late-resources">Late resources</a></h2>
+<p>Late resources are resources that are not given an initial value at compile time using the <code>#[init]</code> attribute but instead are initialized at runtime using the <code>init::LateResources</code> values returned by the <code>init</code> function.</p>
+<p>Late resources are useful e.g., to <em>move</em> (as in transferring the ownership of) peripherals initialized in <code>init</code> into tasks.</p>
+<p>The example below uses late resources to establish a lockless, one-way channel between the <code>UART0</code> interrupt handler and the <code>idle</code> task. A single producer single consumer <a href="../../../api/heapless/spsc/struct.Queue.html"><code>Queue</code></a> is used as the channel. The queue is split into consumer and producer end points in <code>init</code> and then each end point is stored in a different resource; <code>UART0</code> owns the producer resource and <code>idle</code> owns the consumer resource.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../../../examples/late.rs}}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example late
+received message: 42
+</code></pre>
+<h2 id="only-shared-access"><a class="header" href="#only-shared-access">Only shared access</a></h2>
+<p>By default the framework assumes that all tasks require exclusive access (<code>&amp;mut-</code>) to resources but it is possible to specify that a task only requires shared access (<code>&amp;-</code>) to a resource using the <code>&amp;resource_name</code> syntax in the <code>resources</code> list.</p>
+<p>The advantage of specifying shared access (<code>&amp;-</code>) to a resource is that no locks are required to access the resource even if the resource is contended by several tasks running at different priorities. The downside is that the task only gets a shared reference (<code>&amp;-</code>) to the resource, limiting the operations it can perform on it, but where a shared reference is enough this approach reduces the number of required locks. In addition to simple immutable data, this shared access can be useful where the resource type safely implements interior mutability, with
+appropriate locking or atomic operations of its own.</p>
+<p>Note that in this release of RTIC it is not possible to request both exclusive access (<code>&amp;mut-</code>) and shared access (<code>&amp;-</code>) to the <em>same</em> resource from different tasks. Attempting to do so will result in a compile error.</p>
+<p>In the example below a key (e.g. a cryptographic key) is loaded (or created) at runtime and then used from two tasks that run at different priorities without any kind of lock.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/static.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        key: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+
+        (Shared { key: 0xdeadbeef }, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = UART0, shared = [&amp;key])]
+    fn uart0(cx: uart0::Context) {
+        let key: &amp;u32 = cx.shared.key;
+        hprintln!(&quot;UART0(key = {:#x})&quot;, key).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = UART1, priority = 2, shared = [&amp;key])]
+    fn uart1(cx: uart1::Context) {
+        hprintln!(&quot;UART1(key = {:#x})&quot;, cx.shared.key).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example only-shared-access
+UART1(key = 0xdeadbeef)
+UART0(key = 0xdeadbeef)
+</code></pre>
+<h2 id="lock-free-resource-access-of-mutable-resources"><a class="header" href="#lock-free-resource-access-of-mutable-resources">Lock-free resource access of mutable resources</a></h2>
+<p>There exists two other options dealing with resources</p>
+<ul>
+<li><code>#[lock_free]</code>: there might be several tasks with the same priority
+accessing the resource without critical section. Since tasks with the
+same priority never can preempt another task on the same priority
+this is safe.</li>
+<li><code>#[task_local]</code>: there must be only one task using this resource,
+similar to a <code>static mut</code> task local resource, but (optionally) set-up by init.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../by-example/app.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../by-example/tasks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../by-example/app.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../by-example/tasks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

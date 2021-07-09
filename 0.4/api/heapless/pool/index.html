@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A heap-less, interrupt-safe, lock-free memory pool (*)"><meta name="keywords" content="rust, rustlang, rust-lang, pool"><title>heapless::pool - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../heapless/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><p class="location">Module pool</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></div><p class="location"><a href="../index.html">heapless</a></p><div id="sidebar-vars" data-name="pool" data-ty="mod" data-relpath="../"></div><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">heapless</a>::<wbr><a class="mod" href="">pool</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../../src/heapless/pool/mod.rs.html#1-552" title="goto source code">[src]</a></span></h1><div class="docblock"><p>A heap-less, interrupt-safe, lock-free memory pool (*)</p>
+<p>(*) Currently, the implementation is only lock-free <em>and</em> <code>Sync</code> on ARMv7-M devices</p>
+<h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
+<p>The most common way of using this pool is as a global singleton; the singleton mode gives you
+automatic deallocation of memory blocks on <code>drop</code>.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="attribute">#![<span class="ident">no_main</span>]</span>
+<span class="attribute">#![<span class="ident">no_std</span>]</span>
+
+<span class="kw">use</span> <span class="ident">heapless</span>::{<span class="ident">pool</span>, <span class="ident">pool::singleton::Box</span>};
+
+<span class="comment">// instantiate a memory pool of `[u8; 128]` blocks as a global singleton</span>
+<span class="macro">pool!</span>(<span class="ident">A</span>: [<span class="ident">u8</span>; <span class="number">128</span>]);
+
+<span class="attribute">#[<span class="ident">entry</span>]</span>
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">MEMORY</span>: [<span class="ident">u8</span>; <span class="number">1024</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">1024</span>];
+
+    <span class="comment">// increase the capacity of the pool by ~8 blocks</span>
+    <span class="ident">A::grow</span>(<span class="ident">MEMORY</span>);
+
+    <span class="comment">// claim a block of memory</span>
+    <span class="comment">// note that the type is `Box&lt;A&gt;`, and not `Box&lt;[u8; 128]&gt;`</span>
+    <span class="comment">// `A` is the &quot;name&quot; of the pool</span>
+    <span class="kw">let</span> <span class="ident">x</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">A::alloc</span>().<span class="ident">unwrap</span>();
+    <span class="kw">loop</span> {
+        <span class="comment">// .. do stuff with `x` ..</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">exception</span>]</span>
+<span class="kw">fn</span> <span class="ident">SysTick</span>() {
+    <span class="comment">// claim a block of memory</span>
+    <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">A::alloc</span>().<span class="ident">unwrap</span>();
+
+    <span class="comment">// .. do stuff with `y` ..</span>
+
+    <span class="comment">// return the memory block to the pool</span>
+    <span class="ident">drop</span>(<span class="ident">y</span>);
+}</pre></div>
+<h1 id="portability" class="section-header"><a href="#portability">Portability</a></h1>
+<p>This pool internally uses a Treiber stack which is known to be susceptible to the ABA problem.
+The only counter measure against the ABA problem that this implementation currently takes is
+relying on LL/SC (Link-local / Store-conditional) instructions being used to implement CAS loops
+on the target architecture (see section on <a href="#soundness">‘Soundness’</a> for more information). For
+this reason, <code>Pool</code> only implements <code>Sync</code> when compiling for ARMv7-M.</p>
+<p>Also note that ARMv6-M lacks the primitives for CAS loops so this module does <em>not</em> exist for
+<code>thumbv6m-none-eabi</code>.</p>
+<h1 id="soundness" class="section-header"><a href="#soundness">Soundness</a></h1>
+<p>This pool uses a Treiber stack to keep a list of free memory blocks (nodes). Each of these
+nodes has a pointer to the next node. To claim a memory block we simply pop a node from the
+top of the stack and use it as a memory block. The pop operation consists of swapping the
+current head (top) node with the node below it. The Rust code for the <code>pop</code> operation is shown
+below:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Node</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">fetch_order</span> <span class="op">=</span> ..;
+    <span class="kw">let</span> <span class="ident">set_order</span> <span class="op">=</span> ..;
+
+    <span class="comment">// `self.head` has type `AtomicPtr&lt;Node&lt;T&gt;&gt;`</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">load</span>(<span class="ident">fetch_order</span>);
+    <span class="kw">loop</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">nn_head</span>) <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">head</span>) {
+            <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">head</span>).<span class="ident">next</span> };
+
+            <span class="comment">// &lt;~ preempted</span>
+
+            <span class="kw">match</span> <span class="self">self</span>
+                .<span class="ident">head</span>
+                .<span class="ident">compare_exchange_weak</span>(<span class="ident">head</span>, <span class="ident">next</span>, <span class="ident">set_order</span>, <span class="ident">fetch_order</span>)
+            {
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span> <span class="prelude-val">Some</span>(<span class="ident">nn_head</span>),
+                <span class="comment">// head was changed by some interrupt handler / thread</span>
+                <span class="prelude-val">Err</span>(<span class="ident">new_head</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">head</span> <span class="op">=</span> <span class="ident">new_head</span>,
+            }
+        } <span class="kw">else</span> {
+            <span class="comment">// stack is observed as empty</span>
+            <span class="kw">break</span> <span class="prelude-val">None</span>;
+        }
+    }
+}</pre></div>
+<p>In general, the <code>pop</code> operation is susceptible to the ABA problem. If this operation gets
+preempted by some interrupt handler somewhere between the <code>head.load</code> and the
+<code>compare_and_exchange_weak</code>, and that handler modifies the stack in such a way that the head
+(top) of the stack remains unchanged then resuming the <code>pop</code> operation will corrupt the stack.</p>
+<p>An example: imagine we are doing on <code>pop</code> on stack that contains these nodes: <code>A -&gt; B -&gt; C</code>,
+<code>A</code> is the head (top), <code>B</code> is next to <code>A</code> and <code>C</code> is next to <code>B</code>. The <code>pop</code> operation will do a
+<code>CAS(&amp;self.head, A, B)</code> operation to atomically change the head to <code>B</code> iff it currently is <code>A</code>.
+Now, let’s say a handler preempts the <code>pop</code> operation before the <code>CAS</code> operation starts and it
+<code>pop</code>s the stack twice and then <code>push</code>es back the <code>A</code> node; now the state of the stack is <code>A -&gt; C</code>. When the original <code>pop</code> operation is resumed it will succeed in doing the <code>CAS</code> operation
+setting <code>B</code> as the head of the stack. However, <code>B</code> was used by the handler as a memory block and
+no longer is a valid free node. As a result the stack, and thus the allocator, is in a invalid
+state.</p>
+<p>However, not all is lost because Cortex-M devices use LL/SC (Link-local / Store-conditional)
+operations to implement CAS loops. Let’s look at the actual disassembly of <code>pop</code>.</p>
+<pre><code class="language-text">08000130 &lt;&lt;heapless::pool::Pool&lt;T&gt;&gt;::pop&gt;:
+ 8000130:       6802            ldr     r2, [r0, #0]
+ 8000132:       e00c            b.n     800014e &lt;&lt;heapless::pool::Pool&lt;T&gt;&gt;::pop+0x1e&gt;
+ 8000134:       4611            mov     r1, r2
+ 8000136:       f8d2 c000       ldr.w   ip, [r2]
+ 800013a:       e850 2f00       ldrex   r2, [r0]
+ 800013e:       428a            cmp     r2, r1
+ 8000140:       d103            bne.n   800014a &lt;&lt;heapless::pool::Pool&lt;T&gt;&gt;::pop+0x1a&gt;
+ 8000142:       e840 c300       strex   r3, ip, [r0]
+ 8000146:       b913            cbnz    r3, 800014e &lt;&lt;heapless::pool::Pool&lt;T&gt;&gt;::pop+0x1e&gt;
+ 8000148:       e004            b.n     8000154 &lt;&lt;heapless::pool::Pool&lt;T&gt;&gt;::pop+0x24&gt;
+ 800014a:       f3bf 8f2f       clrex
+ 800014e:       2a00            cmp     r2, #0
+ 8000150:       d1f0            bne.n   8000134 &lt;&lt;heapless::pool::Pool&lt;T&gt;&gt;::pop+0x4&gt;
+ 8000152:       2100            movs    r1, #0
+ 8000154:       4608            mov     r0, r1
+ 8000156:       4770            bx      lr
+</code></pre>
+<p>LDREX (“load exclusive”) is the LL instruction, and STREX (“store exclusive”) is the SC
+instruction (see <a href="#references">1</a>). On the Cortex-M, STREX will always fail if the processor
+takes an exception between it and its corresponding LDREX operation (see <a href="#references">2</a>). If
+STREX fails then the CAS loop is retried (see instruction @ <code>0x8000146</code>). On single core
+systems, preemption is required to run into the ABA problem and on Cortex-M devices preemption
+always involves taking an exception. Thus the underlying LL/SC operations prevent the ABA
+problem on Cortex-M.</p>
+<h1 id="references" class="section-header"><a href="#references">References</a></h1>
+<ol>
+<li><a href="http://infocenter.arm.com/help/topic/com.arm.doc.dui0552a/DUI0552A_cortex_m3_dgug.pdf">Cortex-M3 Devices Generic User Guide (DUI 0552A)</a>, Section 2.2.7 “Synchronization
+primitives”</li>
+</ol>
+<ol start="2">
+<li><a href="https://static.docs.arm.com/ddi0403/eb/DDI0403E_B_armv7m_arm.pdf">ARMv7-M Architecture Reference Manual (DDI 0403E.b)</a>, Section A3.4 “Synchronization and
+semaphores”</li>
+</ol>
+</div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
+<table><tr class="module-item"><td><a class="mod" href="singleton/index.html" title="heapless::pool::singleton mod">singleton</a></td><td class="docblock-short"><p><code>Pool</code> as a global singleton</p>
+</td></tr></table><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+<table><tr class="module-item"><td><a class="struct" href="struct.Box.html" title="heapless::pool::Box struct">Box</a></td><td class="docblock-short"><p>A memory block</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.Pool.html" title="heapless::pool::Pool struct">Pool</a></td><td class="docblock-short"><p>A lock-free memory pool</p>
+</td></tr></table><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
+<table><tr class="module-item"><td><a class="enum" href="enum.Init.html" title="heapless::pool::Init enum">Init</a></td><td class="docblock-short"><p>Initialized type state</p>
+</td></tr><tr class="module-item"><td><a class="enum" href="enum.Uninit.html" title="heapless::pool::Uninit enum">Uninit</a></td><td class="docblock-short"><p>Uninitialized type state</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="heapless" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script></body></html>

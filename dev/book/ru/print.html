@@ -1,0 +1,4318 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Real-Time Interrupt-driven Concurrency</title>
+                <meta name="robots" content="noindex" />
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+                <link rel="stylesheet" href="css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">Введение</a></li><li class="chapter-item expanded "><a href="by-example.html"><strong aria-hidden="true">1.</strong> RTIC в примерах</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="by-example/app.html"><strong aria-hidden="true">1.1.</strong> Атрибут app</a></li><li class="chapter-item expanded "><a href="by-example/resources.html"><strong aria-hidden="true">1.2.</strong> Ресурсы</a></li><li class="chapter-item expanded "><a href="by-example/tasks.html"><strong aria-hidden="true">1.3.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="by-example/timer-queue.html"><strong aria-hidden="true">1.4.</strong> Очередь таймера</a></li><li class="chapter-item expanded "><a href="by-example/types-send-sync.html"><strong aria-hidden="true">1.5.</strong> Типы, Send и Sync</a></li><li class="chapter-item expanded "><a href="by-example/new.html"><strong aria-hidden="true">1.6.</strong> Создание нового проекта</a></li><li class="chapter-item expanded "><a href="by-example/tips.html"><strong aria-hidden="true">1.7.</strong> Советы и хитрости</a></li></ol></li><li class="chapter-item expanded "><a href="migration.html"><strong aria-hidden="true">2.</strong> Инструкции по миграции</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migration/migration_v5.html"><strong aria-hidden="true">2.1.</strong> v0.5.x на v0.6.x</a></li><li class="chapter-item expanded "><a href="migration/migration_v4.html"><strong aria-hidden="true">2.2.</strong> v0.4.x на v0.5.x</a></li><li class="chapter-item expanded "><a href="migration/migration_rtic.html"><strong aria-hidden="true">2.3.</strong> RTFM на RTIC</a></li></ol></li><li class="chapter-item expanded "><a href="internals.html"><strong aria-hidden="true">3.</strong> Под капотом</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="internals/interrupt-configuration.html"><strong aria-hidden="true">3.1.</strong> Настройка прерываний</a></li><li class="chapter-item expanded "><a href="internals/non-reentrancy.html"><strong aria-hidden="true">3.2.</strong> Нереентерабельнось</a></li><li class="chapter-item expanded "><a href="internals/access.html"><strong aria-hidden="true">3.3.</strong> Контроль доступа</a></li><li class="chapter-item expanded "><a href="internals/late-resources.html"><strong aria-hidden="true">3.4.</strong> Поздние ресурсы</a></li><li class="chapter-item expanded "><a href="internals/critical-sections.html"><strong aria-hidden="true">3.5.</strong> Критические секции</a></li><li class="chapter-item expanded "><a href="internals/ceilings.html"><strong aria-hidden="true">3.6.</strong> Анализ приоритетов</a></li><li class="chapter-item expanded "><a href="internals/tasks.html"><strong aria-hidden="true">3.7.</strong> Программные задачи</a></li><li class="chapter-item expanded "><a href="internals/timer-queue.html"><strong aria-hidden="true">3.8.</strong> Очередь таймера</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Real-Time Interrupt-driven Concurrency</h1>
+
+                    <div class="right-buttons">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/rtic-rs/cortex-m-rtic" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div align="center"><img width="300" height="300" src="RTIC.svg"></div>
+<div style="font-size: 6em; font-weight: bolder;" align="center">RTIC</div>
+<h1 align="center">Real-Time Interrupt-driven Concurrency</h1>
+<p align="center">Конкурентный фреймворк для создания систем реального времени</p>
+<h1 id="Введение"><a class="header" href="#Введение">Введение</a></h1>
+<p>Эта книга содержит документацию пользовательского уровня о фреймворке Real-Time Interrupt-driven Concurrency
+(RTIC). Справочник по API можно найти <a href="../../api/">здесь</a>.</p>
+<p>Также известен как Real-Time For the Masses.</p>
+<!--Оригинал данного руководства на [английском].-->
+<!--[английском]: ../en/index.html-->
+<p>Это документация по RTIC версии v0.6.x; за документацией по другим версиям:</p>
+<ul>
+<li>v0.5.x <a href="/0.5">сюда</a>.</li>
+<li>v0.4.x <a href="/0.4">сюда</a>.</li>
+</ul>
+<p><a href="https://crates.io/crates/cortex-m-rtic"><img src="https://img.shields.io/crates/v/cortex-m-rtic" alt="crates.io" /></a>
+<a href="https://docs.rs/cortex-m-rtic"><img src="https://docs.rs/cortex-m-rtic/badge.svg" alt="docs.rs" /></a>
+<a href="https://rtic.rs/"><img src="https://img.shields.io/badge/web-rtic.rs-red.svg?style=flat&amp;label=book&amp;colorB=d33847" alt="book" /></a>
+<a href="https://github.com/rust-lang/rust/releases/tag/1.36.0"><img src="https://img.shields.io/badge/rustc-1.36+-lightgray.svg" alt="rustc" /></a>
+<a href="https://matrix.to/#/#rtic:matrix.org"><img src="https://img.shields.io/matrix/rtic:matrix.org" alt="matrix" /></a>
+<a href="https://hackmd.io/@xmis9JvZT8Gvo9lOEKyZ4Q/SkBJKsjuH"><img src="https://hackmd.io/badge.svg" alt="Meeting notes" /></a></p>
+<h2 id="Возможности"><a class="header" href="#Возможности">Возможности</a></h2>
+<ul>
+<li>
+<p><strong>Задачи</strong> как единица конкуренции <sup class="footnote-reference"><a href="#1">1</a></sup>. Задачи могут <em>запускаться от событий</em>
+(срабатывать в ответ на асинхронные воздействия) или вызываться по запросу программы.</p>
+</li>
+<li>
+<p><strong>Передача сообщений</strong> между задачами. Если точнее, сообщения можно передавать
+программным задачам в момент вызова.</p>
+</li>
+<li>
+<p><strong>Очередь таймера</strong> <sup class="footnote-reference"><a href="#2">2</a></sup>. Программные задачи можно планировать на запуск в определенный
+момент в будущем. Эту возможность можно использовать для создания периодических задач.</p>
+</li>
+<li>
+<p>Поддержка приоритета задач, и, как результат, <strong>вытесняющей многозадачности</strong>.</p>
+</li>
+<li>
+<p><strong>Эффективное, избавленное от гонок данных, разделение ресурсов</strong> благодаря легкому
+разбиению на <em>основанные на приоритетах</em> критические секции <sup class="footnote-reference"><a href="#1">1</a></sup>.</p>
+</li>
+<li>
+<p><strong>Выполнение без Deadlock</strong>, гарантируемое на этапе компиляции. Данная гарантия строже,
+чем та, что предоставляется <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html">стандартный абтракцией <code>Mutex</code></a>.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><strong>Минимальные расходы на диспетчеризацию</strong>. Диспетчер задач иммет минимальную программную
+базу; основная работа по диспетчеризации происходит аппаратно.</p>
+</li>
+<li>
+<p><strong>Высокоэффективное использование памяти</strong>: Все задачи разделяют единый стек вызовов и
+отсутствует ресурсоемкая зависисмость от динамического аллокатора.</p>
+</li>
+<li>
+<p><strong>Все Cortex-M устройства полностью поддерживаются</strong>.</p>
+</li>
+<li>
+<p>К такой модели задач можно применять так называемый анализ WCET (Наихудшего времени выполнения),
+а также техники анализа диспетчеризации. (Хотя мы еще не разработали дружественный к Rust'у
+инструментарий для этого.)</p>
+</li>
+<li>
+<p>Приложения должны быть написаны в редакции 2018.</p>
+</li>
+</ul>
+<h2 id="a-hrefhttpsrticrsДокументация-пользователяa"><a class="header" href="#a-hrefhttpsrticrsДокументация-пользователяa"><a href="https://rtic.rs">Документация пользователя</a></a></h2>
+<h2 id="a-hrefhttpsrticrsstableapiСправочник-по-apia"><a class="header" href="#a-hrefhttpsrticrsstableapiСправочник-по-apia"><a href="https://rtic.rs/stable/api/">Справочник по API</a></a></h2>
+<h2 id="Чат"><a class="header" href="#Чат">Чат</a></h2>
+<p>Присоединяйтесь к нам, чтобы говорить о RTIC <a href="https://matrix.to/#/#rtic:matrix.org">в Matrix-комнате</a>.</p>
+<p>Записи еженедельных собраний можно найти в <a href="https://hackmd.io/@xmis9JvZT8Gvo9lOEKyZ4Q/SkBJKsjuH">HackMD</a></p>
+<h2 id="Внести-вклад"><a class="header" href="#Внести-вклад">Внести вклад</a></h2>
+<p>Новые возможности и большие изменения следует проводить через процесс RFC в
+<a href="https://github.com/rtic-rs/rfcs">соответствующем RFC-репозитории</a>.</p>
+<h2 id="Благодарности"><a class="header" href="#Благодарности">Благодарности</a></h2>
+<p>Этот крейт основан на <a href="http://www.rtfm-lang.org/">языке Real-Time For the Masses</a>, созданном Embedded
+Systems group в <a href="https://www.ltu.se/?l=en">Техническом Университете Luleå</a>, под руководством
+<a href="https://www.ltu.se/staff/p/pln-1.11258?l=en">Prof. Per Lindgren</a>.</p>
+<h2 id="Ссылки"><a class="header" href="#Ссылки">Ссылки</a></h2>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Eriksson, J., Häggström, F., Aittamaa, S., Kruglyak, A., &amp; Lindgren, P.
+(2013, June). Real-time for the masses, step 1: Programming API and static
+priority SRP kernel primitives. In Industrial Embedded Systems (SIES), 2013
+8th IEEE International Symposium on (pp. 110-113). IEEE.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Lindgren, P., Fresk, E., Lindner, M., Lindner, A., Pereira, D., &amp; Pinho,
+L. M. (2016). Abstract timers and their implementation onto the arm cortex-m
+family of mcus. ACM SIGBED Review, 13(1), 48-53.</p>
+</div>
+<h2 id="Лицензия"><a class="header" href="#Лицензия">Лицензия</a></h2>
+<p>Все исходные тексты (включая примеры кода) лицензированы под одной из лицензий:</p>
+<ul>
+<li>Apache License, Version 2.0 (<a href="LICENSE-APACHE">LICENSE-APACHE</a> или
+<a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a>)</li>
+<li>MIT license (<a href="LICENSE-MIT">LICENSE-MIT</a> или
+<a href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a>)</li>
+</ul>
+<p>на ваш выбор.</p>
+<p>Текст книги лицензирован по условиям лицензий
+Creative Commons CC-BY-SA v4.0 (<a href="LICENSE-CC-BY-SA">LICENSE-CC-BY-SA</a> или
+<a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">https://creativecommons.org/licenses/by-sa/4.0/legalcode</a>).</p>
+<h3 id="Условия-участия"><a class="header" href="#Условия-участия">Условия участия</a></h3>
+<p>Если вы не укажете этого отдельно, любой вклад, который вы предоставите в эту работу,
+как указано в тексте лицензии Apache-2.0, будет лицензирован по условиям,
+указанным выше, без каких-либо дополнительных условий.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rtic-в-примерах"><a class="header" href="#rtic-в-примерах">RTIC в примерах</a></h1>
+<p>В этой части книги фреймворк Real-Time Interrupt-driven Concurrency (RTIC) представляется
+новым пользователям путем прохода по примерам от простых к более сложным.</p>
+<p>Все примеры в этой части книги можно найти в <a href="https://github.com/rtic-rs/cortex-m-rtic">репозитарии</a> проекта.
+Большинство из них можно пройти, запустив их на эмуляторе QEMU без специального оборудования.</p>
+<p>Для запуска примеров на вашем ПК, вам понадобится программа <code>qemu-system-arm</code>.
+В <a href="https://rust-embedded.github.io/book/intro/install.html">the embedded Rust book</a> есть инструкции по настройке среды для эмбеддед разработке,
+в том числе QEMU.</p>
+<h2 id="Примеры-из-реальной-жизни"><a class="header" href="#Примеры-из-реальной-жизни">Примеры из реальной жизни</a></h2>
+<p>Ниже представлены примеры использования RTIC (RTFM) в реальных проектах.</p>
+<h3 id="rtfm-v042"><a class="header" href="#rtfm-v042">RTFM V0.4.2</a></h3>
+<ul>
+<li><a href="https://github.com/etrombly/sandbox/tree/41d423bcdd0d8e42fd46b79771400a8ca349af55">etrombly/sandbox</a>. Аппаратный дзэн-сад, рисующий картинки на песке. Картинки передаются по последовательному порту с помощью G-кода.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Атрибут-app"><a class="header" href="#Атрибут-app">Атрибут <code>app</code></a></h1>
+<p>Это простейшая из возможных программ на RTIC:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/smallest.rs
+
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _; // panic handler
+use rtic::app;
+
+#[app(device = lm3s6965)]
+mod app {
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        (Shared {}, Local {}, init::Monotonics {})
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Все программы на RTIC используют атрибут <a href="by-example/../../../api/cortex_m_rtic_macros/attr.app.html"><code>app</code></a> (<code>#[app(..)]</code>). Этот атрибут
+должен применяться к элементу <code>mod</code>. Атрибут <code>app</code> имеет обязательный аргумент <code>device</code>,
+который принимает <em>путь</em> как значение. Это должен быть полный путь, указывающий на
+<em>крейт доступа к периферии</em> (PAC), сгенерированный с помощью <a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a> версии <strong>v0.14.x</strong>
+или новее. Более подробно в разделе <a href="by-example/./new.html">Создание нового проекта</a>.</p>
+<p>Атрибут <code>app</code> будет раскрыт в подходящую точку входа программы, поэтому
+атрибут <a href="by-example/../../../api/cortex_m_rt_macros/attr.entry.html"><code>cortex_m_rt::entry</code></a> не нужен.</p>
+<h2 id="init"><a class="header" href="#init"><code>init</code></a></h2>
+<p>Внутри модуля <code>app</code> атрибут ожидает найти функцию инициализации, помеченную
+атрибутом <code>init</code>. Эта функция должна иметь сигнатуру
+<code>fn(init::Context) [-&gt; init::LateResources]</code> (возвращаемый тип нужен не всегда).</p>
+<p>Эта функция инициализации будет первой частью программы, выполняемой при запуске.
+Функция <code>init</code> будет запущена <em>с отключенными прерываниями</em> и будет иметь эксклюзивный доступ
+к Cortex-M, в котором токен <code>bare_metal::CriticalSection</code> доступен как <code>cs</code>.
+Опционально, устройство-специфичные периферия доступна через поля <code>core</code> и <code>device</code> структуры
+<code>init::Context</code>.</p>
+<p><code>static mut</code> переменные, определенные в начале <code>init</code> будут преобразованы в
+<code>&amp;'static mut</code> ссылки, безопасные для доступа. Обратите внимание, данная возможность может
+быть удалена в следующем релизе, см. <code>task_local</code> ресурсы.</p>
+<p>Пример ниже показывает типы полей <code>core</code>, <code>device</code> и <code>cs</code>, и демонстрирует
+безопасный доступ к <code>static mut</code> переменной. Поле <code>device</code> доступно только
+когда аргумент <code>peripherals</code> установлен в <code>true</code> (по умолчанию).
+В редких случаях, когда вы захотите создать приложение с минимальным потреблением ресурсов,
+можно явно установить <code>peripherals</code> в <code>false</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/init.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965, peripherals = true)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init(local = [x: u32 = 0])]
+    fn init(cx: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        // Cortex-M peripherals
+        let _core: cortex_m::Peripherals = cx.core;
+
+        // Device specific peripherals
+        let _device: lm3s6965::Peripherals = cx.device;
+
+        // Locals in `init` have 'static lifetime
+        let _x: &amp;'static mut u32 = cx.local.x;
+
+        // Access to the critical section token,
+        // to indicate that this is a critical seciton
+        let _cs_token: bare_metal::CriticalSection = cx.cs;
+
+        hprintln!(&quot;init&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Запуск примера напечатате <code>init</code> в консоли, а затем завершит процесс QEMU.</p>
+<pre><code class="language-console">$ cargo run --example init
+init
+</code></pre>
+<h2 id="idle"><a class="header" href="#idle"><code>idle</code></a></h2>
+<p>Функцию, помеченную атрибутом <code>idle</code> может опционально добавить в модуль.
+Эта функция используется как специальная <em>задача ожидания</em> и должна иметь сигнатуру
+<code>fn(idle::Context) - &gt; !</code>.</p>
+<p>Если она присутствует, задача <code>idle</code> будет запущена после <code>init</code>. В отличие от
+<code>init</code>, <code>idle</code> будет запущена <em>с включенными прерываниями</em> и она не может вернуть результат,
+а значит должна работать вечно.</p>
+<p>Если функция <code>idle</code> не определена, среда вполнения устанавливает бит <a href="https://developer.arm.com/docs/100737/0100/power-management/sleep-mode/sleep-on-exit-bit">SLEEPONEXIT</a>, а затем
+отправляет микроконтроллер в сон после запуска <code>init</code>.</p>
+<p>Как и в  <code>init</code>, <code>static mut</code> переменные будут трансформированы в <code>&amp;'static mut</code> ссылки,
+безопасные для доступа. Обратите внимание, данная возможность может
+быть удалена в следующем релизе, см. <code>task_local</code> ресурсы.</p>
+<p>Пример ниже показывает, что <code>idle</code> запускается после <code>init</code>.</p>
+<p><strong>Примечание:</strong> Цикл <code>loop {}</code> в функци ожидания не может быть пустым, так как это сломает
+микроконтроллер, из-за того, что LLVM компилирует пустые циклы в инструкцию <code>UDF</code> в release mode.
+Чтобы избежать неопределенного поведения, цикл должен включать &quot;side-effect&quot;
+путем вставки ассемблерной инструкции (например, <code>WFI</code>) или ключевого слова <code>continue</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/idle.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        hprintln!(&quot;init&quot;).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[idle(local = [x: u32 = 0])]
+    fn idle(cx: idle::Context) -&gt; ! {
+        // Locals in idle have lifetime 'static
+        let _x: &amp;'static mut u32 = cx.local.x;
+
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {
+            cortex_m::asm::nop();
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example idle
+init
+idle
+</code></pre>
+<h2 id="Аппаратные-задачи"><a class="header" href="#Аппаратные-задачи">Аппаратные задачи</a></h2>
+<p>Чтобы объявить обработчик прерывания, фреймворк предоставляет атрибут <code>#[task]</code>,
+который можно применять к функциям. Этот атрибут берет аргумент <code>binds</code>, чье значение -
+это имя прерывания, которому будет назначен обработчик;
+функция, декорированная этим атрибутом становится обработчиком прерывания.
+В фреймворке такие типы задач именуются <em>аппаратными</em>, потому что они начинают
+выполняться в ответ на аппаратное событие.</p>
+<p>Пример ниже демонстрирует использование атрибута <code>#[task]</code>, чтобы объявить
+обработчик прерывания. Как и в случае с <code>#[init]</code> и <code>#[idle]</code> локальные  <code>static mut</code> переменные безопасны для использования с аппаратной задачей.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/hardware.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        // Pends the UART0 interrupt but its handler won't run until *after*
+        // `init` returns because interrupts are disabled
+        rtic::pend(Interrupt::UART0); // equivalent to NVIC::pend
+
+        hprintln!(&quot;init&quot;).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[idle]
+    fn idle(_: idle::Context) -&gt; ! {
+        // interrupts are enabled again; the `UART0` handler runs at this point
+
+        hprintln!(&quot;idle&quot;).unwrap();
+
+        rtic::pend(Interrupt::UART0);
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        loop {
+            cortex_m::asm::nop();
+        }
+    }
+
+    #[task(binds = UART0, local = [times: u32 = 0])]
+    fn uart0(cx: uart0::Context) {
+        // Safe access to local `static mut` variable
+        *cx.local.times += 1;
+
+        hprintln!(
+            &quot;UART0 called {} time{}&quot;,
+            *cx.local.times,
+            if *cx.local.times &gt; 1 { &quot;s&quot; } else { &quot;&quot; }
+        )
+        .unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example hardware
+init
+UART0 called 1 time
+idle
+UART0 called 2 times
+</code></pre>
+<p>До сих пор все программы на RTIC, которые мы видели, не отличались от программ,
+которые можно написать, используя лишь крейт <code>cortex-m-rt</code>. С этого момента мы
+начинаем представлять возможности, уникальные для RTIC.</p>
+<h2 id="Приоритеты"><a class="header" href="#Приоритеты">Приоритеты</a></h2>
+<p>Статический приоритет каждого обработчика можно оределить в атрибуте <code>task</code>, используя
+аргумент <code>priority</code>. Задачи могут иметь приоритет в диапазоне <code>1..=(1 &lt;&lt; NVIC_PRIO_BITS)</code>,
+где <code>NVIC_PRIO_BITS</code> - это константа, определенная в крейте <code>устройства</code>.
+Когда аргумент <code>priority</code> не указан, предполагается, что приоритет равен <code>1</code>.
+Задача <code>idle</code> имеет ненастраиваемый приоритет <code>0</code>, наименьший из возможных.</p>
+<blockquote>
+<p>Более высокое значение означает более высокий приоритет в RTIC, что противоположно тому,
+что указано в периферии NVIC Cortex-M.
+Точнее, это значит, что число <code>10</code> обозначает приоритет <strong>выше</strong>, чем число <code>9</code>.</p>
+</blockquote>
+<p>Когда несколько задач готовы к запуску, задача с самым большим статическим
+приоритетом будет запущена первой. Приоритезацию задач можно рассматривать по
+такому сценарию: сигнал прерывания приходит во время выполнения задачи с низким приоритетом;
+сигнал переключает задачу с высоким приоритетом в режим ожидания.
+Разница в приоритетах приводи к тому, что задача с высоким приоритетом вытесняет задачу с низким:
+выполнение задачи с низким приоритетом замораживается и задача с высоким приоритетом выполняется,
+пока не будет завершена. Как только задача с высоким приоритетом будет остановлена,
+продолжится выполнение задачи с низким приоритетом.</p>
+<p>Следующий пример демонстрирует диспетчеризацию на основе приоритетов задач.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/preempt.rs
+
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+use rtic::app;
+
+#[app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::GPIOA);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = GPIOA, priority = 1)]
+    fn gpioa(_: gpioa::Context) {
+        hprintln!(&quot;GPIOA - start&quot;).unwrap();
+        rtic::pend(Interrupt::GPIOC);
+        hprintln!(&quot;GPIOA - end&quot;).unwrap();
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = GPIOB, priority = 2)]
+    fn gpiob(_: gpiob::Context) {
+        hprintln!(&quot; GPIOB&quot;).unwrap();
+    }
+
+    #[task(binds = GPIOC, priority = 2)]
+    fn gpioc(_: gpioc::Context) {
+        hprintln!(&quot; GPIOC - start&quot;).unwrap();
+        rtic::pend(Interrupt::GPIOB);
+        hprintln!(&quot; GPIOC - end&quot;).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example preempt
+GPIOA - start
+ GPIOC - start
+ GPIOC - end
+ GPIOB
+GPIOA - end
+</code></pre>
+<p>Заметьте, что задача <code>gpiob</code> <em>не</em> вытесняет задачу <code>gpioc</code>, потому что ее приоритет
+<em>такой же</em>, как и у <code>gpioc</code>. Однако, как только <code>gpioc</code> возвращает результат,
+выполненяется задача <code>gpiob</code>, как более приоритетная по сравнению с <code>gpioa</code>.
+Выполнение <code>gpioa</code> возобновляется только после выхода из <code>gpiob</code>.</p>
+<p>Еще одно замечание по поводу приоритетов: выбор приоритета большего, чем поддерживает устройство
+(а именно <code>1 &lt;&lt; NVIC_PRIO_BITS</code>) приведет к ошибке компиляции.
+Из-за ограничений языка, сообщение об ошибке далеко от понимания:
+вам скажут что-то похожее на &quot;evaluation of constant value failed&quot;, а указатель на ошибку
+<em>не</em> покажет на проблемное значение прерывания --
+мы извиняемся за это!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Ресурсы"><a class="header" href="#Ресурсы">Ресурсы</a></h1>
+<p>Фреймворк предоставляет абстракцию для разделения данных между любыми контекстами,
+с которыми мы встречались в предыдущей главе (задачами-обработчиками, <code>init</code> и <code>idle</code>): ресурсы.</p>
+<p>Ресурсы - это данные, видимые только функциями, определенными внутри модуля <code>#[app]</code>.
+Фреймворк дает пользователю полный контроль за тем, какой контекст может
+получить доступ к какому ресурсу.</p>
+<p>Все ресурсы определены в одной структуре внутри модуля <code>#[app]</code>.
+Каждое поле структуры соответствует отдельному ресурсу.
+<code>struct</code>-ура должна быть аннотирована следующим атрибутом: <code>#[resources]</code>.</p>
+<p>Ресурсам могут быть опционально даны начальные значения с помощью атрибута <code>#[init]</code>.
+Ресурсы, которым не передано начально значение, называются
+<em>поздними</em> ресурсами, более детально они описаны в одном из разделов на этой странице.</p>
+<p>Каждый контекс (задача-обработчик, <code>init</code> или <code>idle</code>) должен указать ресурсы, к которым
+он намерен обращаться, в соответсятвующем ему атрибуте с метаданными, используя
+аргумент <code>resources</code>. Этот аргумент принимает список имен ресурсов в качестве значения.
+Перечисленные ресурсы становятся доступны в контексте через поле <code>resources</code> структуры <code>Context</code>.</p>
+<p>Пример программы, показанной ниже содержит два обработчика прерывания, которые разделяют
+доступ к ресурсу под названием <code>shared</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/resource.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+
+        (Shared { shared: 0 }, Local {}, init::Monotonics())
+    }
+
+    // `shared` cannot be accessed from this context
+    #[idle]
+    fn idle(_cx: idle::Context) -&gt; ! {
+        debug::exit(debug::EXIT_SUCCESS);
+
+        // error: no `shared` field in `idle::Context`
+        // _cx.shared.shared += 1;
+
+        loop {
+            cortex_m::asm::nop();
+        }
+    }
+
+    // `shared` can be accessed from this context
+    // defaults to priority 1
+    #[task(binds = UART0, shared = [shared])]
+    fn uart0(mut cx: uart0::Context) {
+        let shared = cx.shared.shared.lock(|shared| {
+            *shared += 1;
+            *shared
+        });
+
+        hprintln!(&quot;UART0: shared = {}&quot;, shared).unwrap();
+    }
+
+    // `shared` can be accessed from this context
+    // explicitly set to priority 2
+    #[task(binds = UART1, shared = [shared], priority = 2)]
+    fn uart1(mut cx: uart1::Context) {
+        let shared = cx.shared.shared.lock(|shared| {
+            *shared += 1;
+            *shared
+        });
+
+        hprintln!(&quot;UART1: shared = {}&quot;, shared).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example resource
+UART1: shared = 1
+UART0: shared = 2
+</code></pre>
+<p>Заметьте, что к ресурсу <code>shared</code> нельзя получить доступ из <code>idle</code>. Попытка сделать это
+приведет к ошибке компиляции.</p>
+<h2 id="lock"><a class="header" href="#lock"><code>lock</code></a></h2>
+<p>Критические секции необходимы для разделения изменяемых данных таким образом,
+чтобы избежать гонок данных.</p>
+<p>Поле <code>resources</code>, передаваемого <code>Context</code> реализует трейт <a href="by-example/../../../api/rtic/trait.Mutex.html"><code>Mutex</code></a> для каждого разделяемого
+ресурса, доступного задаче.</p>
+<p>Единственный метод этого трейта, <a href="by-example/../../../api/rtic/trait.Mutex.html#method.lock"><code>lock</code></a>, запускает свой аргумент-замыкание в критической секции.</p>
+<p>Критическая секция, создаваемая интерфейсом <code>lock</code> основана на динамических приоритетах:
+она временно повышает динамический приоритет контекста до <em>максимального</em> приоритета,
+что не дает другим задачам возможности вытеснить критическую секцию.
+Этот протокол синхронизации известен как <a href="https://en.wikipedia.org/wiki/Priority_ceiling_protocol">Протокол немедленного максимального приоритета
+(ICPP)</a>, и компилируется диспетчером RTIC с <a href="https://en.wikipedia.org/wiki/Stack_Resource_Policy">Политикой ресурсов стека(SRP)</a>.</p>
+<p>В примере ниже у нас есть три обработчика прерываний с приоритетами от одного до трех.
+Два из обработчиков с более низким приоритетом соревнуются за ресурс <code>shared</code>,
+поэтому должны блокировать доступа к данным ресурса.
+Обработчик с наивысшим приоритетом, который не имеет доступа к ресурсу <code>shared</code>,
+может свободно вытеснять критическую секцию, созданную обработчиком с низким приоритетом.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/lock.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::GPIOA);
+
+        (Shared { shared: 0 }, Local {}, init::Monotonics())
+    }
+
+    // when omitted priority is assumed to be `1`
+    #[task(binds = GPIOA, shared = [shared])]
+    fn gpioa(mut c: gpioa::Context) {
+        hprintln!(&quot;A&quot;).unwrap();
+
+        // the lower priority task requires a critical section to access the data
+        c.shared.shared.lock(|shared| {
+            // data can only be modified within this critical section (closure)
+            *shared += 1;
+
+            // GPIOB will *not* run right now due to the critical section
+            rtic::pend(Interrupt::GPIOB);
+
+            hprintln!(&quot;B - shared = {}&quot;, *shared).unwrap();
+
+            // GPIOC does not contend for `shared` so it's allowed to run now
+            rtic::pend(Interrupt::GPIOC);
+        });
+
+        // critical section is over: GPIOB can now start
+
+        hprintln!(&quot;E&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = GPIOB, priority = 2, shared = [shared])]
+    fn gpiob(mut c: gpiob::Context) {
+        // the higher priority task does still need a critical section
+        let shared = c.shared.shared.lock(|shared| {
+            *shared += 1;
+
+            *shared
+        });
+
+        hprintln!(&quot;D - shared = {}&quot;, shared).unwrap();
+    }
+
+    #[task(binds = GPIOC, priority = 3)]
+    fn gpioc(_: gpioc::Context) {
+        hprintln!(&quot;C&quot;).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example lock
+A
+B - shared = 1
+C
+D - shared = 2
+E
+</code></pre>
+<h2 id="Множественное-блокировка"><a class="header" href="#Множественное-блокировка">Множественное блокировка</a></h2>
+<p>Это расширение к <code>lock</code>, чтобы уменьшить количесво отступов, блокируемые ресурсы можно объединять в кортежи.
+Следующий пример это демонстрирует:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/mutlilock.rs
+//!
+//! The multi-lock feature example.
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared1: u32,
+        shared2: u32,
+        shared3: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::GPIOA);
+
+        (
+            Shared {
+                shared1: 0,
+                shared2: 0,
+                shared3: 0,
+            },
+            Local {},
+            init::Monotonics(),
+        )
+    }
+
+    // when omitted priority is assumed to be `1`
+    #[task(binds = GPIOA, shared = [shared1, shared2, shared3])]
+    fn locks(c: locks::Context) {
+        let mut s1 = c.shared.shared1;
+        let mut s2 = c.shared.shared2;
+        let mut s3 = c.shared.shared3;
+
+        hprintln!(&quot;Multiple single locks&quot;).unwrap();
+        s1.lock(|s1| {
+            s2.lock(|s2| {
+                s3.lock(|s3| {
+                    *s1 += 1;
+                    *s2 += 1;
+                    *s3 += 1;
+
+                    hprintln!(
+                        &quot;Multiple single locks, s1: {}, s2: {}, s3: {}&quot;,
+                        *s1,
+                        *s2,
+                        *s3
+                    )
+                    .unwrap();
+                })
+            })
+        });
+
+        hprintln!(&quot;Multilock!&quot;).unwrap();
+
+        (s1, s2, s3).lock(|s1, s2, s3| {
+            *s1 += 1;
+            *s2 += 1;
+            *s3 += 1;
+
+            hprintln!(
+                &quot;Multiple single locks, s1: {}, s2: {}, s3: {}&quot;,
+                *s1,
+                *s2,
+                *s3
+            )
+            .unwrap();
+        });
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Поздние-ресурсы"><a class="header" href="#Поздние-ресурсы">Поздние ресурсы</a></h2>
+<p>Поздние ресурсы - такие ресурсы, которым не передано начальное значение во время компиляции
+с помощью атрибута <code>#[init]</code>, но которые вместо этого инициализируются во время выполнения
+с помощью значений из структуры <code>init::LateResources</code>, возвращаемой функцией <code>init</code>.</p>
+<p>Поздние ресурсы полезны, например, для <em>move</em> (передача владения) периферии,
+инициализированной в <code>init</code>, в задачи.</p>
+<p>Пример ниже использует поздние ресурсы, чтобы установить неблокируемый односторонний канал
+между обработчиком прерывания <code>UART0</code> и задачей <code>idle</code>. Для канала использована очередь типа
+один производитель-один потребитель <a href="by-example/../../../api/heapless/spsc/struct.Queue.html"><code>Queue</code></a>. Структура очереди разделяется на потребителя
+и производителя в <code>init</code>, а затем каждая из частей располагается в отдельном ресурсу;
+<code>UART0</code> владеет ресурсом производителя, а <code>idle</code> владеет ресурсом потребителя.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../../../examples/late.rs}}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example late
+received message: 42
+</code></pre>
+<h2 id="Только-разделяемый-доступ"><a class="header" href="#Только-разделяемый-доступ">Только разделяемый доступ</a></h2>
+<p>По-умолчанию фреймворк предполагает, что все задачи требуют эксклюзивный доступ (<code>&amp;mut-</code>) к ресурсам,
+но возможно указать, что задаче достаточен разделяемый доступ (<code>&amp;-</code>) к ресурсы с помощью синтакисиса
+<code>&amp;resource_name</code> в списке <code>resources</code>.</p>
+<p>Преимущество указания разделяемого досупа (<code>&amp;-</code>) к ресурсу в том, что для доступа к ресурсу
+не нужна блокировка, даже если за ресурс соревнуются несколько задач, запускаемые с
+разными приоритетами. Недостаток в том, что задача получает только разделяемую ссылку (<code>&amp;-</code>)
+на ресурс, и ограничена операциями, возможными с ней, но там, где разделяемой ссылки достаточно,
+такой подход уменьшает количесво требуемых блокировок.
+В дополнение к простым неизменяемым данным, такой разделяемый доступ может быть полезен для
+ресурсов, безопасно реализующих внутреннюю мутабельность с самоблокировкой или атомарными операциями.</p>
+<p>Заметьте, что в этом релизе RTIC невозможно запросить и эксклюзивный доступ (<code>&amp;mut-</code>)
+и разделяемый (<code>&amp;-</code>) для <em>одного и того же</em> ресурса из различных задач.
+Попытка это сделать приведет к ошибке компиляции.</p>
+<p>В примере ниже ключ (например криптографический ключ) загружается (или создается) во время выполнения,
+а затем используется двумя задачами, запускаемымы с различным приоритетом без каких-либо блокировок.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/static.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        key: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+
+        (Shared { key: 0xdeadbeef }, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = UART0, shared = [&amp;key])]
+    fn uart0(cx: uart0::Context) {
+        let key: &amp;u32 = cx.shared.key;
+        hprintln!(&quot;UART0(key = {:#x})&quot;, key).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = UART1, priority = 2, shared = [&amp;key])]
+    fn uart1(cx: uart1::Context) {
+        hprintln!(&quot;UART1(key = {:#x})&quot;, cx.shared.key).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example only-shared-access
+UART1(key = 0xdeadbeef)
+UART0(key = 0xdeadbeef)
+</code></pre>
+<h2 id="Неблокируемый-доступ-к-изменяемым-ресурсам"><a class="header" href="#Неблокируемый-доступ-к-изменяемым-ресурсам">Неблокируемый доступ к изменяемым ресурсам</a></h2>
+<p>Есть две других возможности доступа к ресурсам</p>
+<ul>
+<li><code>#[lock_free]</code>: могут быть несколько задач с одинаковым приоритетом,
+получающие доступ к ресурсу без критических секций. Так как задачи с
+одинаковым приоритетом никогда не могут вытеснить друг друга, это безопасно.</li>
+<li><code>#[task_local]</code>: в этом случае должна быть только одна задача, использующая
+этот ресурс, так же как локальный <code>static mut</code> ресурс задачи, но (опционально) устанавливаемая с в init.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Программные-задачи"><a class="header" href="#Программные-задачи">Программные задачи</a></h1>
+<p>В дополнение к аппаратным задачам, вызываемым в ответ на аппаратные события,
+RTIC также поддерживает <em>программные</em> задачи, которые могут порождаться
+приложением из любого контекста выполнения.</p>
+<p>Программным задачам можно также назначать приоритет и, под капотом, они
+диспетчеризуются обработчиками прерываний. RTIC требует, чтобы свободные
+прерывания, были указаны в аргументе <code>dispatchers</code> модуля <code>app</code>, если используются
+программные задачи; часть из этих свободных прерываний будут использованы для
+управления программными задачами. Преимущество программных задач над аппаратными
+в том, что множество задач можно назначить на один обработчик прерывания.</p>
+<p>Программные задачи также определяются атрибутом <code>task</code>, но аргумент <code>binds</code> опускается.</p>
+<p>Пример ниже демонстрирует три программные задачи, запускаемых 2-х разных приоритетах.
+Три программные задачи привязаны к 2-м обработчикам прерываний.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/task.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965, dispatchers = [SSI0, QEI0])]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        foo::spawn().unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[task]
+    fn foo(_: foo::Context) {
+        hprintln!(&quot;foo - start&quot;).unwrap();
+
+        // spawns `bar` onto the task scheduler
+        // `foo` and `bar` have the same priority so `bar` will not run until
+        // after `foo` terminates
+        bar::spawn().unwrap();
+
+        hprintln!(&quot;foo - middle&quot;).unwrap();
+
+        // spawns `baz` onto the task scheduler
+        // `baz` has higher priority than `foo` so it immediately preempts `foo`
+        baz::spawn().unwrap();
+
+        hprintln!(&quot;foo - end&quot;).unwrap();
+    }
+
+    #[task]
+    fn bar(_: bar::Context) {
+        hprintln!(&quot;bar&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(priority = 2)]
+    fn baz(_: baz::Context) {
+        hprintln!(&quot;baz&quot;).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example task
+foo - start
+foo - middle
+baz
+foo - end
+bar
+</code></pre>
+<h2 id="Передача-сообщений"><a class="header" href="#Передача-сообщений">Передача сообщений</a></h2>
+<p>Другое преимущество программной задачи в том, что задачам можно передать сообщения
+в момент их запуска. Тип передаваемого сообщения должен быть определен в сигнатуре
+задачи-обработчика.</p>
+<p>Пример ниже демонстрирует три задачи, две из которых ожидают сообщение.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/message.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965, dispatchers = [SSI0])]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        foo::spawn(/* no message */).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[task(local = [count: u32 = 0])]
+    fn foo(cx: foo::Context) {
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        bar::spawn(*cx.local.count).unwrap();
+        *cx.local.count += 1;
+    }
+
+    #[task]
+    fn bar(_: bar::Context, x: u32) {
+        hprintln!(&quot;bar({})&quot;, x).unwrap();
+
+        baz::spawn(x + 1, x + 2).unwrap();
+    }
+
+    #[task]
+    fn baz(_: baz::Context, x: u32, y: u32) {
+        hprintln!(&quot;baz({}, {})&quot;, x, y).unwrap();
+
+        if x + y &gt; 4 {
+            debug::exit(debug::EXIT_SUCCESS);
+        }
+
+        foo::spawn().unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example message
+foo
+bar(0)
+baz(1, 2)
+foo
+bar(1)
+baz(2, 3)
+</code></pre>
+<h2 id="Вместимость"><a class="header" href="#Вместимость">Вместимость</a></h2>
+<p>RTIC <em>не</em> производит никакого рода аллокаций памяти в куче.
+Память, необходимая для размещения сообщения резервируется статически.
+По-умолчанию фреймворк минимизирует выделение памяти программой таким образом,
+что каждая задача имеет &quot;вместимость&quot; для сообщения равную 1:
+это значит, что не более одного сообщения можно передать задаче перед тем, как
+у нее появится возможность к запуску. Это значение по-умолчанию можно
+изменить для каждой задачи, используя аргумент <code>capacity</code>.
+Этот аргумент принимает положительное целое, которое определяет как много
+сообщений буфер сообщений задачи может хранить.</p>
+<p>Пример ниже устанавливает вместимость программной задачи <code>foo</code> равной 4.
+Если вместимость не установить, второй вызов <code>spawn.foo</code> в <code>UART0</code> приведет к ошибке (панике).</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/capacity.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965, dispatchers = [SSI0])]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = UART0)]
+    fn uart0(_: uart0::Context) {
+        foo::spawn(0).unwrap();
+        foo::spawn(1).unwrap();
+        foo::spawn(2).unwrap();
+        foo::spawn(3).unwrap();
+
+        bar::spawn().unwrap();
+    }
+
+    #[task(capacity = 4)]
+    fn foo(_: foo::Context, x: u32) {
+        hprintln!(&quot;foo({})&quot;, x).unwrap();
+    }
+
+    #[task]
+    fn bar(_: bar::Context) {
+        hprintln!(&quot;bar&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example capacity
+foo(0)
+foo(1)
+foo(2)
+foo(3)
+bar
+</code></pre>
+<h2 id="Обработка-ошибок"><a class="header" href="#Обработка-ошибок">Обработка ошибок</a></h2>
+<p>Интерфейс <code>spawn</code> возвращает вариант <code>Err</code>, если для размещения сообщения нет места.
+В большинстве сценариев возникающие ошибки обрабатываются одним из двух способов:</p>
+<ul>
+<li>
+<p>Паника, с помощью <code>unwrap</code>, <code>expect</code>, и т.п. Этот метод используется, чтобы обнаружить
+ошибку программиста (например bug) выбора вместительности, которая оказалась недостаточна.
+Когда эта паника встречается во время тестирования, выбирается большая вместительность,
+и перекомпиляция программы может решить проблему, но иногда достаточно окунуться глубже
+и провести анализ времени выполнения программы, чтобы выяснить, может ли платформа
+обрабатывать пиковые нагрузки, или процессор необходимо заменить на более быстрый.</p>
+</li>
+<li>
+<p>Игнорирование результата. В программах реального времени, как и в обычных, может быть
+нормальным иногда терять данные, или не получать ответ на некоторые события в пиковых ситуациях.
+В таких сценариях может быть допустимо игнорирование ошибки вызова <code>spawn</code>.</p>
+</li>
+</ul>
+<p>Следует отметить, что повторная попытка вызова <code>spawn</code> обычно неверный подход, поскольку
+такая операция на практике вероятно никогда не завершится успешно.
+Так как у нас есть только переключения контекста на задачи с <em>более высоким</em> приоритетом,
+повторение вызова <code>spawn</code> на задаче с низким приоритом никогда не позволит планировщику
+вызвать задачу, что значит, что буфер никогда не будет очищен. Такая ситуация отражена в
+следующем наброске:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(..)]
+mod app {
+    #[init(spawn = [foo, bar])]
+    fn init(cx: init::Context) {
+        cx.spawn.foo().unwrap();
+        cx.spawn.bar().unwrap();
+    }
+
+    #[task(priority = 2, spawn = [bar])]
+    fn foo(cx: foo::Context) {
+        // ..
+
+        // программа зависнет здесь
+        while cx.spawn.bar(payload).is_err() {
+            // повтор попытки вызова spawn, если произошла ошибка
+        }
+    }
+
+    #[task(priority = 1)]
+    fn bar(cx: bar::Context, payload: i32) {
+        // ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Очередь-таймера"><a class="header" href="#Очередь-таймера">Очередь таймера</a></h1>
+<p>В отличие от интерфейса <code>spawn</code>, который немедленно передает программную задачу
+планировщику для немедленного запуска, интерфейс <code>schedule</code> можно использовать
+для планирования задачи к запуске через какое-то время в будущем.</p>
+<p>Чтобы использовать интерфейс <code>schedule</code>, предварительно должен быть определен
+монотонный таймер с помощью аргумента <code>monotonic</code> атрибута <code>#[app]</code>.
+Этот аргумент принимает путь к типу, реализующему трейт <a href="by-example/../../../api/rtic/trait.Monotonic.html"><code>Monotonic</code></a>.
+Ассоциированный тип, <code>Instant</code>, этого трейта представляет метку времени в соответствущих
+единицах измерения и широко используется в интерфейсе <code>schedule</code> -- предлагается смоделировать
+этот тип позднее <a href="https://doc.rust-lang.org/std/time/struct.Instant.html">один из таких есть в стандартной библиотеке</a>.</p>
+<p>Хотя это не отражено в определении трейта (из-за ограничений системы типов / трейтов),
+разница двух <code>Instant</code>ов должна возвращать какой-то тип <code>Duration</code> (см. <a href="https://doc.rust-lang.org/core/time/struct.Duration.html"><code>core::time::Duration</code></a>)
+и этот <code>Duration</code> должен реализовывать трейт <code>TryInto&lt;u32&gt;</code>.
+Реализация этого трейта должна конвертировать значение <code>Duration</code>, которое
+использует какую-то определенную единицу измерения времени, в единицы измерения &quot;тактов системного таймера
+(SYST)&quot;. Результат преобразований должен быть 32-битным целым.
+Если результат не соответствует 32-битному целому, тогда операция должна возвращать ошибку любого типа.</p>
+<p>Для целевых платформ ARMv7+ крейт <code>rtic</code> предоставляет реализацию <code>Monotonic</code>, основанную на
+встроенном CYCle CouNTer (CYCCNT). Заметьте, что это 32-битный таймер, работающий на
+частоте центрального процессора, и поэтому не подходит для отслеживания интервалов времени в секундах.</p>
+<p>Когда планируется задача, (определенный пользователем) <code>Instant</code>, в который задача должна быть
+выполнена, должен передаваться в качестве первого аргумента вызова <code>schedule</code>.</p>
+<p>К тому же, выбранный <code>monotonic</code> таймер, необходимо сконфигурировать и инициализировать в
+фазе работы <code>#[init]</code>. Заметьте, что <em>также</em> касается случая использования <code>CYCCNT</code>,
+предоставляемого крейтом <code>cortex-m-rtic</code>.</p>
+<p>Пример ниже планирует к выполнению две задачи из <code>init</code>: <code>foo</code> и <code>bar</code>. <code>foo</code> запланирована
+к запуску через 8 миллионов циклов в будущем. Далее, <code>bar</code> запланировано запустить через
+4 миллиона циклов в будущем. Таким образом, <code>bar</code> запустится до <code>foo</code>, так как и запланировано.</p>
+<blockquote>
+<p><strong>DF:YJ</strong>: Примеры, использующие интерфейс <code>schedule</code> или абстракцию <code>Instant</code>
+<strong>не будут</strong> правильно работать на эмуляторе QEMU, поскольку счетчик циклов Cortex-M
+функционально не был реализован в <code>qemu-system-arm</code>.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/schedule.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+// NOTE: does NOT work on QEMU!
+#[rtic::app(device = lm3s6965, dispatchers = [SSI0])]
+mod app {
+    use cortex_m_semihosting::hprintln;
+    use dwt_systick_monotonic::DwtSystick;
+    use rtic::time::duration::Seconds;
+
+    const MONO_HZ: u32 = 8_000_000; // 8 MHz
+
+    #[monotonic(binds = SysTick, default = true)]
+    type MyMono = DwtSystick&lt;MONO_HZ&gt;;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(cx: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        let mut dcb = cx.core.DCB;
+        let dwt = cx.core.DWT;
+        let systick = cx.core.SYST;
+
+        let mono = DwtSystick::new(&amp;mut dcb, dwt, systick, 8_000_000);
+
+        hprintln!(&quot;init&quot;).ok();
+
+        // Schedule `foo` to run 1 second in the future
+        foo::spawn_after(Seconds(1_u32)).ok();
+
+        // Schedule `bar` to run 2 seconds in the future
+        bar::spawn_after(Seconds(2_u32)).ok();
+
+        (Shared {}, Local {}, init::Monotonics(mono))
+    }
+
+    #[task]
+    fn foo(_: foo::Context) {
+        hprintln!(&quot;foo&quot;).ok();
+    }
+
+    #[task]
+    fn bar(_: bar::Context) {
+        hprintln!(&quot;bar&quot;).ok();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Запусе программы на реальном оборудовании создает следующий вывод в консоли:</p>
+<pre><code class="language-text">init @ Instant(0)
+bar  @ Instant(4000236)
+foo  @ Instant(8000173)
+</code></pre>
+<p>Когда интерфейс <code>schedule</code> используется, среда исполнения использует внутри
+обработчик прерываний <code>SysTick</code> и периферию системного таймера (<code>SYST</code>), поэтому ни
+тот ни другой нельзя использовать в программе. Это гарантируется изменением типа
+<code>init::Context.core</code> с <code>cortex_m::Peripherals</code> на <code>rtic::Peripherals</code>.
+Последняя структура содержит все поля из предыдущей кроме <code>SYST</code>.</p>
+<h2 id="Периодические-задачи"><a class="header" href="#Периодические-задачи">Периодические задачи</a></h2>
+<p>Программные задачи имеют доступ к моменту времени <code>Instant</code>, в который они были запланированы
+на выполнение переменной <code>scheduled</code>. Эта информация и интерфейс <code>schedule</code> можно использовать,
+чтобы реализовать периодические задачи, как показано ниже.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/periodic.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+// NOTE: does NOT work on QEMU!
+#[rtic::app(device = lm3s6965, dispatchers = [SSI0])]
+mod app {
+    use dwt_systick_monotonic::DwtSystick;
+    use rtic::time::duration::Seconds;
+
+    #[monotonic(binds = SysTick, default = true)]
+    type MyMono = DwtSystick&lt;8_000_000&gt;; // 8 MHz
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(cx: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        let mut dcb = cx.core.DCB;
+        let dwt = cx.core.DWT;
+        let systick = cx.core.SYST;
+
+        let mono = DwtSystick::new(&amp;mut dcb, dwt, systick, 8_000_000);
+
+        foo::spawn_after(Seconds(1_u32)).unwrap();
+
+        (Shared {}, Local {}, init::Monotonics(mono))
+    }
+
+    #[task]
+    fn foo(_cx: foo::Context) {
+        // Periodic
+        foo::spawn_after(Seconds(1_u32)).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Это вывод, создаваемый примером. Заметьте, что здесь пристствует небольшой дрейф / колебания
+даже несмотря на то, что <code>schedule.foo</code> была вызвана в <em>конце</em> <code>foo</code>. Использование
+<code>Instant::now</code> вместо <code>scheduled</code> вызвало бы дрейф / колебания.</p>
+<pre><code class="language-text">foo(scheduled = Instant(8000000), now = Instant(8000196))
+foo(scheduled = Instant(16000000), now = Instant(16000196))
+foo(scheduled = Instant(24000000), now = Instant(24000196))
+</code></pre>
+<h2 id="Базовое-время"><a class="header" href="#Базовое-время">Базовое время</a></h2>
+<p>Для задач, вызываемых из <code>init</code> мы имеем точную информацию о их <code>scheduled</code> времени.
+Для аппаратных задач такого времени нет, поскольку они асинхронны по природе.
+Для аппаратных задач среда исполнения предоставляет время запуска (<code>start</code>), которое отражает
+время, в которое обработчик прерывания будет запущен.</p>
+<p>Заметьте, что <code>start</code> <strong>не</strong> равно времени прихода события, которое вызывает задачу.
+В зависимости от приоритета задачи и загрузки системы, время <code>start</code> может сильно отдалиться от
+времени прихода события.</p>
+<p>Какое по вашему мнению будет значение <code>scheduled</code> для программных задач, которые вызываются через
+<code>spawn</code> вместо планирования? Ответ в том, что вызываемые задачи наследуют
+<em>базовое</em> время того контекста, который их вызывает. Базовое время аппаратных задач -
+это их время <code>start</code>, базовое время программных задач - их время <code>scheduled</code>, а
+базовое время  <code>init</code> - время старта системы, или нулевое
+(<code>Instant::zero()</code>). <code>idle</code> на самом деле не имеет базового времени, но задачи вызываемые из нее,
+используют <code>Instant::now()</code> в качестве базового.</p>
+<p>Пример ниже демонстрирует разные смыслы <em>базового времени</em>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../../../examples/baseline.rs}}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Запуск программы на реальном оборудовании приведет к следующему выводу в консоли:</p>
+<pre><code class="language-text">init(baseline = Instant(0))
+foo(baseline = Instant(0))
+UART0(baseline = Instant(904))
+foo(baseline = Instant(904))
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Типы-send-и-sync"><a class="header" href="#Типы-send-и-sync">Типы, Send и Sync</a></h1>
+<p>Каждая функция в модуле <code>app</code> принимает структуру <code>Context</code> в качесте первого параметра.
+Все поля этих структур имеют предсказуемые, неанонимные типы,
+поэтому вы можете написать обычные функции, принимающие их как аргументы.</p>
+<p>Справочник по API определяет как эти типы генерируются на основе входных данных.
+Вы можете также сгенерировать документацию к вашему крейту программы (<code>cargo doc --bin &lt;name&gt;</code>);
+в документации вы найдете структуры <code>Context</code> (например <code>init::Context</code> и
+<code>idle::Context</code>).</p>
+<p>Пример ниже показывает различные типы, сгенерированные атрибутом <code>app</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../../../examples/types.rs}}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="send"><a class="header" href="#send"><code>Send</code></a></h2>
+<p><a href="https://doc.rust-lang.org/core/marker/trait.Send.html"><code>Send</code></a> - это маркерный трейт для &quot;типов, которые можно передавать через границы
+потоков&quot;, как это определено в <code>core</code>. В контексте RTIC трейт <code>Send</code> необходим
+только там, где возможна передача значения между задачами, запускаемыми на
+<em>разных</em> приоритетах. Это возникает в нескольких случаях: при передаче сообщений,
+в разделяемых <code>static mut</code> ресурсах и при инициализации поздних ресурсов.</p>
+<p>Атрибут <code>app</code> проверит, что <code>Send</code> реализован, где необходимо, поэтому вам не
+стоит волноваться об этом. В настоящий момент все передаваемые типы в RTIC должны быть <code>Send</code>, но
+это ограничение возможно будет ослаблено в будущем.</p>
+<h2 id="sync"><a class="header" href="#sync"><code>Sync</code></a></h2>
+<p>Аналогично, <a href="https://doc.rust-lang.org/core/marker/trait.Sync.html"><code>Sync</code></a> - маркерный трейт для &quot;типов, на которые можно безопасно разделять между потоками&quot;,
+как это определено в <code>core</code>. В контексте RTIC типаж <code>Sync</code> необходим только там,
+где возможно для двух или более задач, запускаемых на разных приоритетах получить разделяемую ссылку (<code>&amp;-</code>)  на
+ресурс. Это возникает только (<code>&amp;-</code>) ресурсах с разделяемым доступом.</p>
+<p>Атрибут <code>app</code> проверит, что <code>Sync</code> реализован, где необходимо, но важно знать,
+где ограничение <code>Sync</code> не требуется: в (<code>&amp;-</code>) ресурсах с разделяемым доступом, за которые
+соперничают задачи с <em>одинаковым</em> приоритетом.</p>
+<p>В примере ниже показано, где можно использовать типы, не реализующие <code>Sync</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! `examples/not-sync.rs`
+
+// #![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use core::marker::PhantomData;
+use panic_semihosting as _;
+
+pub struct NotSync {
+    _0: PhantomData&lt;*const ()&gt;,
+}
+
+unsafe impl Send for NotSync {}
+
+#[rtic::app(device = lm3s6965, dispatchers = [SSI0])]
+mod app {
+    use super::NotSync;
+    use core::marker::PhantomData;
+    use cortex_m_semihosting::debug;
+
+    #[shared]
+    struct Shared {
+        shared: NotSync,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        debug::exit(debug::EXIT_SUCCESS);
+
+        (
+            Shared {
+                shared: NotSync { _0: PhantomData },
+            },
+            Local {},
+            init::Monotonics(),
+        )
+    }
+
+    #[task(shared = [&amp;shared])]
+    fn foo(c: foo::Context) {
+        let _: &amp;NotSync = c.shared.shared;
+    }
+
+    #[task(shared = [&amp;shared])]
+    fn bar(c: bar::Context) {
+        let _: &amp;NotSync = c.shared.shared;
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Создание-нового-проекта"><a class="header" href="#Создание-нового-проекта">Создание нового проекта</a></h1>
+<p>Теперь, когда Вы изучили основные возможности фреймворка RTIC, Вы можете
+попробовать его использовать на Вашем оборудовании следуя этим инструкциям.</p>
+<ol>
+<li>Создайте экземпляр из шаблона <a href="https://github.com/rust-embedded/cortex-m-quickstart#cortex-m-quickstart"><code>cortex-m-quickstart</code></a>.</li>
+</ol>
+<pre><code class="language-console">$ # например используя `cargo-generate`
+$ cargo generate \
+    --git https://github.com/rust-embedded/cortex-m-quickstart \
+    --name app
+
+$ # следуйте остальным инструкциям
+</code></pre>
+<ol start="2">
+<li>Добавьте крейт доступа к периферии (PAC), сгенерированный с помощью<a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a>
+<strong>v0.14.x</strong>, или крейт отладочной платы, у которой в зависимостях один из таких PAC'ов.
+Убедитесь, что опция <code>rt</code> крейта включена.</li>
+</ol>
+<p>В этом примере я буду использовать крейт устройства <a href="https://crates.io/crates/lm3s6965"><code>lm3s6965</code></a>.
+Эта библиотека не имеет Cargo-опции <code>rt</code>; эта опция всегда включена.</p>
+<p>Этот крейт устройства предоставляет линковочный скрипт с макетом памяти
+целевого устройства, поэтому <code>memory.x</code> и <code>build.rs</code> нужно удалить.</p>
+<pre><code class="language-console">$ cargo add lm3s6965 --vers 0.1.3
+
+$ rm memory.x build.rs
+</code></pre>
+<ol start="3">
+<li>Добавьте крейт <code>cortex-m-rtic</code> как зависимость.</li>
+</ol>
+<pre><code class="language-console">$ cargo add cortex-m-rtic --allow-prerelease
+</code></pre>
+<ol start="4">
+<li>Напишите свою RTIC программу.</li>
+</ol>
+<p>Здесь я буду использовать пример <code>init</code> из крейта <code>cortex-m-rtic</code>.</p>
+<p>Примеры находтся в папке <code>examples</code>, а содержание <code>init.rs</code> показано здесь:</p>
+<pre><code class="language-console">//! examples/init.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965, peripherals = true)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init(local = [x: u32 = 0])]
+    fn init(cx: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        // Cortex-M peripherals
+        let _core: cortex_m::Peripherals = cx.core;
+
+        // Device specific peripherals
+        let _device: lm3s6965::Peripherals = cx.device;
+
+        // Locals in `init` have 'static lifetime
+        let _x: &amp;'static mut u32 = cx.local.x;
+
+        // Access to the critical section token,
+        // to indicate that this is a critical seciton
+        let _cs_token: bare_metal::CriticalSection = cx.cs;
+
+        hprintln!(&quot;init&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+}
+</code></pre>
+<p>Пример <code>init</code> использует устройство <code>lm3s6965</code>. Не забудьте настроить аргумент <code>device</code>
+в атрибуте макроса app так, чтобы он соответствовал пути к PAC-крейту, если он отличается,
+а также добавить перифериб и другие аргументы если необходимо.
+Несмотря на то, что в программе могут использоваться псевдонимы типов,
+здесь необходимо указать полный путь (из корня крейта). Для многих устройств,
+есть общий подход в крейтах реализации HAL (с псевдонимом <code>hal</code>) и крейтах поддержки
+отладочных плат реекспортиорвать PAC как <code>pac</code>, что приводит нас к образцу, аналогичному
+приведенному ниже:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use abcd123_hal as hal;
+//...
+
+#[rtic::app(device = crate::hal::pac, peripherals = true, monotonic = rtic::cyccnt::CYCCNT)]
+mod app { /*...*/ }
+<span class="boring">}
+</span></code></pre></pre>
+<p>Пример <code>init</code> также зависит от крейта <code>panic-semihosting</code>:</p>
+<pre><code class="language-console">$ cargo add panic-semihosting
+</code></pre>
+<ol start="5">
+<li>Соберите его, загрузите в микроконтроллер и запустите.</li>
+</ol>
+<pre><code class="language-console">$ # ПРИМЕЧАНИЕ: Я раскомментировал опцию `runner` в `.cargo/config`
+$ cargo run
+init
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Советы-и-хитрости"><a class="header" href="#Советы-и-хитрости">Советы и хитрости</a></h1>
+<h2 id="Обобщенное-программирование-generics"><a class="header" href="#Обобщенное-программирование-generics">Обобщенное программирование (Generics)</a></h2>
+<p>Все объекты, предоставляющие ресурысы реализуют трейт <code>rtic::Mutex</code>.
+Если ресурс не реализует его, можно обернуть его в новый тип <a href="by-example/../../../api/rtic/struct.Exclusive.html"><code>rtic::Exclusive</code></a>,
+который реализует трейт <code>Mutex</code>. С помощью этого нового типа
+можно написать обобщенную функцию, которая работает с обобщенным ресурсом и
+вызывать его из различных задач, чтобы производить однотипные операции над
+похожим множеством ресурсов.
+Вот один такой пример:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/generics.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::hprintln;
+use panic_semihosting as _;
+use rtic::Mutex;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        shared: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+
+        (Shared { shared: 0 }, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = UART0, shared = [shared], local = [state: u32 = 0])]
+    fn uart0(c: uart0::Context) {
+        hprintln!(&quot;UART0(STATE = {})&quot;, *c.local.state).unwrap();
+
+        // second argument has type `shared::shared`
+        super::advance(c.local.state, c.shared.shared);
+
+        rtic::pend(Interrupt::UART1);
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(binds = UART1, priority = 2, shared = [shared], local = [state: u32 = 0])]
+    fn uart1(c: uart1::Context) {
+        hprintln!(&quot;UART1(STATE = {})&quot;, *c.local.state).unwrap();
+
+        // second argument has type `shared::shared`
+        super::advance(c.local.state, c.shared.shared);
+    }
+}
+
+// the second parameter is generic: it can be any type that implements the `Mutex` trait
+fn advance(state: &amp;mut u32, mut shared: impl Mutex&lt;T = u32&gt;) {
+    *state += 1;
+
+    let (old, new) = shared.lock(|shared: &amp;mut u32| {
+        let old = *shared;
+        *shared += *state;
+        (old, *shared)
+    });
+
+    hprintln!(&quot;shared: {} -&gt; {}&quot;, old, new).unwrap();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example generics
+UART1(STATE = 0)
+shared: 0 -&gt; 1
+UART0(STATE = 0)
+shared: 1 -&gt; 2
+UART1(STATE = 1)
+shared: 2 -&gt; 4
+</code></pre>
+<h2 id="Условная-компиляция"><a class="header" href="#Условная-компиляция">Условная компиляция</a></h2>
+<p>Вы можете использовать условную компиляцию (<code>#[cfg]</code>) на ресурсах (полях структуры
+<code>#[resources] struct Resources</code>) и задачах (элементах <code>fn</code>).
+Эффект использования атрибутов <code>#[cfg]</code> в том, что ресурс/ задача
+будут <em>не</em> доступны в соответствующих структурах <code>Context</code> если условие не выполняется.</p>
+<p>В примере ниже выводится сообщение каждый раз, когда вызывается задача <code>foo</code>, но только
+если программы скомпилирова с профилем <code>dev</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../../../examples/cfg.rs}}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example cfg --release
+
+$ cargo run --example cfg
+foo has been called 1 time
+foo has been called 2 times
+</code></pre>
+<h2 id="Запуск-задач-из-ОЗУ"><a class="header" href="#Запуск-задач-из-ОЗУ">Запуск задач из ОЗУ</a></h2>
+<p>Главной целью переноса описания программы на RTIC в атрибуты в
+RTIC v0.4.x была возможность взаимодействия с другими атрибутами.
+Напримерe, атрибут <code>link_section</code> можно применять к задачам, чтобы разместить
+их в ОЗУ; это может улучшить производительность в некоторых случаях.</p>
+<blockquote>
+<p><strong>ВАЖНО</strong>: Обычно атрибуты <code>link_section</code>, <code>export_name</code> и <code>no_mangle</code>
+очень мощные, но их легко использовать неправильно. Неверное использование
+любого из этих атрибутов может вызвать неопределенное поведение;
+Вам следует всегда предпочитать использование безопасных, высокоуровневых
+атрибутов вместо них, таких как атрибуты <code>interrupt</code> и <code>exception</code>
+из <code>cortex-m-rt</code>.</p>
+<p>В особых функций, размещаемых в ОЗУ нет безопасной абстракции в <code>cortex-m-rt</code>
+v0.6.5 но создано <a href="https://github.com/rust-embedded/cortex-m-rt/pull/100">RFC</a> для добавления атрибута <code>ramfunc</code> в будущем релизе.</p>
+</blockquote>
+<p>В примере ниже показано как разместить высокоприоритетную задачу <code>bar</code> в ОЗУ.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/ramfunc.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(
+    device = lm3s6965,
+    dispatchers = [
+        UART0,
+        #[link_section = &quot;.data.UART1&quot;]
+        UART1
+    ])
+]
+mod app {
+    use cortex_m_semihosting::{debug, hprintln};
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        foo::spawn().unwrap();
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[inline(never)]
+    #[task]
+    fn foo(_: foo::Context) {
+        hprintln!(&quot;foo&quot;).unwrap();
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    // run this task from RAM
+    #[inline(never)]
+    #[link_section = &quot;.data.bar&quot;]
+    #[task(priority = 2)]
+    fn bar(_: bar::Context) {
+        foo::spawn().unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Запуск этой программы создаст ожидаемый вывод.</p>
+<pre><code class="language-console">$ cargo run --example ramfunc
+foo
+</code></pre>
+<p>Можно посмотреть на вывод <code>cargo-nm</code>, чтобы убедиться, что <code>bar</code> расположен в ОЗУ
+(<code>0x2000_0000</code>), тогда как <code>foo</code> расположен во Flash (<code>0x0000_0000</code>).</p>
+<pre><code class="language-console">$ cargo nm --example ramfunc --release | grep ' foo::'
+00000162 t ramfunc::foo::h30e7789b08c08e19
+</code></pre>
+<pre><code class="language-console">$ cargo nm --example ramfunc --release | grep ' bar::'
+20000000 t ramfunc::bar::h9d6714fe5a3b0c89
+</code></pre>
+<h2 id="Обходной-путь-для-быстрой-передачи-сообщений"><a class="header" href="#Обходной-путь-для-быстрой-передачи-сообщений">Обходной путь для быстрой передачи сообщений</a></h2>
+<p>Передача сообщений всегда вызывает копирование от отправителя в
+статическую переменную, а затем из статической переменной получателю.
+Таким образом, при передаче большого буфера, например <code>[u8; 128]</code>, передача сообщения
+вызывает два дорогих вызова <code>memcpy</code>. Чтобы минимизировать накладные расходы на передачу
+сообщения, можно использовать обходной путь: вместо передачи буфера по значению,
+можно передавать владеющий указатель на буфер.</p>
+<p>Можно использовать глобальный аллокатор, чтобы реализовать данный трюк (<code>alloc::Box</code>,
+<code>alloc::Rc</code>, и т.п.), либо использовать статически аллоцируемый пул памяти, например <a href="https://docs.rs/heapless/0.5.0/heapless/pool/index.html"><code>heapless::Pool</code></a>.</p>
+<p>Здесь приведен пример использования <code>heapless::Pool</code> для &quot;упаковки&quot; буфера из 128 байт.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/pool.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use heapless::{
+    pool,
+    pool::singleton::{Box, Pool},
+};
+use panic_semihosting as _;
+use rtic::app;
+
+// Declare a pool of 128-byte memory blocks
+pool!(P: [u8; 128]);
+
+#[app(device = lm3s6965, dispatchers = [SSI0, QEI0])]
+mod app {
+    use crate::{Box, Pool};
+    use cortex_m_semihosting::{debug, hprintln};
+    use lm3s6965::Interrupt;
+
+    // Import the memory pool into scope
+    use super::P;
+
+    #[shared]
+    struct Shared {}
+
+    #[local]
+    struct Local {}
+
+    #[init(local = [memory: [u8; 512] = [0; 512]])]
+    fn init(cx: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        // Increase the capacity of the memory pool by ~4
+        P::grow(cx.local.memory);
+
+        rtic::pend(Interrupt::I2C0);
+
+        (Shared {}, Local {}, init::Monotonics())
+    }
+
+    #[task(binds = I2C0, priority = 2)]
+    fn i2c0(_: i2c0::Context) {
+        // claim a memory block, leave it uninitialized and ..
+        let x = P::alloc().unwrap().freeze();
+
+        // .. send it to the `foo` task
+        foo::spawn(x).ok().unwrap();
+
+        // send another block to the task `bar`
+        bar::spawn(P::alloc().unwrap().freeze()).ok().unwrap();
+    }
+
+    #[task]
+    fn foo(_: foo::Context, x: Box&lt;P&gt;) {
+        hprintln!(&quot;foo({:?})&quot;, x.as_ptr()).unwrap();
+
+        // explicitly return the block to the pool
+        drop(x);
+
+        debug::exit(debug::EXIT_SUCCESS);
+    }
+
+    #[task(priority = 2)]
+    fn bar(_: bar::Context, x: Box&lt;P&gt;) {
+        hprintln!(&quot;bar({:?})&quot;, x.as_ptr()).unwrap();
+
+        // this is done automatically so we can omit the call to `drop`
+        // drop(x);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ cargo run --example pool
+bar(0x2000008c)
+foo(0x20000110)
+</code></pre>
+<h2 id="Инспектирование-раскрываемого-кода"><a class="header" href="#Инспектирование-раскрываемого-кода">Инспектирование раскрываемого кода</a></h2>
+<p><code>#[rtic::app]</code> - это процедурный макрос, который создает код.
+Если по какой-то причине вам нужно увидеть код, сгенерированный этим макросом,
+у вас есть два пути:</p>
+<p>Вы можете изучить файл <code>rtic-expansion.rs</code> внутри папки <code>target</code>. Этот файл
+содержит элемент <code>#[rtic::app]</code> в раскрытом виде (не всю вашу программу!)
+из <em>последней сборки</em> (с помощью <code>cargo build</code> или <code>cargo check</code>) RTIC программы.
+Раскрытый код не отформатирован по-умолчанию, но вы можете запустить <code>rustfmt</code>
+на нем перед тем, как читать.</p>
+<pre><code class="language-console">$ cargo build --example foo
+
+$ rustfmt target/rtic-expansion.rs
+
+$ tail target/rtic-expansion.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#[doc = r&quot; Implementation details&quot;]
+mod app {
+    #[doc = r&quot; Always include the device crate which contains the vector table&quot;]
+    use lm3s6965 as _;
+    #[no_mangle]
+    unsafe extern &quot;C&quot; fn main() -&gt; ! {
+        rtic::export::interrupt::disable();
+        let mut core: rtic::export::Peripherals = core::mem::transmute(());
+        core.SCB.scr.modify(|r| r | 1 &lt;&lt; 1);
+        rtic::export::interrupt::enable();
+        loop {
+            rtic::export::wfi()
+        }
+    }
+}
+</code></pre></pre>
+<p>Или, вы можете использовать подкоманду <a href="https://crates.io/crates/cargo-expand"><code>cargo-expand</code></a>. Она раскроет
+<em>все</em> макросы, включая атрибут <code>#[rtic::app]</code>, и модули в вашем крейте и
+напечатает вывод в консоль.</p>
+<pre><code class="language-console">$ # создаст такой же вывод, как выше
+$ cargo expand --example smallest | tail
+</code></pre>
+<h2 id="Деструктуризация-ресурса"><a class="header" href="#Деструктуризация-ресурса">Деструктуризация ресурса</a></h2>
+<p>Если задача требует нескольких ресурсов, разбиение структуры ресурсов
+может улучшить читабельность. Вот два примера того, как это можно сделать: </p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! examples/destructure.rs
+
+#![deny(unsafe_code)]
+#![deny(warnings)]
+#![no_main]
+#![no_std]
+
+use panic_semihosting as _;
+
+#[rtic::app(device = lm3s6965)]
+mod app {
+    use cortex_m_semihosting::hprintln;
+    use lm3s6965::Interrupt;
+
+    #[shared]
+    struct Shared {
+        // Some resources to work with
+        a: u32,
+        b: u32,
+        c: u32,
+    }
+
+    #[local]
+    struct Local {}
+
+    #[init]
+    fn init(_: init::Context) -&gt; (Shared, Local, init::Monotonics) {
+        rtic::pend(Interrupt::UART0);
+        rtic::pend(Interrupt::UART1);
+
+        (Shared { a: 0, b: 0, c: 0 }, Local {}, init::Monotonics())
+    }
+
+    // Direct destructure
+    #[task(binds = UART0, shared = [&amp;a, &amp;b, &amp;c])]
+    fn uart0(cx: uart0::Context) {
+        let a = cx.shared.a;
+        let b = cx.shared.b;
+        let c = cx.shared.c;
+
+        hprintln!(&quot;UART0: a = {}, b = {}, c = {}&quot;, a, b, c).unwrap();
+    }
+
+    // De-structure-ing syntax
+    #[task(binds = UART1, shared = [&amp;a, &amp;b, &amp;c])]
+    fn uart1(cx: uart1::Context) {
+        let uart1::SharedResources { a, b, c } = cx.shared;
+
+        hprintln!(&quot;UART0: a = {}, b = {}, c = {}&quot;, a, b, c).unwrap();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Инструкции-по-миграции"><a class="header" href="#Инструкции-по-миграции">Инструкции по миграции</a></h1>
+<p>В этом разделе описывается как мигрировать между различными версиями RTIC.
+Можно также использовать для сравнения версий.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Миграция-с-v05x-на-v060"><a class="header" href="#Миграция-с-v05x-на-v060">Миграция с v0.5.x на v0.6.0</a></h1>
+<p>Этот раздел описывает как обновиться с версии v0.5.x на v0.6.0 фреймворка RTIC.</p>
+<h2 id="cargotoml---увеличьте-версию"><a class="header" href="#cargotoml---увеличьте-версию"><code>Cargo.toml</code> - увеличьте версию</a></h2>
+<p>Измените версию <code>cortex-m-rtic</code> на <code>&quot;0.6.0&quot;</code>.</p>
+<h2 id="mod-вместо-const"><a class="header" href="#mod-вместо-const"><code>mod</code> вместо <code>const</code></a></h2>
+<p>С поддержкой атрибутов над модулями трюк с <code>const APP</code> теперь не нужен.</p>
+<p>Измените</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+  [код здесь]
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>на</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+mod app {
+  [код здесь]
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Так как теперь используется обычный модуль Rust, это значит, что можно использовать
+обычный пользовательский код в этом модуле.
+Также жто значит, что <code>use</code>-выражения для ресурсов (и т.п.) могут понадобиться.</p>
+<h2 id="Перенос-диспетчеров-из-extern-c-в-аргументы-app"><a class="header" href="#Перенос-диспетчеров-из-extern-c-в-аргументы-app">Перенос диспетчеров из <code>extern &quot;C&quot;</code> в аргументы app.</a></h2>
+<p>Измените</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    [код здесь]
+
+    // RTIC требует, чтобы неиспользуемые прерывания были задекларированы в блоке extern, когда
+    // используются программные задачи; эти свободные прерывания будут использованы для управления
+    // программными задачами.
+    extern &quot;C&quot; {
+        fn SSI0();
+        fn QEI0();
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>на</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */, dispatchers = [SSI0, QEI0])]
+mod app {
+  [код здесь]
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Это работает и для ОЗУ-функций, см. examples/ramfunc.rs</p>
+<h2 id="init-всегда-возвращает-поздние-ресурсы"><a class="header" href="#init-всегда-возвращает-поздние-ресурсы">Init всегда возвращает поздние ресурсы</a></h2>
+<p>С целью сделать API более симметричным задача #[init] всегда возвращает поздние ресурсы.</p>
+<p>С этого:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = lm3s6965)]
+mod app {
+    #[init]
+    fn init(_: init::Context) {
+        rtic::pend(Interrupt::UART0);
+    }
+
+    // [еще код]
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>на это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = lm3s6965)]
+mod app {
+    #[init]
+    fn init(_: init::Context) -&gt; init::LateResources {
+        rtic::pend(Interrupt::UART0);
+
+        init::LateResources {}
+    }
+
+    // [еще код]
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Структура-resources---resources"><a class="header" href="#Структура-resources---resources">Структура Resources - <code>#[resources]</code></a></h2>
+<p>Ранее ресурсы RTIC должны были располагаться в структуре с именем &quot;Resources&quot;:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Resources {
+    // Ресурсы определены здесь
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>В RTIC v0.6.0 структура ресурсов аннотируется также, как и
+<code>#[task]</code>, <code>#[init]</code>, <code>#[idle]</code>: атрибутом <code>#[resources]</code></p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[resources]
+struct Resources {
+    // Ресурсы определены здесь
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>На самом деле, имя структуры предоставлено на усмотрение разработчика:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[resources]
+struct Whateveryouwant {
+    // Ресурсы определены здесь
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>будет работать так же хороршо.</p>
+<h2 id="Вызовпланирование-откуда-угодно"><a class="header" href="#Вызовпланирование-откуда-угодно">Вызов/планирование откуда угодно</a></h2>
+<p>С этой новой возвожностью, старый код, такой как:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[task(spawn = [bar])]
+fn foo(cx: foo::Context) {
+    cx.spawn.bar().unwrap();
+}
+
+#[task(schedule = [bar])]
+fn bar(cx: bar::Context) {
+    cx.schedule.foo(/* ... */).unwrap();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Теперь будет выглядеть так:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[task]
+fn foo(_c: foo::Context) {
+    bar::spawn().unwrap();
+}
+
+#[task]
+fn bar(_c: bar::Context) {
+    foo::schedule(/* ... */).unwrap();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Заметьте, что атрибуты <code>spawn</code> и <code>schedule</code> больше не нужны.</p>
+<h2 id="Симметричные-блокировки"><a class="header" href="#Симметричные-блокировки">Симметричные блокировки</a></h2>
+<p>Теперь RTIC использует симметричные блокировки, это значит, что метод <code>lock</code> нужно использовать для
+всех доступов к ресурсам. Поскольку высокоприоритетные задачи имеют эксклюзивный доступ к ресурсу,
+в старом коде можно было следующее:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[task(priority = 2, resources = [r])]
+fn foo(cx: foo::Context) {
+    cx.resources.r = /* ... */;
+}
+
+#[task(resources = [r])]
+fn bar(cx: bar::Context) {
+    cx.resources.r.lock(|r| r = /* ... */);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>С симметричными блокировками нужно вызывать <code>lock</code> для обоих задач:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[task(priority = 2, resources = [r])]
+fn foo(cx: foo::Context) {
+    cx.resources.r.lock(|r| r = /* ... */);
+}
+
+#[task(resources = [r])]
+fn bar(cx: bar::Context) {
+    cx.resources.r.lock(|r| r = /* ... */);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Заметьте, что скорость работы не изменяется благодаря оптимизациям LLVM, которые убирают ненужные блокировки.</p>
+<hr />
+<h2 id="Дополнительно"><a class="header" href="#Дополнительно">Дополнительно</a></h2>
+<h3 id="Внешние-задачи"><a class="header" href="#Внешние-задачи">Внешние задачи</a></h3>
+<p>Как программные, так и аппаратные задачи теперь можно определять вне модуля <code>mod app</code>.
+Ранее это было возможно только путем реализации обертки, вызывающей реализацию задачи.</p>
+<p>Смотреть примеры <code>examples/extern_binds.rs</code> и <code>examples/extern_spawn.rs</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Миграция-с-v04x-на-v050"><a class="header" href="#Миграция-с-v04x-на-v050">Миграция с v0.4.x на v0.5.0</a></h1>
+<p>Этот раздел описывает как обновить программы, написанные на RTIC v0.4.x
+на версию v0.5.0 фреймворка.</p>
+<h2 id="cargotoml"><a class="header" href="#cargotoml"><code>Cargo.toml</code></a></h2>
+<p>Во-первых, нужно обновить версию зависимости <code>cortex-m-rtic</code> до
+<code>&quot;0.5.0&quot;</code>. Опцию <code>timer-queue</code> нужно удалить.</p>
+<pre><code class="language-toml">[dependencies.cortex-m-rtic]
+# изменить это
+version = &quot;0.4.3&quot;
+
+# на это
+version = &quot;0.5.0&quot;
+
+# и удалить Cargo feature
+features = [&quot;timer-queue&quot;]
+#           ^^^^^^^^^^^^^
+</code></pre>
+<h2 id="Аргумент-context"><a class="header" href="#Аргумент-context">Аргумент <code>Context</code></a></h2>
+<p>Все функции внутри элемента <code>#[rtic::app]</code> должны принимать первым аргументом
+структуру <code>Context</code>. Этот тип <code>Context</code> будет содержать переменные, которые были магически
+инъецированы в область видимости функции версией v0.4.x фреймворка:
+<code>resources</code>, <code>spawn</code>, <code>schedule</code> -- эти переменные станут полями структуры <code>Context</code>.
+Каждая функция элемента <code>#[rtic::app]</code> получит отдельный тип <code>Context</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    // change this
+    #[task(resources = [x], spawn = [a], schedule = [b])]
+    fn foo() {
+        resources.x.lock(|x| /* .. */);
+        spawn.a(message);
+        schedule.b(baseline);
+    }
+
+    // into this
+    #[task(resources = [x], spawn = [a], schedule = [b])]
+    fn foo(mut cx: foo::Context) {
+        // ^^^^^^^^^^^^^^^^^^^^
+
+        cx.resources.x.lock(|x| /* .. */);
+    //  ^^^
+
+        cx.spawn.a(message);
+    //  ^^^
+
+        cx.schedule.b(message, baseline);
+    //  ^^^
+    }
+
+    // change this
+    #[init]
+    fn init() {
+        // ..
+    }
+
+    // into this
+    #[init]
+    fn init(cx: init::Context) {
+        //  ^^^^^^^^^^^^^^^^^
+        // ..
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Ресурсы-1"><a class="header" href="#Ресурсы-1">Ресурсы</a></h2>
+<p>Синтаксис, используемый, для определения ресурсов был изменен с переменных <code>static mut</code>
+на структуру <code>Resources</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    // измените это
+    static mut X: u32 = 0;
+    static mut Y: u32 = (); // поздний ресурс
+
+    // на это
+    struct Resources {
+        #[init(0)] // &lt;- начальное значение
+        X: u32, // ПРИМЕЧАНИЕ: мы предлагаем изменить стиль именования на `snake_case`
+
+        Y: u32, // поздний ресурс
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Периферия-устройства"><a class="header" href="#Периферия-устройства">Периферия устройства</a></h2>
+<p>Если ваша программа получала доступ к периферии в <code>#[init]</code> через
+переменну <code>device</code>, вам нужно будет добавить <code>peripherals = true</code> в атрибут
+<code>#[rtic::app]</code>, чтобы и дальше получать доступ к периферии через поле <code>device</code> структуры <code>init::Context</code>.</p>
+<p>Измените это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    #[init]
+    fn init() {
+        device.SOME_PERIPHERAL.write(something);
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>На это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */, peripherals = true)]
+//                    ^^^^^^^^^^^^^^^^^^
+const APP: () = {
+    #[init]
+    fn init(cx: init::Context) {
+        //  ^^^^^^^^^^^^^^^^^
+        cx.device.SOME_PERIPHERAL.write(something);
+    //  ^^^
+    }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="interrupt-и-exception"><a class="header" href="#interrupt-и-exception"><code>#[interrupt]</code> и <code>#[exception]</code></a></h2>
+<p>Атрибуты <code>#[interrupt]</code> и <code>#[exception]</code> были удалены. Чтобы определять аппаратные задачи в v0.5.x
+используте атрибут <code>#[task]</code> с аргументом <code>binds</code>.</p>
+<p>Измените это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    // аппаратные задачи
+    #[exception]
+    fn SVCall() { /* .. */ }
+
+    #[interrupt]
+    fn UART0() { /* .. */ }
+
+    // программные задачи
+    #[task]
+    fn foo() { /* .. */ }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>На это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(/* .. */)]
+const APP: () = {
+    #[task(binds = SVCall)]
+    //     ^^^^^^^^^^^^^^
+    fn svcall(cx: svcall::Context) { /* .. */ }
+    // ^^^^^^ мы предлагаем использовать `snake_case` имя здесь
+
+    #[task(binds = UART0)]
+    //     ^^^^^^^^^^^^^
+    fn uart0(cx: uart0::Context) { /* .. */ }
+
+    #[task]
+    fn foo(cx: foo::Context) { /* .. */ }
+
+    // ..
+};
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="schedule"><a class="header" href="#schedule"><code>schedule</code></a></h2>
+<p>Интерфейс <code>schedule</code> больше не требует cargo опции <code>timer-queue</code>, которая была удалена.
+Чтобы использовать интерфес <code>schedule</code>, нужно сначала определить
+монотонный тамер, который будет использоваьт среды выполнения, с помощью аргумента <code>monotonic</code>
+атрибута <code>#[rtic::app]</code>. Чтобы продолжить использовать счетчик циклов
+(CYCCNT) в качестве монотонного таймера, как было в версии v0.4.x, добавьте
+аргумент <code>monotonic = rtic::cyccnt::CYCCNT</code> в атрибут <code>#[rtic::app]</code>.</p>
+<p>Также были добавлены типы <code>Duration</code> и <code>Instant</code>, а трейт <code>U32Ext</code> был перемещен в модуль <code>rtic::cyccnt</code>.
+Этот модуль доступен только на устройствах ARMv7-M+.
+Удаление <code>timer-queue</code> также возвращает периферию <code>DWT</code> в структуру периферии ядра,
+включить ее в работу можно внутри <code>init</code>.</p>
+<p>Измените это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use rtic::{Duration, Instant, U32Ext};
+
+#[rtic::app(/* .. */)]
+const APP: () = {
+    #[task(schedule = [b])]
+    fn a() {
+        // ..
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>На это:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use rtic::cyccnt::{Duration, Instant, U32Ext};
+//        ^^^^^^^^
+
+#[rtic::app(/* .. */, monotonic = rtic::cyccnt::CYCCNT)]
+//                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+const APP: () = {
+    #[init]
+    fn init(cx: init::Context) {
+        cx.core.DWT.enable_cycle_counter();
+        // опционально, настройка запуска DWT без подключенного отладчика
+        cx.core.DCB.enable_trace();
+    }
+    #[task(schedule = [b])]
+    fn a(cx: a::Context) {
+        // ..
+    }
+};
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Миграция-с-rtfm-на-rtic"><a class="header" href="#Миграция-с-rtfm-на-rtic">Миграция с RTFM на RTIC</a></h1>
+<p>В этом разделе описано, как обновить приложение, написанное на RTFM v0.5.x на RTIC той же версии.
+Это необходимо из-за переименования фреймворка в соответствии с <a href="https://github.com/rtic-rs/rfcs/pull/33">RFC #33</a>.</p>
+<p><strong>Примечание:</strong> Между RTFM v0.5.3 и RTIC v0.5.3 нет разниц в коде, это исключительно изменение имен.</p>
+<h2 id="cargotoml-1"><a class="header" href="#cargotoml-1"><code>Cargo.toml</code></a></h2>
+<p>Во-первых, зависимость <code>cortex-m-rtfm</code> должна быть изменена на <code>cortex-m-rtic</code>.</p>
+<pre><code class="language-toml">[dependencies]
+# измените это
+cortex-m-rtfm = &quot;0.5.3&quot;
+
+# на это
+cortex-m-rtic = &quot;0.5.3&quot;
+</code></pre>
+<h2 id="Изменения-в-коде"><a class="header" href="#Изменения-в-коде">Изменения в коде</a></h2>
+<p>Единственное изменение в коде, которое нужно сделать - поменять все ссылки на <code>rtfm</code>,
+чтобы они указывали на <code>rtic</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//
+// Измените это
+//
+
+#[rtfm::app(/* .. */, monotonic = rtfm::cyccnt::CYCCNT)]
+const APP: () = {
+    // ...
+
+};
+
+//
+// На это
+//
+
+#[rtic::app(/* .. */, monotonic = rtic::cyccnt::CYCCNT)]
+const APP: () = {
+    // ...
+
+};
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Под-капотом"><a class="header" href="#Под-капотом">Под капотом</a></h1>
+<p><strong>Этот раздел в настоящий момент находится в разработке,
+он появится снова, когда будет завершен</strong></p>
+<p>Этот раздел описывает внутренности фреймворка RTIC на <em>высоком уровне</em>.
+Низкоуровневые детали, такие как парсинг и генерация кода, выполняемые процедурным макросом
+(<code>#[app]</code>) объясняться не будут. Внимание будет сосредоточено на анализе
+спецификации пользователя и структурах данных, используемых на этапе выполнения.</p>
+<p>Мы настоятельно рекомендуем вам прочитать раздел о <a href="https://github.com/rust-embedded/embedonomicon/pull/48">конкуренции</a> в embedonomicon
+перед тем, как погружаться в материал.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Настройка-прерываний"><a class="header" href="#Настройка-прерываний">Настройка прерываний</a></h1>
+<p>Прерывания - это основа работы программ на RTIC. Правильно настроить приоритеты
+прерываний и убедиться, что они не изменяются во время выполнения обязательно
+для безопасной работы программы.</p>
+<p>Фреймворк RTIC представляет приоритеты прерываний, как нечто, что должно быть определено
+на этапе компиляции. Однако, статическая настройка должна быть зашита в соответствующие регистры
+в процессе инициализации программы. Настройка прерываний происходит до запуска функции <code>init</code>.</p>
+<p>Этот пример дает представление о коде, запускаемом фреймворком RTIC:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = lm3s6965)]
+mod app {
+    #[init]
+    fn init(c: init::Context) {
+        // .. пользовательский код ..
+    }
+
+    #[idle]
+    fn idle(c: idle::Context) -&gt; ! {
+        // .. пользовательский код ..
+    }
+
+    #[interrupt(binds = UART0, priority = 2)]
+    fn foo(c: foo::Context) {
+        // .. пользовательский код ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Фреймворк генерирует точку входа в программу, которая выглядит примерно так:</p>
+<pre><pre class="playground"><code class="language-rust">// настоящая точку входа в программу
+#[no_mangle]
+unsafe fn main() -&gt; ! {
+    // преобразует логические приоритеты в аппаратные / NVIC приоритеты
+    fn logical2hw(priority: u8) -&gt; u8 {
+        use lm3s6965::NVIC_PRIO_BITS;
+
+        // NVIC кодирует приоритеты верхними битами
+        // большие значения обозначают меньший приоритет
+        ((1 &lt;&lt; NVIC_PRIORITY_BITS) - priority) &lt;&lt; (8 - NVIC_PRIO_BITS)
+    }
+
+    cortex_m::interrupt::disable();
+
+    let mut core = cortex_m::Peripheral::steal();
+
+    core.NVIC.enable(Interrupt::UART0);
+
+    // значение, определенное пользователем
+    let uart0_prio = 2;
+
+    // проверка на этапе компиляции, что определенный приоритет входит в поддерживаемый диапазон
+    let _ = [(); (1 &lt;&lt; NVIC_PRIORITY_BITS) - (uart0_prio as usize)];
+
+    core.NVIC.set_priority(Interrupt::UART0, logical2hw(uart0_prio));
+
+    // вызов пользовательского кода
+    init(/* .. */);
+
+    // ..
+
+    cortex_m::interrupt::enable();
+
+    // вызов пользовательского кода
+    idle(/* .. */)
+}
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Нереентерабельность"><a class="header" href="#Нереентерабельность">Нереентерабельность</a></h1>
+<p>В RTIC задачи-обработчики <em>не</em> могут использоваться повторно. Переиспользование задачи-обработчика
+может сломать правила заимствования Rust и привести к <em>неопределенному поведению</em>.
+Задача-обработчик теоретически может быть переиспользована одним из двух способов: программно или аппаратно.</p>
+<h2 id="Программно"><a class="header" href="#Программно">Программно</a></h2>
+<p>Чтобы переиспользовать задачу-обработчик программно, назначенный ей обработчик прерывания
+должен быть вызван с помощью FFI (смотрите пример ниже). FFI требует <code>unsafe</code> код,
+что уменьшает желание конечных пользователей вызывать обработчик прерывания.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    #[init]
+    fn init(c: init::Context) { .. }
+
+    #[interrupt(binds = UART0)]
+    fn foo(c: foo::Context) {
+        static mut X: u64 = 0;
+
+        let x: &amp;mut u64 = X;
+
+        // ..
+
+        //~ `bar` может вытеснить `foo` в этом месте
+
+        // ..
+    }
+
+    #[interrupt(binds = UART1, priority = 2)]
+    fn bar(c: foo::Context) {
+        extern &quot;C&quot; {
+            fn UART0();
+        }
+
+        // этот обработчик прерывания вызовет задачу-обработчик `foo`, что сломает
+        // ссылку на статическую переменную `X`
+        unsafe { UART0() }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Фреймворк RTIC должен сгенерировать код обработчика прерывания, который вызывает
+определенные пользователем задачи-обработчики. Мы аккуратны в том, чтобы обеспечить
+невозможность вызова этих обработчиков из пользовательского кода.</p>
+<p>Пример выше раскрывается в:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // .. пользовательский код ..
+}
+
+fn bar(c: bar::Context) {
+    // .. пользовательский код ..
+}
+
+mod app {
+    // все в этом блоке невидимо для пользовательского кода
+
+    #[no_mangle]
+    unsafe fn USART0() {
+        foo(..);
+    }
+
+    #[no_mangle]
+    unsafe fn USART1() {
+        bar(..);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Аппаратно"><a class="header" href="#Аппаратно">Аппаратно</a></h2>
+<p>Обработчик прерывания также может быть вызван без программного вмешательства.
+Это может произойти, если один обработчик будет назначен двум или более прерываниям
+в векторе прерываний, но синтаксиса для такого рода функциональности в RTIC нет.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Контроль-доступа"><a class="header" href="#Контроль-доступа">Контроль доступа</a></h1>
+<p>Одна из основ RTIC - контроль доступа. Контроль того, какая часть программы
+может получить доступ к какой статической переменной - инструмент обеспечения
+безопасности памяти.</p>
+<p>Статические переменные используются для разделения состояний между обработчиками
+прерываний, или между обработчиком прерывания и нижним контекстом выполнения, <code>main</code>.
+В обычном Rust коде трудно обеспечить гранулированный контроль за тем, какие функции
+могут получать доступ к статическим переменным, поскольку к статическим переменным
+можно получить доступ из любой функции, находящейся в той же области видимости,
+в которой они определены. Модули дают частичный контроль над доступом
+к статическим переменным, но они недостаточно гибкие.</p>
+<p>Чтобы добиться полного контроля за тем, что задачи могут получить доступ
+только к статическим переменным (ресурсам), которые им были указаны в RTIC атрибуте,
+фреймворк RTIC производит трансформацию структуры кода.
+Эта трансформация состоит из размещения ресурсов (статических переменных), определенных
+пользователем <em>внутри</em> модуля, а пользовательского кода <em>вне</em> модуля.
+Это делает невозможным обращение пользовательского кода к статическим переменным.</p>
+<p>Затем доступ к ресурсам предоставляется каждой задаче с помощью структуры <code>Resources</code>,
+чьи поля соответствуют ресурсам, к которым получает доступ задача.
+Есть лишь одна такая структура на задачу и структура <code>Resources</code> инициализируется
+либо уникальной ссылкой (<code>&amp;mut-</code>) на статическую переменную, либо с помощью прокси-ресурса (см.
+раздел <a href="internals/critical-sections.html">критические секции</a>).</p>
+<p>Код ниже - пример разных трансформаций структуры кода, происходящих за сценой:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    static mut X: u64: 0;
+    static mut Y: bool: 0;
+
+    #[init(resources = [Y])]
+    fn init(c: init::Context) {
+        // .. пользовательский код ..
+    }
+
+    #[interrupt(binds = UART0, resources = [X])]
+    fn foo(c: foo::Context) {
+        // .. пользовательский код ..
+    }
+
+    #[interrupt(binds = UART1, resources = [X, Y])]
+    fn bar(c: bar::Context) {
+        // .. пользовательский код ..
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Фреймворк создает код, подобный этому:</p>
+<pre><pre class="playground"><code class="language-rust">fn init(c: init::Context) {
+    // .. пользовательский код ..
+}
+
+fn foo(c: foo::Context) {
+    // .. пользовательский код ..
+}
+
+fn bar(c: bar::Context) {
+    // .. пользовательский код ..
+}
+
+// Публичное API
+pub mod init {
+    pub struct Context&lt;'a&gt; {
+        pub resources: Resources&lt;'a&gt;,
+        // ..
+    }
+
+    pub struct Resources&lt;'a&gt; {
+        pub Y: &amp;'a mut bool,
+    }
+}
+
+pub mod foo {
+    pub struct Context&lt;'a&gt; {
+        pub resources: Resources&lt;'a&gt;,
+        // ..
+    }
+
+    pub struct Resources&lt;'a&gt; {
+        pub X: &amp;'a mut u64,
+    }
+}
+
+pub mod bar {
+    pub struct Context&lt;'a&gt; {
+        pub resources: Resources&lt;'a&gt;,
+        // ..
+    }
+
+    pub struct Resources&lt;'a&gt; {
+        pub X: &amp;'a mut u64,
+        pub Y: &amp;'a mut bool,
+    }
+}
+
+/// Детали реализации
+mod app {
+    // все, что внутри этого модуля спрятано от пользовательского кода
+
+    static mut X: u64 = 0;
+    static mut Y: bool = 0;
+
+    // настоящая точка входа в программу
+    unsafe fn main() -&gt; ! {
+        interrupt::disable();
+
+        // ..
+
+        // вызов пользовательского кода; передача ссылок на статические переменные
+        init(init::Context {
+            resources: init::Resources {
+                X: &amp;mut X,
+            },
+            // ..
+        });
+
+        // ..
+
+        interrupt::enable();
+
+        // ..
+    }
+
+    // обработчик прерывания,с которым связан `foo`
+    #[no_mangle]
+    unsafe fn UART0() {
+        // вызов пользовательского кода; передача ссылок на статические переменные
+        foo(foo::Context {
+            resources: foo::Resources {
+                X: &amp;mut X,
+            },
+            // ..
+        });
+    }
+
+    // обработчик прерывания,с которым связан `bar`
+    #[no_mangle]
+    unsafe fn UART1() {
+        // вызов пользовательского кода; передача ссылок на статические переменные
+        bar(bar::Context {
+            resources: bar::Resources {
+                X: &amp;mut X,
+                Y: &amp;mut Y,
+            },
+            // ..
+        });
+    }
+}
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Поздние-ресурсы-1"><a class="header" href="#Поздние-ресурсы-1">Поздние ресурсы</a></h1>
+<p>Некоторые ресурсы инициализируются во время выполнения после завершения функции <code>init</code>.
+Важно то, что ресурсы (статические переменные) полностью инициализируются
+до того, как задачи смогут запуститься, вот почему они должны быть инициализированы
+пока прерывания отключены.</p>
+<p>Ниже показан пример кода, генерируемого фреймворком для инициализации позних ресурсов.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    struct Resources {
+        x: Thing,
+    }
+
+    #[init]
+    fn init() -&gt; init::LateResources {
+        // ..
+
+        init::LateResources {
+            x: Thing::new(..),
+        }
+    }
+
+    #[task(binds = UART0, resources = [x])]
+    fn foo(c: foo::Context) {
+        let x: &amp;mut Thing = c.resources.x;
+
+        x.frob();
+
+        // ..
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Код, генерируемы фреймворком выглядит примерно так:</p>
+<pre><pre class="playground"><code class="language-rust">fn init(c: init::Context) -&gt; init::LateResources {
+    // .. пользовательский код ..
+}
+
+fn foo(c: foo::Context) {
+    // .. пользовательский код ..
+}
+
+// Public API
+pub mod init {
+    pub struct LateResources {
+        pub x: Thing,
+    }
+
+    // ..
+}
+
+pub mod foo {
+    pub struct Resources&lt;'a&gt; {
+        pub x: &amp;'a mut Thing,
+    }
+
+    pub struct Context&lt;'a&gt; {
+        pub resources: Resources&lt;'a&gt;,
+        // ..
+    }
+}
+
+/// Детали реализации
+mod app {
+    // неинициализированная статическая переменная
+    static mut x: MaybeUninit&lt;Thing&gt; = MaybeUninit::uninit();
+
+    #[no_mangle]
+    unsafe fn main() -&gt; ! {
+        cortex_m::interrupt::disable();
+
+        // ..
+
+        let late = init(..);
+
+        // инициализация поздних ресурсов
+        x.as_mut_ptr().write(late.x);
+
+        cortex_m::interrupt::enable(); //~ compiler fence
+
+        // исключения, прерывания и задачи могут вытеснить `main` в этой точке
+
+        idle(..)
+    }
+
+    #[no_mangle]
+    unsafe fn UART0() {
+        foo(foo::Context {
+            resources: foo::Resources {
+                // `x` уже инициализирована к этому моменту
+                x: &amp;mut *x.as_mut_ptr(),
+            },
+            // ..
+        })
+    }
+}
+</code></pre></pre>
+<p>Важная деталь здесь то, что <code>interrupt::enable</code> ведет себя как like a <em>compiler
+fence</em>, которое не дает компилятору пореставить запись в <code>X</code> <em>после</em>
+<code>interrupt::enable</code>. Если бы компилятор мог делать такие перестановки появились
+бы гонки данных между этой записью и любой операцией <code>foo</code>, взаимодействующей с <code>X</code>.</p>
+<p>Архитектурам с более сложным конвейером инструкций нужен барьер памяти
+(<code>atomic::fence</code>) вместо compiler fence для полной очистки операции записи
+перед включением прерываний. Архитектура ARM Cortex-M не нуждается в барьере памяти
+в одноядерном контексте.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Критические-секции"><a class="header" href="#Критические-секции">Критические секции</a></h1>
+<p>Когда ресурсы (статические переменные) разделяются между двумя или более задачами,
+которые выполняются с разными приоритетами, некая форма запрета изменений
+необходима, чтобы изменять память без гонки данных. В RTIC мы используем
+основанные на приоритетах критические секции, чтобы гарантировать запрет изменений
+(см. <a href="https://en.wikipedia.org/wiki/Priority_ceiling_protocol">Протокол немедленного максимального приоритета</a>).</p>
+<p>Критическия секция состоит во временном увеличении <em>динамического</em> приоритета задачи.
+Пока задача находится в критической секции, все другие задачи, которые могут
+послать запрос переменной <em>не могут запуститься</em>.</p>
+<p>Насколько большим должен быть динамический приориткт, чтобы гарантировать запрет изменений
+определенного ресурса? <a href="internals/ceilings.html">Анализ приоритетов</a> отвечает на этот вопрос
+и будет обсужден в следующем разделе. В этом разделе мы сфокусируемся
+на реализации критической секции.</p>
+<h2 id="Прокси-ресурсы"><a class="header" href="#Прокси-ресурсы">Прокси-ресурсы</a></h2>
+<p>Для упрощения, давайте взглянем на ресурс, разделяемый двумя задачами,
+запускаемыми с разными приоритетами. Очевидно, что одна задача может вытеснить
+другую; чтобы предотвратить гонку данных задача с <em>низким приоритетом</em> должна
+использовать критическую секцию, когда необходимо изменять разделяемую память.
+С другой стороны, высокоприоритетная задача может напрямую изменять
+разделяемую память, поскольку не может быть вытеснена низкоприоритетной задачей.
+Чтобы заставить использовать критическую секцию на задаче с низким приоритетом,
+мы предоставляем <em>прокси-ресурсы</em>, в которых мы отдаем уникальную ссылку
+(<code>&amp;mut-</code>) высокоприоритетной задаче.</p>
+<p>Пример ниже показывает разные типы, передаваемые каждой задаче:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mut app {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x])]
+    fn foo(c: foo::Context) {
+        // прокси-ресурс
+        let mut x: resources::x = c.resources.x;
+
+        x.lock(|x: &amp;mut u64| {
+            // критическая секция
+            *x += 1
+        });
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: bar::Context) {
+        let mut x: &amp;mut u64 = c.resources.x;
+
+        *x += 1;
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Теперь давайте посмотрим. как эти типы создаются фреймворком.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // .. пользовательский код ..
+}
+
+fn bar(c: bar::Context) {
+    // .. пользовательский код ..
+}
+
+pub mod resources {
+    pub struct x {
+        // ..
+    }
+}
+
+pub mod foo {
+    pub struct Resources {
+        pub x: resources::x,
+    }
+
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+}
+
+pub mod bar {
+    pub struct Resources&lt;'a&gt; {
+        pub x: &amp;'a mut u64,
+    }
+
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+}
+
+mod app {
+    static mut x: u64 = 0;
+
+    impl rtic::Mutex for resources::x {
+        type T = u64;
+
+        fn lock&lt;R&gt;(&amp;mut self, f: impl FnOnce(&amp;mut u64) -&gt; R) -&gt; R {
+            // мы рассмотрим это детально позднее
+        }
+    }
+
+    #[no_mangle]
+    unsafe fn UART0() {
+        foo(foo::Context {
+            resources: foo::Resources {
+                x: resources::x::new(/* .. */),
+            },
+            // ..
+        })
+    }
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        bar(bar::Context {
+            resources: bar::Resources {
+                x: &amp;mut x,
+            },
+            // ..
+        })
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="lock-1"><a class="header" href="#lock-1"><code>lock</code></a></h2>
+<p>Теперь давайте рассмотрим непосредственно критическую секцию. В этом примере мы должны
+увеличить динамический приоритет минимум до <code>2</code>, чтобы избежать гонки данных.
+В архитектуре Cortex-M динамический приоритет можно изменить записью в регистр <code>BASEPRI</code>.</p>
+<p>Семантика регистра <code>BASEPRI</code> такова:</p>
+<ul>
+<li>Запись <code>0</code> в <code>BASEPRI</code> отключает его функциональность.</li>
+<li>Запись ненулевого значения в <code>BASEPRI</code> изменяет уровень приоритета, требуемого для
+вытеснения прерывания. Однако, это имеет эффект, только когда записываемое значение
+<em>меньше</em>, чем уровень приоритета текущего контекста выполнения, но обращаем внимание, что
+более низкий уровень аппаратного приоритета означает более высокий логический приоритет</li>
+</ul>
+<p>Таким образом, динамический приоритет в любой момент времени может быть рассчитан как</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>dynamic_priority = max(hw2logical(BASEPRI), hw2logical(static_priority))
+<span class="boring">}
+</span></code></pre></pre>
+<p>Где <code>static_priority</code> - приоритет, запрограммированный в NVIC для текущего прерывания,
+или логический <code>0</code>, когда текущий контекств - это <code>idle</code>.</p>
+<p>В этом конкретном примере мы можем реализовать критическую секцию так:</p>
+<blockquote>
+<p><strong>ПРИМЕЧАНИЕ:</strong> это упрощенная реализация</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl rtic::Mutex for resources::x {
+    type T = u64;
+
+    fn lock&lt;R, F&gt;(&amp;mut self, f: F) -&gt; R
+    where
+        F: FnOnce(&amp;mut u64) -&gt; R,
+    {
+        unsafe {
+            // начать критическую секцию: увеличить динамический приоритет до `2`
+            asm!(&quot;msr BASEPRI, 192&quot; : : : &quot;memory&quot; : &quot;volatile&quot;);
+
+            // запустить пользовательский код в критической секции
+            let r = f(&amp;mut x);
+
+            // окончить критическую секцию: восстановить динамический приоритет до статического значения (`1`)
+            asm!(&quot;msr BASEPRI, 0&quot; : : : &quot;memory&quot; : &quot;volatile&quot;);
+
+            r
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>В данном случае важно указать <code>&quot;memory&quot;</code> в блоке <code>asm!</code>.
+Это не даст компилятору менять местами операции вокруг него.
+Это важно, поскольку доступ к переменной <code>x</code> вне критической секции привело бы
+к гонке данных.</p>
+<p>Важно отметить, что сигнатура метода <code>lock</code> препятствет его вложенным вызовам.
+Это необходимо для безопасности памяти, так как вложенные вызовы привели бы
+к созданию множественных уникальных ссылок (<code>&amp;mut-</code>) на <code>x</code>, ломая правила заимствования Rust.
+Смотреть ниже:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[interrupt(binds = UART0, priority = 1, resources = [x])]
+fn foo(c: foo::Context) {
+    // resource proxy
+    let mut res: resources::x = c.resources.x;
+
+    res.lock(|x: &amp;mut u64| {
+        res.lock(|alias: &amp;mut u64| {
+            //~^ ошибка: `res` уже был заимствован уникально (`&amp;mut-`)
+            // ..
+        });
+    });
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Вложенность"><a class="header" href="#Вложенность">Вложенность</a></h2>
+<p>Вложенные вызовы <code>lock</code> на <em>том же</em> ресурсе должны отклоняться компилятором
+для безопасности памяти, однако вложенные вызовы <code>lock</code> на <em>разных</em> ресурсах -
+нормальная операция. В этом случае мы хотим убедиться, что вложенные критические секции
+никогда не приведут к понижению динамического приоритета, так как это плохо,
+и мы хотим оптимизировать несколько записей в регистр <code>BASEPRI</code> и compiler fences.
+Чтобы справиться с этим, мы проследим динамический приоритет задачи, с помощью стековой
+переменной и используем ее, чтобы решить, записывать <code>BASEPRI</code> или нет.
+На практике, стековая переменная будет соптимизирована компилятором, но все еще
+будет предоставлять информацию компилятору.</p>
+<p>Рассмотрим такую программу:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+        #[init(0)]
+        y: u64,
+    }
+
+    #[init]
+    fn init() {
+        rtic::pend(Interrupt::UART0);
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x, y])]
+    fn foo(c: foo::Context) {
+        let mut x = c.resources.x;
+        let mut y = c.resources.y;
+
+        y.lock(|y| {
+            *y += 1;
+
+            *x.lock(|x| {
+                x += 1;
+            });
+
+            *y += 1;
+        });
+
+        // середина
+
+        x.lock(|x| {
+            *x += 1;
+
+            y.lock(|y| {
+                *y += 1;
+            });
+
+            *x += 1;
+        })
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: foo::Context) {
+        // ..
+    }
+
+    #[interrupt(binds = UART2, priority = 3, resources = [y])]
+    fn baz(c: foo::Context) {
+        // ..
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Код, сгенерированный фреймворком, выглядит так:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// опущено: пользовательский код
+
+pub mod resources {
+    pub struct x&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+    }
+
+    impl&lt;'a&gt; x&lt;'a&gt; {
+        pub unsafe fn new(priority: &amp;'a Cell&lt;u8&gt;) -&gt; Self {
+            x { priority }
+        }
+
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            self.priority
+        }
+    }
+
+    // repeat for `y`
+}
+
+pub mod foo {
+    pub struct Context {
+        pub resources: Resources,
+        // ..
+    }
+
+    pub struct Resources&lt;'a&gt; {
+        pub x: resources::x&lt;'a&gt;,
+        pub y: resources::y&lt;'a&gt;,
+    }
+}
+
+mod app {
+    use cortex_m::register::basepri;
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        // статический приоритет прерывания (определено пользователем)
+        const PRIORITY: u8 = 2;
+
+        // сделать снимок BASEPRI
+        let initial = basepri::read();
+
+        let priority = Cell::new(PRIORITY);
+        bar(bar::Context {
+            resources: bar::Resources::new(&amp;priority),
+            // ..
+        });
+
+        // вернуть BASEPRI значение из снимка, сделанного ранее
+        basepri::write(initial); // то же, что и `asm!` блок, виденный ранее
+    }
+
+    // так же для `UART0` / `foo` и `UART2` / `baz`
+
+    impl&lt;'a&gt; rtic::Mutex for resources::x&lt;'a&gt; {
+        type T = u64;
+
+        fn lock&lt;R&gt;(&amp;mut self, f: impl FnOnce(&amp;mut u64) -&gt; R) -&gt; R {
+            unsafe {
+                // определение максимального приоритет ресурса
+                const CEILING: u8 = 2;
+
+                let current = self.priority().get();
+                if current &lt; CEILING {
+                    // увеличить динамический приоритет
+                    self.priority().set(CEILING);
+                    basepri::write(logical2hw(CEILING));
+
+                    let r = f(&amp;mut y);
+
+                    // восстановить динамический приоритет
+                    basepri::write(logical2hw(current));
+                    self.priority().set(current);
+
+                    r
+                } else {
+                    // динамический приоритет достаточно высок
+                    f(&amp;mut y)
+                }
+            }
+        }
+    }
+
+    // повторить для ресурса `y`
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Наконец, компилятор оптимизирует функцию  <code>foo</code> во что-то наподобие такого:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(c: foo::Context) {
+    // ПРИМЕЧАНИЕ: BASEPRI содержит значение `0` (значение сброса) в этот момент
+
+    // увеличить динамический приоритет до `3`
+    unsafe { basepri::write(160) }
+
+    // две операции над `y` объединены в одну
+    y += 2;
+
+    // BASEPRI не изменяется для доступа к `x`, потому что динамический приоритет достаточно высок
+    x += 1;
+
+    // уменьшить (восстановить) динамический приоритет до `1`
+    unsafe { basepri::write(224) }
+
+    // средина
+
+    // увеличить динамический приоритет до `2`
+    unsafe { basepri::write(192) }
+
+    x += 1;
+
+    // увеличить динамический приоритет до `3`
+    unsafe { basepri::write(160) }
+
+    y += 1;
+
+    // уменьшить (восстановить) динамический приоритет до `2`
+    unsafe { basepri::write(192) }
+
+    // ПРИМЕЧАНИЕ: было вы правильно объединить эту операцию над  `x` с предыдущей, но
+    // compiler fences грубые и предотвращают оптимизацию
+    x += 1;
+
+    // уменьшить (восстановить) динамический приоритет до `1`
+    unsafe { basepri::write(224) }
+
+    // ПРИМЕЧАНИЕ: BASEPRI содержит значение `224` в этот момент
+    // обработчик UART0 восстановит значение `0` перед завершением
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Инвариант-basepri"><a class="header" href="#Инвариант-basepri">Инвариант BASEPRI</a></h2>
+<p>Инвариант, который фреймворк RTIC должен сохранять в том, что значение
+BASEPRI в начале обработчика <em>прерывания</em> должно быть таким же, как и при выходе
+из него. BASEPRI может изменяться в процессе выполнения обработчика прерывания,
+но но выполнения обработчика прерывания в начале и конце не должно вызвать
+наблюдаемого изменения BASEPRI.</p>
+<p>Этот инвариант нужен, чтобы избежать уеличения динамического приоритета до значений,
+при которых обработчик не сможет быть вытеснен. Лучше всего это видно на следующем примере:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    struct Resources {
+        #[init(0)]
+        x: u64,
+    }
+
+    #[init]
+    fn init() {
+        // `foo` запустится сразу после завершения `init`
+        rtic::pend(Interrupt::UART0);
+    }
+
+    #[task(binds = UART0, priority = 1)]
+    fn foo() {
+        // BASEPRI равен `0` в этот момент; динамический приоритет равен `1`
+
+        // `bar` вытеснит `foo` в этот момент
+        rtic::pend(Interrupt::UART1);
+
+        // BASEPRI равен `192` в этот момент (из-за бага); динамический приоритет равен `2`
+        // эта функция возвращается в `idle`
+    }
+
+    #[task(binds = UART1, priority = 2, resources = [x])]
+    fn bar() {
+        // BASEPRI равен `0` (динамический приоритет = 2)
+
+        x.lock(|x| {
+            // BASEPRI увеличен до `160` (динамический приоритет = 3)
+
+            // ..
+        });
+
+        // BASEPRI восстановлен до `192` (динамический приоритет = 2)
+    }
+
+    #[idle]
+    fn idle() -&gt; ! {
+        // BASEPRI равен `192` (из-за бага); динамический приоритет = 2
+
+        // это не оказывает эффекта, из-за значени BASEPRI
+        // задача `foo` не будет выполнена снова никогда
+        rtic::pend(Interrupt::UART0);
+
+        loop {
+            // ..
+        }
+    }
+
+    #[task(binds = UART2, priority = 3, resources = [x])]
+    fn baz() {
+        // ..
+    }
+
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>ВАЖНО: давайте например мы <em>забудем</em> восстановить <code>BASEPRI</code> в <code>UART1</code> -- из-за
+какого нибудь бага в генераторе кода RTIC.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// код, сгенерированный RTIC
+
+mod app {
+    // ..
+
+    #[no_mangle]
+    unsafe fn UART1() {
+        // статический приоритет этого прерывания (определен пользователем)
+        const PRIORITY: u8 = 2;
+
+        // сделать снимок BASEPRI
+        let initial = basepri::read();
+
+        let priority = Cell::new(PRIORITY);
+        bar(bar::Context {
+            resources: bar::Resources::new(&amp;priority),
+            // ..
+        });
+
+        // БАГ: ЗАБЫЛИ восстановить BASEPRI на значение из снимка
+        basepri::write(initial);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>В результате, <code>idle</code> запустится на динамическом приоритете <code>2</code> и на самом деле
+система больше никогда не перейдет на динамический приоритет ниже <code>2</code>.
+Это не компромис для безопасности памяти программы, а влияет на диспетчеризацию задач:
+в этом конкретном случае задачи с приоритетом <code>1</code> никогда не получат шанс на запуск.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Анализ-приоритетов"><a class="header" href="#Анализ-приоритетов">Анализ приоритетов</a></h1>
+<p><em>Поиск максимального приоритета</em> ресурса (<em>ceiling</em>) - поиск динамического
+приоритета, который любая задача должна иметь, чтобы безопасно работать с
+памятью ресурсов. Анализ приоритетов - относительно прост,
+но критичен для безопасности памяти RTIC программ.</p>
+<p>Для расчета максимального приоритета ресурса мы должны сначала составить
+список задач, имеющих доступ к ресурсу -- так как фреймворк RTIC
+форсирует контроль доступа к ресурсам на этапе компиляции, он
+также имеет доступ к этой информации на этапе компиляции.
+Максимальный приоритет ресурса - просто наивысший логический приоритет
+среди этих задач.</p>
+<p><code>init</code> и <code>idle</code> не настоящие задачи, но у них есть доступ к ресурсам,
+поэтому они должны учитываться при анализе приоритетов.
+<code>idle</code> учитывается как задача, имеющая логический приоритет <code>0</code>,
+в то время как <code>init</code> полностью исключается из анализа --
+причина этому в том, что <code>init</code> никогда не использует (не нуждается) критические
+секции для доступа к статическим переменным.</p>
+<p>В предыдущем разделе мы показывали, что разделяемые ресусы
+могут быть представлены уникальными ссылками (<code>&amp;mut-</code>) или скрываться за
+прокси в зависимости от того, имеет ли задача к ним доступ.
+Какой из вариантов представляется задаче зависит от приоритета задачи и
+максимального приоритета ресурса.
+Если приоритет задачи такой же, как максимальный приоритет ресурса, тогда
+задача получает уникальную ссылку (<code>&amp;mut-</code>) на память ресурса,
+в противном случае задача получает прокси -- это также касается <code>idle</code>.
+<code>init</code> особеннвй: он всегда получает уникальные ссылки (<code>&amp;mut-</code>) на ресурсы.</p>
+<p>Пример для иллюстрации анализа приоритетов:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    struct Resources {
+        // доступен из `foo` (prio = 1) и `bar` (prio = 2)
+        // -&gt; CEILING = 2
+        #[init(0)]
+        x: u64,
+
+        // доступен из `idle` (prio = 0)
+        // -&gt; CEILING = 0
+        #[init(0)]
+        y: u64,
+    }
+
+    #[init(resources = [x])]
+    fn init(c: init::Context) {
+        // уникальная ссылка, потому что это `init`
+        let x: &amp;mut u64 = c.resources.x;
+
+        // уникальная ссылка, потому что это `init`
+        let y: &amp;mut u64 = c.resources.y;
+
+        // ..
+    }
+
+    // PRIORITY = 0
+    #[idle(resources = [y])]
+    fn idle(c: idle::Context) -&gt; ! {
+        // уникальная ссылка, потому что
+        // приоритет (0) == максимальному приоритету ресурса (0)
+        let y: &amp;'static mut u64 = c.resources.y;
+
+        loop {
+            // ..
+        }
+    }
+
+    #[interrupt(binds = UART0, priority = 1, resources = [x])]
+    fn foo(c: foo::Context) {
+        // прокси-ресурс, потому что
+        // приоритет задач (1) &lt; максимальному приоритету ресурса (2)
+        let x: resources::x = c.resources.x;
+
+        // ..
+    }
+
+    #[interrupt(binds = UART1, priority = 2, resources = [x])]
+    fn bar(c: foo::Context) {
+        // уникальная ссылка, потому что
+        // приоритет задачи (2) == максимальному приоритету ресурса (2)
+        let x: &amp;mut u64 = c.resources.x;
+
+        // ..
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Программные-задачи-1"><a class="header" href="#Программные-задачи-1">Программные задачи</a></h1>
+<p>RTIC поддерживает программные и аппаратные задачи. Каждая аппаратная задача
+назначается на отдельный обработчик прерывания. С другой стороны, несколько
+программных задач могут управляться одним обработчиком прерывания --
+это сделано, чтобы минимизировать количество обработчиков прерывания,
+используемых фреймворком.</p>
+<p>Фреймворк группирует задачи, для которых вызывается <code>spawn</code> по уровню приоритета,
+и генерирует один <em>диспетчер задачи</em> для каждого уровня приоритета.
+Каждый диспетчер запускается на отдельном обработчике прерывания,
+а приоритет этого обработчика прерывания устанавливается так, чтобы соответствовать
+уровню приоритета задач, управляемых диспетчером.</p>
+<p>Каждый диспетчер задач хранит <em>очередь</em> задач, <em>готовых</em> к выполнению;
+эта очередь называется <em>очередью готовности</em>. Вызов программной задачи состоит
+из добавления записи в очередь и вызова прерывания, который запускает соответствующий
+диспетчер задач. Каждая запись в эту очередь содержит метку (<code>enum</code>),
+которая идентифицирует задачу, которую необходимо выполнить и <em>указатель</em>
+на сообщение, передаваемое задаче.</p>
+<p>Очередь готовности - неблокируемая очередь типа SPSC (один производитель - один потребитель).
+Диспетчер задач владеет конечным потребителем в очереди; конечным производителем
+считается ресурс, за который соперничают задачи, которые могут вызывать (<code>spawn</code>) другие задачи.</p>
+<h2 id="Дисметчер-задач"><a class="header" href="#Дисметчер-задач">Дисметчер задач</a></h2>
+<p>Давайте сначала глянем на код, генерируемый фреймворком для диспетчеризации задач.
+Рассмотрим пример:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    // ..
+
+    #[interrupt(binds = UART0, priority = 2, spawn = [bar, baz])]
+    fn foo(c: foo::Context) {
+        foo.spawn.bar().ok();
+
+        foo.spawn.baz(42).ok();
+    }
+
+    #[task(capacity = 2, priority = 1)]
+    fn bar(c: bar::Context) {
+        // ..
+    }
+
+    #[task(capacity = 2, priority = 1, resources = [X])]
+    fn baz(c: baz::Context, input: i32) {
+        // ..
+    }
+
+    extern &quot;C&quot; {
+        fn UART1();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Фреймворк создает следующий диспетчер задач, состоящий из обработчика прерывания и очереди готовности:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn bar(c: bar::Context) {
+    // .. пользовательский код ..
+}
+
+mod app {
+    use heapless::spsc::Queue;
+    use cortex_m::register::basepri;
+
+    struct Ready&lt;T&gt; {
+        task: T,
+        // ..
+    }
+
+    /// вызываемые (`spawn`) задачи, выполняющиеся с уровнем приоритета `1`
+    enum T1 {
+        bar,
+        baz,
+    }
+
+    // очередь готовности диспетчера задач
+    // `U4` - целое число, представляющее собой емкость этой очереди
+    static mut RQ1: Queue&lt;Ready&lt;T1&gt;, U4&gt; = Queue::new();
+
+    // обработчик прерывания, выбранный для диспетчеризации задач с приоритетом `1`
+    #[no_mangle]
+    unsafe UART1() {
+        // приоритет данного обработчика прерывания
+        const PRIORITY: u8 = 1;
+
+        let snapshot = basepri::read();
+
+        while let Some(ready) = RQ1.split().1.dequeue() {
+            match ready.task {
+                T1::bar =&gt; {
+                    // **ПРИМЕЧАНИЕ** упрощенная реализация
+
+                    // используется для отслеживания динамического приоритета
+                    let priority = Cell::new(PRIORITY);
+
+                    // вызов пользовательского кода
+                    bar(bar::Context::new(&amp;priority));
+                }
+
+                T1::baz =&gt; {
+                    // рассмотрим `baz` позднее
+                }
+            }
+        }
+
+        // инвариант BASEPRI
+        basepri::write(snapshot);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="Вызов-задачи"><a class="header" href="#Вызов-задачи">Вызов задачи</a></h2>
+<p>Интерфейс <code>spawn</code> предоставлен пользователю как методы структурв <code>Spawn</code>.
+Для каждой задачи существует своя структура <code>Spawn</code>.</p>
+<p>Код <code>Spawn</code>, генерируемый фреймворком для предыдущего примера выглядит так:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod foo {
+    // ..
+
+    pub struct Context&lt;'a&gt; {
+        pub spawn: Spawn&lt;'a&gt;,
+        // ..
+    }
+
+    pub struct Spawn&lt;'a&gt; {
+        // отслеживает динамический приоритет задачи
+        priority: &amp;'a Cell&lt;u8&gt;,
+    }
+
+    impl&lt;'a&gt; Spawn&lt;'a&gt; {
+        // `unsafe` и спрятано, поскольку сы не хотит, чтобы пользователь вмешивался сюда
+        #[doc(hidden)]
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            self.priority
+        }
+    }
+}
+
+mod app {
+    // ..
+
+    // Поиск максимального приоритета для конечного производителя `RQ1`
+    const RQ1_CEILING: u8 = 2;
+
+    // используется, чтобы отследить сколько еще сообщений для `bar` можно поставить в очередь
+    // `U2` - емкость задачи `bar`; максимум 2 экземпляра можно добавить в очередь
+    // эта очередь заполняется фреймворком до того, как запустится `init`
+    static mut bar_FQ: Queue&lt;(), U2&gt; = Queue::new();
+
+    // Поиск максимального приоритета для конечного потребителя `bar_FQ`
+    const bar_FQ_CEILING: u8 = 2;
+
+    // приоритет-ориентированная критическая секция
+    //
+    // это запускае переданное замыкание `f` с динамическим приоритетом не ниже
+    // `ceiling`
+    fn lock(priority: &amp;Cell&lt;u8&gt;, ceiling: u8, f: impl FnOnce()) {
+        // ..
+    }
+
+    impl&lt;'a&gt; foo::Spawn&lt;'a&gt; {
+        /// Вызывает задачу `bar`
+        pub fn bar(&amp;self) -&gt; Result&lt;(), ()&gt; {
+            unsafe {
+                match lock(self.priority(), bar_FQ_CEILING, || {
+                    bar_FQ.split().1.dequeue()
+                }) {
+                    Some(()) =&gt; {
+                        lock(self.priority(), RQ1_CEILING, || {
+                            // помещаем задачу в очередь готовности
+                            RQ1.split().1.enqueue_unchecked(Ready {
+                                task: T1::bar,
+                                // ..
+                            })
+                        });
+
+                        // вызываем прерывание, которое запускает диспетчер задач
+                        rtic::pend(Interrupt::UART0);
+                    }
+
+                    None =&gt; {
+                        // достигнута максимальная вместительность; неудачный вызов
+                        Err(())
+                    }
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Использование <code>bar_FQ</code> для ограничения числа задач <code>bar</code>, которые могут бы вызваны,
+может показаться искусственным, но это будет иметь больше смысла, когда мы поговорим
+о вместительности задач.</p>
+<h2 id="Сообщения"><a class="header" href="#Сообщения">Сообщения</a></h2>
+<p>Мы пропустили, как на самом деле работает передача сообщений, поэтому давайте вернемся
+к реализации <code>spawn</code>, но в этот раз для задачи <code>baz</code>, которая принимает сообщение типа <code>u64</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn baz(c: baz::Context, input: u64) {
+    // .. пользовательский код ..
+}
+
+mod app {
+    // ..
+
+    // Теперь мы покажем все содержимое структуры `Ready`
+    struct Ready {
+        task: Task,
+        // индекс сообщения; используется с буфером `INPUTS`
+        index: u8,
+    }
+
+    // память, зарезервированная для хранения сообщений, переданных `baz`
+    static mut baz_INPUTS: [MaybeUninit&lt;u64&gt;; 2] =
+        [MaybeUninit::uninit(), MaybeUninit::uninit()];
+
+    // список свободной памяти: используется для отслеживания свободных ячеек в массиве `baz_INPUTS`
+    // эта очередь инициализируется значениями `0` и `1` перед запуском `init`
+    static mut baz_FQ: Queue&lt;u8, U2&gt; = Queue::new();
+
+    // Поиск максимального приоритета для конечного потребителя `baz_FQ`
+    const baz_FQ_CEILING: u8 = 2;
+
+    impl&lt;'a&gt; foo::Spawn&lt;'a&gt; {
+        /// Spawns the `baz` task
+        pub fn baz(&amp;self, message: u64) -&gt; Result&lt;(), u64&gt; {
+            unsafe {
+                match lock(self.priority(), baz_FQ_CEILING, || {
+                    baz_FQ.split().1.dequeue()
+                }) {
+                    Some(index) =&gt; {
+                        // ПРИМЕЧАНИЕ: `index` - владеющий указатель на ячейку буфера
+                        baz_INPUTS[index as usize].write(message);
+
+                        lock(self.priority(), RQ1_CEILING, || {
+                            // помещаем задачу в очередь готовности
+                            RQ1.split().1.enqueue_unchecked(Ready {
+                                task: T1::baz,
+                                index,
+                            });
+                        });
+
+                        // вызываем прерывание, которое запускает диспетчер задач
+                        rtic::pend(Interrupt::UART0);
+                    }
+
+                    None =&gt; {
+                        // достигнута максимальная вместительность; неудачный вызов
+                        Err(message)
+                    }
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>А теперь давайте взглянем на настоящую реализацию диспетчера задач:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod app {
+    // ..
+
+    #[no_mangle]
+    unsafe UART1() {
+        const PRIORITY: u8 = 1;
+
+        let snapshot = basepri::read();
+
+        while let Some(ready) = RQ1.split().1.dequeue() {
+            match ready.task {
+                Task::baz =&gt; {
+                    // ПРИМЕЧАНИЕ: `index` - владеющий указатель на ячейку буфера
+                    let input = baz_INPUTS[ready.index as usize].read();
+
+                    // сообщение было прочитано, поэтому можно вернуть ячейку обратно
+                    // чтобы освободить очередь
+                    // (диспетчер задач имеет эксклюзивный доступ к
+                    // последнему элементу очереди)
+                    baz_FQ.split().0.enqueue_unchecked(ready.index);
+
+                    let priority = Cell::new(PRIORITY);
+                    baz(baz::Context::new(&amp;priority), input)
+                }
+
+                Task::bar =&gt; {
+                    // выглядит также как ветка для `baz`
+                }
+
+            }
+        }
+
+        // инвариант BASEPRI
+        basepri::write(snapshot);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>INPUTS</code> плюс <code>FQ</code>, список свободной памяти равняется эффективному пулу памяти.
+Однако, вместо того <em>список свободной памяти</em> (связный список), чтобы отслеживать
+пустые ячейки в буфере <code>INPUTS</code>, мы используем SPSC очередь; это позволяет нам
+уменьшить количество критических секций.
+На самом деле благодаря этому выбору код диспетчера задач неблокируемый.</p>
+<h2 id="Вместительность-очереди"><a class="header" href="#Вместительность-очереди">Вместительность очереди</a></h2>
+<p>Фреймворк RTIC использует несколько очередей, такие как очереди готовности и
+списки свободной памяти. Когда список свободной памяти пуст, попытка выызова
+(<code>spawn</code>) задачи приводит к ошибке; это условие проверяется во время выполнения.
+Не все операции, произвожимые фреймворком с этими очередями проверяют их
+пустоту / наличие места. Например, возвращение ячейки списка свободной памяти
+(см. диспетчер задач) не проверяется, поскольку есть фиксированное количество
+таких ячеек циркулирующих в системе, равное вместительности списка свободной памяти.
+Аналогично, добавление записи в очередь готовности (см. <code>Spawn</code>) не проверяется,
+потому что вместительность очереди выбрана фреймворком.</p>
+<p>Пользователи могут задавать вместительность программных задач;
+эта вместительность - максимальное количество сообщений, которые можно
+послать указанной задаче от задачи более высоким приоритетом до того,
+как <code>spawn</code> вернет ошибку. Эта определяемая пользователем иместительность -
+размер списка свободной памяти задачи (например <code>foo_FQ</code>), а также размер массива,
+содержащего входные данные для задачи (например <code>foo_INPUTS</code>).</p>
+<p>Вместительность очереди готовности (например <code>RQ1</code>) вычисляется как <em>сумма</em>
+вместительностей всех задач, управляемх диспетчером; эта сумма является также
+количеством сообщений, которые очередь может хранить в худшем сценарии, когда
+все возможные сообщения были посланы до того, как диспетчер задач получает шанс
+на запуск. По этой причине получение ячейки списка свободной памяти при любой
+операции <code>spawn</code> приводит к тому, что очередь готовности еще не заполнена,
+поэтому вставка записи в список готовности может пропустить проверку &quot;полна ли очередь?&quot;.</p>
+<p>В нашем запущенном примере задача <code>bar</code> не принимает входных данных, поэтому
+мы можем пропустить проверку как <code>bar_INPUTS</code>, так и <code>bar_FQ</code> и позволить
+пользователю посылать неограниченное число сообщений задаче, но если бы мы сделали это,
+было бы невозможно превысить вместительность для <code>RQ1</code>, что позволяет нам
+пропустить проверку &quot;полна ли очередь?&quot; при вызове задачи <code>baz</code>.
+В разделе о <a href="internals/timer-queue.html">очереди таймера</a> мы увидим как
+список свободной памяти используется для задач без входных данных.</p>
+<h2 id="Анализ-приоритетов-1"><a class="header" href="#Анализ-приоритетов-1">Анализ приоритетов</a></h2>
+<p>Очереди, использемые внутри интерфейса <code>spawn</code>, рассматриваются как обычные ресурсы
+и для них тоже работает анализ приоритетов. Важно заметить, что это SPSC очереди,
+и только один из конечных элементов становится ресурсом; другим конечным элементом
+владеет диспетчер задач.</p>
+<p>Рассмотрим следующий пример:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    #[idle(spawn = [foo, bar])]
+    fn idle(c: idle::Context) -&gt; ! {
+        // ..
+    }
+
+    #[task]
+    fn foo(c: foo::Context) {
+        // ..
+    }
+
+    #[task]
+    fn bar(c: bar::Context) {
+        // ..
+    }
+
+    #[task(priority = 2, spawn = [foo])]
+    fn baz(c: baz::Context) {
+        // ..
+    }
+
+    #[task(priority = 3, spawn = [bar])]
+    fn quux(c: quux::Context) {
+        // ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Вот как будет проходить анализ приоритетов:</p>
+<ul>
+<li>
+<p><code>idle</code> (prio = 0) и <code>baz</code> (prio = 2) соревнуются за конечный потребитель
+<code>foo_FQ</code>; это приводит к максимальному приоритету <code>2</code>.</p>
+</li>
+<li>
+<p><code>idle</code> (prio = 0) и <code>quux</code> (prio = 3) соревнуются за конечный потребитель
+<code>bar_FQ</code>; это приводит к максимальному приоритету <code>3</code>.</p>
+</li>
+<li>
+<p><code>idle</code> (prio = 0), <code>baz</code> (prio = 2) и <code>quux</code> (prio = 3) соревнуются за
+конечный производитель <code>RQ1</code>; это приводит к максимальному приоритету <code>3</code></p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="Очередь-таймера-1"><a class="header" href="#Очередь-таймера-1">Очередь таймера</a></h1>
+<p>Функциональность очередь таймера позволяет пользователю планировать задачи на запуск
+в опреленное время в будущем. Неудивительно, что эта функция также реализуется с помощью очереди:
+очередь приоритетов, где запланированные задачи сортируются в порядке аозрастания времени.
+Эта функция требует таймер, способный устанавливать прерывания истечения времени.
+Таймер используется для пуска прерывания, когда настает запланированное время задачи;
+в этот момент задача удаляется из очереди таймера и помещается в очередь готовности.</p>
+<p>Давайте посмотрим, как это реализовано в коде. Рассмотрим следующую программу:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    // ..
+
+    #[task(capacity = 2, schedule = [foo])]
+    fn foo(c: foo::Context, x: u32) {
+        // запланировать задачу на повторный запуск через 1 млн. тактов
+        c.schedule.foo(c.scheduled + Duration::cycles(1_000_000), x + 1).ok();
+    }
+
+    extern &quot;C&quot; {
+        fn UART0();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="schedule-1"><a class="header" href="#schedule-1"><code>schedule</code></a></h2>
+<p>Давайте сначала взглянем на интерфейс <code>schedule</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod foo {
+    pub struct Schedule&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+    }
+
+    impl&lt;'a&gt; Schedule&lt;'a&gt; {
+        // `unsafe` и спрятано, потому что мы не хотим, чтобы пользовать сюда вмешивался
+        #[doc(hidden)]
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            self.priority
+        }
+    }
+}
+
+mod app {
+    type Instant = &lt;path::to::user::monotonic::timer as rtic::Monotonic&gt;::Instant;
+
+    // все задачи, которые могут быть запланированы (`schedule`)
+    enum T {
+        foo,
+    }
+
+    struct NotReady {
+        index: u8,
+        instant: Instant,
+        task: T,
+    }
+
+    // Очередь таймера - двоичная куча (min-heap) задач `NotReady`
+    static mut TQ: TimerQueue&lt;U2&gt; = ..;
+    const TQ_CEILING: u8 = 1;
+
+    static mut foo_FQ: Queue&lt;u8, U2&gt; = Queue::new();
+    const foo_FQ_CEILING: u8 = 1;
+
+    static mut foo_INPUTS: [MaybeUninit&lt;u32&gt;; 2] =
+        [MaybeUninit::uninit(), MaybeUninit::uninit()];
+
+    static mut foo_INSTANTS: [MaybeUninit&lt;Instant&gt;; 2] =
+        [MaybeUninit::uninit(), MaybeUninit::uninit()];
+
+    impl&lt;'a&gt; foo::Schedule&lt;'a&gt; {
+        fn foo(&amp;self, instant: Instant, input: u32) -&gt; Result&lt;(), u32&gt; {
+            unsafe {
+                let priority = self.priority();
+                if let Some(index) = lock(priority, foo_FQ_CEILING, || {
+                    foo_FQ.split().1.dequeue()
+                }) {
+                    // `index` - владеющий укачатель на ячейки в этих буферах
+                    foo_INSTANTS[index as usize].write(instant);
+                    foo_INPUTS[index as usize].write(input);
+
+                    let nr = NotReady {
+                        index,
+                        instant,
+                        task: T::foo,
+                    };
+
+                    lock(priority, TQ_CEILING, || {
+                        TQ.enqueue_unchecked(nr);
+                    });
+                } else {
+                    // Не осталось места, чтобы разместить входные данные / instant
+                    Err(input)
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Это очень похоже на реализацию <code>Spawn</code>. На самом деле одни и те же буфер
+<code>INPUTS</code> и список сободной памяти (<code>FQ</code>) используются совместно интерфейсами
+<code>spawn</code> и <code>schedule</code>. Главное отличие между ними в том, что <code>schedule</code> также
+размещает <code>Instant</code>, момент на который задача запланирована на запуск,
+в отдельном буфере (<code>foo_INSTANTS</code> в нашем случае).</p>
+<p><code>TimerQueue::enqueue_unchecked</code> делает немного больше работы, чем
+просто добавление записи в min-heap: он также вызывает прерывание
+системного таймера (<code>SysTick</code>), если новая запись оказывается первой в очереди.</p>
+<h2 id="Системный-таймер"><a class="header" href="#Системный-таймер">Системный таймер</a></h2>
+<p>Прерывание системного таймера (<code>SysTick</code>) заботится о двух вещах:
+передаче задач, которых становятся готовыми из очереди таймера в очередь готовности
+и установке прерывания истечения времени, когда наступит запланированное
+время следующей задачи.</p>
+<p>Давайте посмотрим на соответствующий код.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod app {
+    #[no_mangle]
+    fn SysTick() {
+        const PRIORITY: u8 = 1;
+
+        let priority = &amp;Cell::new(PRIORITY);
+        while let Some(ready) = lock(priority, TQ_CEILING, || TQ.dequeue()) {
+            match ready.task {
+                T::foo =&gt; {
+                    // переместить эту задачу в очередь готовности `RQ1`
+                    lock(priority, RQ1_CEILING, || {
+                        RQ1.split().0.enqueue_unchecked(Ready {
+                           task: T1::foo,
+                           index: ready.index,
+                        })
+                    });
+
+                    // вызвать диспетчер задач
+                    rtic::pend(Interrupt::UART0);
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Выглядит похоже на диспетчер задач, за исключением того, что
+вместо запуска готовой задачи, она лишь переносится в очередь готовности,
+что ведет к ее запуску с нужным приоритетом.</p>
+<p><code>TimerQueue::dequeue</code> установит новое прерывание истечения времени, если вернет
+<code>None</code>. Он сязан с <code>TimerQueue::enqueue_unchecked</code>, который вызывает это
+прерывание; на самом деле, <code>enqueue_unchecked</code> передает задачу установки
+нового прерывание истечения времени обработчику <code>SysTick</code>.</p>
+<h2 id="Точность-и-диапазон-cyccntinstant-и-cyccntduration"><a class="header" href="#Точность-и-диапазон-cyccntinstant-и-cyccntduration">Точность и диапазон <code>cyccnt::Instant</code> и <code>cyccnt::Duration</code></a></h2>
+<p>RTIC предоставляет реализацию <code>Monotonic</code>, основанную на счетчике тактов <code>DWT</code> (Data Watchpoint and Trace). <code>Instant::now</code> возвращает снимок таймера; эти снимки
+DWT (<code>Instant</code>ы) используются для сортировки записей в очереди таймера.
+Счетчик тактов - 32-битный счетчик, работающий на частоте ядра.
+Этот счетчик обнуляется каждые <code>(1 &lt;&lt; 32)</code> тактов; у нас нет прерывания,
+ассоциированног с этим счетчиком, поэтому ничего ужасного не случится,
+когда он пройдет оборот.</p>
+<p>Чтобы упорядочить <code>Instant</code>ы в очереди, нам нужно сравнить 32-битные целые.
+Чтобы учесть обороты, мы используем разницу между двумя <code>Instant</code>ами, <code>a - b</code>,
+и рассматриваем результат как 32-битное знаковое целое.
+Если результат меньше нуля, значит <code>b</code> более поздний <code>Instant</code>;
+если результат больше нуля, значит <code>b</code> более ранний <code>Instant</code>.
+Это значит, что планирование задачи на <code>Instant</code>, который на <code>(1 &lt;&lt; 31) - 1</code> тактов
+больше, чем запланированное время (<code>Instant</code>) первой (самой ранней) записи
+в очереди приведет к тому, что задача будет помещена в неправильное
+место в очереди. У нас есть несколько debug assertions в коде, чтобы
+предотвратить эту пользовательскую ошибку, но этого нельзя избежать,
+поскольку пользователь может написать
+<code>(instant + duration_a) + duration_b</code> и переполнить <code>Instant</code>.</p>
+<p>Системный таймер, <code>SysTick</code> - 24-битный счетчик также работающий
+на частоте процессора. Когда следующая планируемая задача более, чем в
+<code>1 &lt;&lt; 24</code> тактов в будущем, прерывание устанавливается на время в пределах
+<code>1 &lt;&lt; 24</code> тактов. Этот процесс может происходить несколько раз, пока
+следующая запланированная задача не будет в диапазоне счетчика <code>SysTick</code>.</p>
+<p>Подведем итог, оба <code>Instant</code> и <code>Duration</code> имеют разрешение 1 такт ядра, и <code>Duration</code> эффективно имеет (полуоткрытый) диапазон <code>0..(1 &lt;&lt; 31)</code> (не включая максимум) тактов ядра.</p>
+<h2 id="Вместительность-очереди-1"><a class="header" href="#Вместительность-очереди-1">Вместительность очереди</a></h2>
+<p>Вместительность очереди таймера рассчитывается как сумма вместительностей
+всех планируемых (<code>schedule</code>) задач. Как и в случае очередей готовности,
+это значит, что как только мы затребовали пустую ячейку в буфере <code>INPUTS</code>,
+мы гарантируем, что способны передать задачу в очередь таймера;
+это позволяет нам опустить проверки времени выполнения.</p>
+<h2 id="Приоритет-системного-таймера"><a class="header" href="#Приоритет-системного-таймера">Приоритет системного таймера</a></h2>
+<p>Приориет системного таймера не может быть установлен пользователем;
+он выбирается фреймворком.
+Чтобы убедиться, что низкоприоритетные задачи не препятствуют
+запуску высокоприоритетных, мы выбираем приоритет системного таймера
+максимальным из всех планируемых задач.</p>
+<p>Чтобы понять, почему это нужно, рассмотрим вариант, когда две ранее
+запланированные задачи с приоритетами <code>2</code> и <code>3</code> становятся готовыми в
+примерно одинаковое время, но низкоприоритетная задача перемещается
+в очередь готовности первой.
+Если бы приоритет системного таймера был, например, равен <code>1</code>,
+тогда после перемещения низкоприоритетной (<code>2</code>) задачи, это бы привело
+к завершению (из-за того, что приоритет выше приоритета системного таймера)
+ожидания выполнения высокоприоритетной задачи (<code>3</code>).
+Чтобы избежать такого сценария, системный таймер должен работать на
+приоритете, равном наивысшему из приоритетов планируемых задач;
+в этом примере это <code>3</code>.</p>
+<h2 id="Анализ-приоритетов-2"><a class="header" href="#Анализ-приоритетов-2">Анализ приоритетов</a></h2>
+<p>Очередь таймера - это ресурс, разделяемый всеми задачами, которые могут
+планировать (<code>schedule</code>) задачи и обработчиком <code>SysTick</code>.
+Также интерфейс <code>schedule</code> соперничает с интерфейсом <code>spawn</code>
+за списки свободной памяти. Все это должно уситываться в анализе приоритетов.</p>
+<p>Чтобы проиллюстрировать, рассмотрим следующий пример:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[rtic::app(device = ..)]
+mod app {
+    #[task(priority = 3, spawn = [baz])]
+    fn foo(c: foo::Context) {
+        // ..
+    }
+
+    #[task(priority = 2, schedule = [foo, baz])]
+    fn bar(c: bar::Context) {
+        // ..
+    }
+
+    #[task(priority = 1)]
+    fn baz(c: baz::Context) {
+        // ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Анализ приоритетов происходил бы вот так:</p>
+<ul>
+<li>
+<p><code>foo</code> (prio = 3) и <code>baz</code> (prio = 1) планируемые задачи, поэтому
+<code>SysTick</code> должен работать на максимальном из этих двух приоритетов, т.е. <code>3</code>.</p>
+</li>
+<li>
+<p><code>foo::Spawn</code> (prio = 3) и <code>bar::Schedule</code> (prio = 2) соперничают за
+конечный потребитель <code>baz_FQ</code>; это приводит к максимальному приоритету <code>3</code>.</p>
+</li>
+<li>
+<p><code>bar::Schedule</code> (prio = 2) имеет экслюзивный доступ к
+конечному потребителю <code>foo_FQ</code>; поэтому максимальный приоритет <code>foo_FQ</code> фактически <code>2</code>.</p>
+</li>
+<li>
+<p><code>SysTick</code> (prio = 3) и <code>bar::Schedule</code> (prio = 2)  соперничают за
+очередь таймера <code>TQ</code>; это приводит к максимальному приоритету <code>3</code>.</p>
+</li>
+<li>
+<p><code>SysTick</code> (prio = 3) и <code>foo::Spawn</code> (prio = 3) оба имеют неблокируемый
+доступ к очереди готовности <code>RQ3</code>, что хранит записи <code>foo</code>;
+поэтому максимальный приоритет <code>RQ3</code> фактически <code>3</code>.</p>
+</li>
+<li>
+<p><code>SysTick</code> имеет эксклюзивный доступ к очереди готовности <code>RQ1</code>,
+которая хранит записи <code>baz</code>; поэтому максимальный приоритет <code>RQ1</code> фактически <code>3</code>.</p>
+</li>
+</ul>
+<h2 id="Изменения-в-реализации-spawn"><a class="header" href="#Изменения-в-реализации-spawn">Изменения в реализации <code>spawn</code></a></h2>
+<p>Когда интерфейс <code>schedule</code> используется, реализация <code>spawn</code> немного
+изменяется, чтобы отслеживать baseline задач. Как можете видеть в
+реализации <code>schedule</code> есть буферы <code>INSTANTS</code>, используемые, чтобы
+хранить время, в которое задача была запланирована навыполнение;
+этот <code>Instant</code> читается диспетчером задач и передается в пользовательский
+код, как часть контекста задачи.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod app {
+    // ..
+
+    #[no_mangle]
+    unsafe UART1() {
+        const PRIORITY: u8 = 1;
+
+        let snapshot = basepri::read();
+
+        while let Some(ready) = RQ1.split().1.dequeue() {
+            match ready.task {
+                Task::baz =&gt; {
+                    let input = baz_INPUTS[ready.index as usize].read();
+                    // ADDED
+                    let instant = baz_INSTANTS[ready.index as usize].read();
+
+                    baz_FQ.split().0.enqueue_unchecked(ready.index);
+
+                    let priority = Cell::new(PRIORITY);
+                    // ИЗМЕНЕНО instant передан как часть контекста задачи
+                    baz(baz::Context::new(&amp;priority, instant), input)
+                }
+
+                Task::bar =&gt; {
+                    // выглядит также как ветка для `baz`
+                }
+
+            }
+        }
+
+        // инвариант BASEPRI
+        basepri::write(snapshot);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>И наоборот, реализации <code>spawn</code> нужно писать значение в буфер <code>INSTANTS</code>.
+Записанное значение располагается в структуре <code>Spawn</code> и это либо
+время <code>start</code> аппаратной задачи, либо время <code>scheduled</code> программной задачи.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod foo {
+    // ..
+
+    pub struct Spawn&lt;'a&gt; {
+        priority: &amp;'a Cell&lt;u8&gt;,
+        // ADDED
+        instant: Instant,
+    }
+
+    impl&lt;'a&gt; Spawn&lt;'a&gt; {
+        pub unsafe fn priority(&amp;self) -&gt; &amp;Cell&lt;u8&gt; {
+            &amp;self.priority
+        }
+
+        // ADDED
+        pub unsafe fn instant(&amp;self) -&gt; Instant {
+            self.instant
+        }
+    }
+}
+
+mod app {
+    impl&lt;'a&gt; foo::Spawn&lt;'a&gt; {
+        /// Spawns the `baz` task
+        pub fn baz(&amp;self, message: u64) -&gt; Result&lt;(), u64&gt; {
+            unsafe {
+                match lock(self.priority(), baz_FQ_CEILING, || {
+                    baz_FQ.split().1.dequeue()
+                }) {
+                    Some(index) =&gt; {
+                        baz_INPUTS[index as usize].write(message);
+                        // ADDED
+                        baz_INSTANTS[index as usize].write(self.instant());
+
+                        lock(self.priority(), RQ1_CEILING, || {
+                            RQ1.split().1.enqueue_unchecked(Ready {
+                                task: Task::foo,
+                                index,
+                            });
+                        });
+
+                        rtic::pend(Interrupt::UART0);
+                    }
+
+                    None =&gt; {
+                        // достигнута максимальная вместительность; неудачный вызов
+                        Err(message)
+                    }
+                }
+            }
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+                        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+                
+    </body>
+</html>

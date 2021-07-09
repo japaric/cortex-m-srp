@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["entry","Attribute to declare the entry point of the program"],["exception","Attribute to declare an exception handler"],["interrupt","Attribute to declare an interrupt (AKA device-specific exception) handler"],["pre_init","Attribute to mark which function will be called at the beginning of the reset handler."]]});

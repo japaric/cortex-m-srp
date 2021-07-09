@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Attribute used to declare a RTIC application"><meta name="keywords" content="rust, rustlang, rust-lang, app"><title>app in cortex_m_rtic_macros - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc attr"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../cortex_m_rtic_macros/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><div class="sidebar-elems"><p class="location"><a href="index.html">cortex_m_rtic_macros</a></p><div id="sidebar-vars" data-name="app" data-ty="attr" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Attribute Macro <a href="index.html">cortex_m_rtic_macros</a>::<wbr><a class="attr" href="">app</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/cortex_m_rtic_macros/lib.rs.html#205-233" title="goto source code">[src]</a></span></h1><pre class="rust attr">#[app]</pre><div class="docblock"><p>Attribute used to declare a RTIC application</p>
+<p>This attribute must be applied to a <code>const</code> item of type <code>()</code>. The <code>const</code> item is effectively
+used as a <code>mod</code> item: its value must be a block that contains items commonly found in modules,
+like functions and <code>static</code> variables.</p>
+<p>The <code>app</code> attribute has one mandatory argument:</p>
+<ul>
+<li><code>device = &lt;path&gt;</code>. The path must point to a device crate generated using <a href="https://crates.io/crates/svd2rust"><code>svd2rust</code></a>
+<strong>v0.14.x</strong> or newer.</li>
+</ul>
+<p>and a few optional arguments:</p>
+<ul>
+<li>
+<p><code>peripherals = &lt;bool&gt;</code>. Indicates whether the runtime takes the device peripherals and makes
+them available to the <code>init</code> context.</p>
+</li>
+<li>
+<p><code>monotonic = &lt;path&gt;</code>. This is a path to a zero-sized structure (e.g. <code>struct Foo;</code>) that
+implements the <code>Monotonic</code> trait. This argument must be provided to use the <code>schedule</code> API.</p>
+</li>
+</ul>
+<p>The items allowed in the block value of the <code>const</code> item are specified below:</p>
+<h1 id="1-struct-resources" class="section-header"><a href="#1-struct-resources">1. <code>struct Resources</code></a></h1>
+<p>This structure contains the declaration of all the resources used by the application. Each field
+in this structure corresponds to a different resource. Each resource may optionally be given an
+initial value using the <code>#[init(&lt;value&gt;)]</code> attribute. Resources with no compile-time initial
+value as referred to as <em>late</em> resources.</p>
+<h1 id="2-fn" class="section-header"><a href="#2-fn">2. <code>fn</code></a></h1>
+<p>Functions must contain <em>one</em> of the following attributes: <code>init</code>, <code>idle</code> or <code>task</code>. The
+attribute defines the role of the function in the application.</p>
+<h2 id="a-init" class="section-header"><a href="#a-init">a. <code>#[init]</code></a></h2>
+<p>This attribute indicates that the function is to be used as the <em>initialization function</em>. There
+must be exactly one instance of the <code>init</code> attribute inside the <code>app</code> pseudo-module. The
+signature of the <code>init</code> function must be <code>fn (&lt;fn-name&gt;::Context) [-&gt; &lt;fn-name&gt;::LateResources]</code>
+where <code>&lt;fn-name&gt;</code> is the name of the function adorned with the <code>#[init]</code> attribute.</p>
+<p>The <code>init</code> function runs after memory (RAM) is initialized and runs with interrupts disabled.
+Interrupts are re-enabled after <code>init</code> returns.</p>
+<p>The <code>init</code> attribute accepts the following optional arguments:</p>
+<ul>
+<li>
+<p><code>resources = [resource_a, resource_b, ..]</code>. This is the list of resources this context has
+access to.</p>
+</li>
+<li>
+<p><code>schedule = [task_a, task_b, ..]</code>. This is the list of <em>software</em> tasks that this context can
+schedule to run in the future. <em>IMPORTANT</em>: This argument is accepted only if the <code>monotonic</code>
+argument is passed to the <code>#[app]</code> attribute.</p>
+</li>
+<li>
+<p><code>spawn = [task_a, task_b, ..]</code>. This is the list of <em>software</em> tasks that this context can
+immediately spawn.</p>
+</li>
+</ul>
+<p>The first argument of the function, <code>&lt;fn-name&gt;::Context</code>, is a structure that contains the
+following fields:</p>
+<ul>
+<li><code>core</code>. Exclusive access to core peripherals. The type of this field is <a href="../rtic/struct.Peripherals.html"><code>rtic::Peripherals</code></a>
+when the <code>schedule</code> API is used and <a href="https://docs.rs/cortex-m/0.6/cortex_m/peripheral/struct.Peripherals.html"><code>cortex_m::Peripherals</code></a> when it’s not.</li>
+</ul>
+<ul>
+<li>
+<p><code>device: &lt;device&gt;::Peripherals</code>. Exclusive access to device-specific peripherals. This
+field is only present when the <code>peripherals</code> argument of the <code>#[app]</code> attribute is set to
+<code>true</code>. <code>&lt;device&gt;</code> is the path to the device crate specified in the top <code>app</code> attribute.</p>
+</li>
+<li>
+<p><code>start: &lt;Instant&gt;</code>. The <code>start</code> time of the system: <code>&lt;Instant&gt;::zero()</code>. <code>&lt;Instant&gt;</code> is the
+<code>Instant</code> type associated to the <code>Monotonic</code> implementation specified in the top <code>#[app]</code>
+attribute. <strong>NOTE</strong>: this field is only present when the <code>schedule</code> is used.</p>
+</li>
+<li>
+<p><code>resources: &lt;fn-name&gt;::Resources</code>. A <code>struct</code> that contains all the resources that can be
+accessed from this context. Each field is a different resource; each resource may appear as a
+reference (<code>&amp;[mut]-</code>) or as proxy structure that implements the <a href="../rtic/trait.Mutex.html"><code>rftm::Mutex</code></a> trait.</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><code>schedule: &lt;fn-name&gt;::Schedule</code>. A <code>struct</code> that can be used to schedule <em>software</em> tasks.</p>
+</li>
+<li>
+<p><code>spawn: &lt;fn-name&gt;::Spawn</code>. A <code>struct</code> that can be used to spawn <em>software</em> tasks.</p>
+</li>
+</ul>
+<p>The return type <code>&lt;fn-name&gt;::LateResources</code> must only be specified when late resources, resources
+with no initial value declared at compile time, are used. <code>&lt;fn-name&gt;::LateResources</code> is a
+structure where each field corresponds to a different late resource. The
+<code>&lt;fn-name&gt;::LateResources</code> value returned by the <code>#[init]</code> function is used to initialize the
+late resources before <code>idle</code> or any task can start.</p>
+<p>Other properties:</p>
+<ul>
+<li>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;'static mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;'static mut u32</code>.</li>
+</ul>
+<h2 id="b-idle" class="section-header"><a href="#b-idle">b. <code>#[idle]</code></a></h2>
+<p>This attribute indicates that the function is to be used as the <em>idle task</em>. There can be at
+most once instance of the <code>idle</code> attribute inside the <code>app</code> pseudo-module. The signature of the
+<code>idle</code> function must be <code>fn(&lt;fn-name&gt;::Context) -&gt; !</code> where <code>&lt;fn-name&gt;</code> is the name of the
+function adorned with the <code>#[idle]</code> attribute.</p>
+<p>The <code>idle</code> task is a special task that always runs in the background. The <code>idle</code> task runs at
+the lowest priority of <code>0</code>. If the <code>idle</code> task is not defined then the runtime sets the
+<a href="https://developer.arm.com/products/architecture/cpu-architecture/m-profile/docs/100737/0100/power-management/sleep-mode/sleep-on-exit-bit">SLEEPONEXIT</a> bit after executing <code>init</code>.</p>
+<p>The <code>idle</code> attribute accepts the following optional arguments:</p>
+<ul>
+<li>
+<p><code>resources = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].spawn</code></a>.</p>
+</li>
+</ul>
+<p>The first argument of the function, <code>idle::Context</code>, is a structure that contains the following
+fields:</p>
+<ul>
+<li>
+<p><code>resources: _</code>. Same meaning / function as <a href="#a-init"><code>&lt;init&gt;::Context.resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule: idle::Schedule</code>. Same meaning / function as <a href="#a-init"><code>&lt;init&gt;::Context.schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn: idle::Spawn</code>. Same meaning / function as <a href="#a-init"><code>&lt;init&gt;::Context.spawn</code></a>.</p>
+</li>
+</ul>
+<p>Other properties:</p>
+<ul>
+<li>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<code>&amp;'static mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code> will
+become <code>FOO: &amp;'static mut u32</code>.</li>
+</ul>
+<h2 id="c-task" class="section-header"><a href="#c-task">c. <code>#[task]</code></a></h2>
+<p>This attribute indicates that the function is either a hardware task or a software task. The
+signature of hardware tasks must be <code>fn(&lt;fn-name&gt;::Context)</code> whereas the signature of software
+tasks must be <code>fn(&lt;fn-name&gt;::Context, &lt;inputs&gt;)</code>. <code>&lt;fn-name&gt;</code> refers to the name of the function
+adorned with the <code>#[task]</code> attribute.</p>
+<p>The <code>task</code> attribute accepts the following optional arguments.</p>
+<ul>
+<li>
+<p><code>binds = &lt;interrupt-name&gt;</code>. Binds this task to a particular interrupt. When this argument is
+present the task is treated as a hardware task; when it’s omitted the task treated is treated as
+a software task.</p>
+</li>
+<li>
+<p><code>priority = &lt;integer&gt;</code>. This is the static priority of the exception handler. The value must
+be in the range <code>1..=(1 &lt;&lt; &lt;device-path&gt;::NVIC_PRIO_BITS)</code> where <code>&lt;device-path&gt;</code> is the path to
+the device crate specified in the top <code>app</code> attribute. If this argument is omitted the priority
+is assumed to be 1.</p>
+</li>
+<li>
+<p><code>resources = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn = (..)</code>. Same meaning / function as <a href="#a-init"><code>#[init].spawn</code></a>.</p>
+</li>
+</ul>
+<p>The first argument of the function, <code>&lt;fn-name&gt;::Context</code>, is a structure that contains the
+following fields:</p>
+<ul>
+<li>
+<p><code>start: &lt;Instant&gt;</code>. For hardware tasks this is the time at which this handler started
+executing. For software tasks this is the time at which the task was scheduled to run. <strong>NOTE</strong>:
+only present when the <code>schedule</code> API is used.</p>
+</li>
+<li>
+<p><code>resources: _</code>. Same meaning / function as <a href="#a-init"><code>&lt;init&gt;::Context.resources</code></a>.</p>
+</li>
+<li>
+<p><code>schedule: &lt;exception-name&gt;::Schedule</code>. Same meaning / function as
+<a href="#a-init"><code>&lt;init&gt;::Context.schedule</code></a>.</p>
+</li>
+<li>
+<p><code>spawn: &lt;exception-name&gt;::Spawn</code>.  Same meaning / function as
+<a href="#a-init"><code>&lt;init&gt;::Context.spawn</code></a>.</p>
+</li>
+</ul>
+<p>Other properties / constraints:</p>
+<ul>
+<li>The <code>static mut</code> variables declared at the beginning of this function will be transformed into
+<em>non</em>-static <code>&amp;mut</code> references that are safe to access. For example, <code>static mut FOO: u32 = 0</code>
+will become <code>FOO: &amp;mut u32</code>.</li>
+</ul>
+<h1 id="3-extern-block" class="section-header"><a href="#3-extern-block">3. <code>extern</code> block</a></h1>
+<p>This <code>extern</code> block contains a list of interrupts which are <em>not</em> used by the application as
+hardware tasks. These interrupts will be used to dispatch software tasks. Each interrupt will be
+used to dispatch <em>multiple</em> software tasks <em>at the same priority level</em>.</p>
+<p>This <code>extern</code> block must only contain functions with signature <code>fn ()</code>. The names of these
+functions must match the names of the target device interrupts.</p>
+<p>Attributes can be applied to the functions inside this block. These attributes will be forwarded
+to the interrupt handlers generated by the <code>app</code> attribute.</p>
+</div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="cortex_m_rtic_macros" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+    <script src="../main.js"></script></body></html>

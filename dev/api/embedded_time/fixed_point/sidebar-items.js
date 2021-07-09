@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["FixedPoint","Fixed-point value type"]]});

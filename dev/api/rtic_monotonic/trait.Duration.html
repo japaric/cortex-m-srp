@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="An unsigned, fixed-point duration type"><meta name="keywords" content="rust, rustlang, rust-lang, Duration"><title>Duration in rtic_monotonic - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../rtic_monotonic/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class="location">Trait Duration</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#provided-methods">Provided Methods</a><div class="sidebar-links"><a href="#method.to_generic">to_generic</a><a href="#method.to_rate">to_rate</a></div><a class="sidebar-title" href="#implementors">Implementors</a></div><p class="location"><a href="index.html">rtic_monotonic</a></p><div id="sidebar-vars" data-name="Duration" data-ty="trait" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Trait <a href="index.html">rtic_monotonic</a>::<wbr><a class="trait" href="">Duration</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/embedded_time/duration.rs.html#293-433" title="goto source code">[src]</a></span></h1><div class="docblock type-decl"><pre class="rust trait">pub trait Duration: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> {
+    pub fn <a href="#method.to_generic" class="fnname">to_generic</a>&lt;DestInt&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scaling_factor: <a class="struct" href="struct.Fraction.html" title="struct rtic_monotonic::Fraction">Fraction</a><br>&nbsp;&nbsp;&nbsp;&nbsp;) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Generic.html" title="struct rtic_monotonic::Generic">Generic</a>&lt;DestInt&gt;, <a class="enum" href="../embedded_time/enum.ConversionError.html" title="enum embedded_time::ConversionError">ConversionError</a>&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestInt: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html" title="trait core::convert::TryFrom">TryFrom</a>&lt;Self::<a class="type" href="trait._.html#associatedtype.T" title="type rtic_monotonic::_::T">T</a>&gt;</span>,
+    { ... }
+<div class="item-spacer"></div>    pub fn <a href="#method.to_rate" class="fnname">to_rate</a>&lt;Rate&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Rate, <a class="enum" href="../embedded_time/enum.ConversionError.html" title="enum embedded_time::ConversionError">ConversionError</a>&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate: <a class="trait" href="../embedded_time/rate/trait.Rate.html" title="trait embedded_time::rate::Rate">Rate</a> + <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Rate as <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>&gt;::<a class="type" href="trait._.html#associatedtype.T" title="type rtic_monotonic::_::T">T</a>: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html" title="trait core::convert::TryFrom">TryFrom</a>&lt;Self::<a class="type" href="trait._.html#associatedtype.T" title="type rtic_monotonic::_::T">T</a>&gt;</span>,
+    { ... }
+}</pre></div><div class="docblock"><p>An unsigned, fixed-point duration type</p>
+<p>Each implementation defines an <em>integer</em> type and a <em>scaling factor</em> <a href="struct.Fraction.html" title="Fraction"><code>Fraction</code></a>.</p>
+<h1 id="constructing-a-duration" class="section-header"><a href="#constructing-a-duration">Constructing a duration</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">millis</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Milliseconds</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">5</span>);
+<span class="kw">let</span> <span class="ident">millis</span> <span class="op">=</span> <span class="ident">Milliseconds</span>(<span class="number">5_u32</span>);
+<span class="kw">let</span> <span class="ident">millis</span> <span class="op">=</span> <span class="number">5_u32</span>.<span class="ident">milliseconds</span>();</pre></div>
+<h1 id="get-the-integer-part" class="section-header"><a href="#get-the-integer-part">Get the integer part</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">millis</span> <span class="op">=</span> <span class="ident">Milliseconds</span>(<span class="number">23_u32</span>).<span class="ident">integer</span>();
+
+<span class="macro">assert_eq!</span>(<span class="ident">millis</span>, <span class="number">23_u32</span>);</pre></div>
+<h1 id="formatting" class="section-header"><a href="#formatting">Formatting</a></h1>
+<p>Just forwards the underlying integer to <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt" title="core::fmt::Display::fmt()"><code>core::fmt::Display::fmt()</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">Seconds</span>(<span class="number">123_u32</span>)), <span class="string">&quot;123&quot;</span>);</pre></div>
+<h1 id="getting-hmsms-components" class="section-header"><a href="#getting-hmsms-components">Getting H:M:S.MS… Components</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="comment">// (the default duration _integer_ type is `u32`)</span>
+<span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span> <span class="number">38_238_479_u32</span>.<span class="ident">microseconds</span>();
+<span class="kw">let</span> <span class="ident">hours</span>: <span class="ident">Hours</span> <span class="op">=</span> <span class="ident">duration</span>.<span class="ident">into</span>();
+<span class="kw">let</span> <span class="ident">minutes</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Minutes</span><span class="op">&gt;</span><span class="ident">::from</span>(<span class="ident">duration</span>) <span class="op">%</span> <span class="ident">Hours</span>(<span class="number">1_u32</span>);
+<span class="kw">let</span> <span class="ident">seconds</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Seconds</span><span class="op">&gt;</span><span class="ident">::from</span>(<span class="ident">duration</span>) <span class="op">%</span> <span class="ident">Minutes</span>(<span class="number">1_u32</span>);
+<span class="kw">let</span> <span class="ident">milliseconds</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Milliseconds</span><span class="op">&gt;</span><span class="ident">::from</span>(<span class="ident">duration</span>) <span class="op">%</span> <span class="ident">Seconds</span>(<span class="number">1_u32</span>);
+<span class="comment">// ...</span></pre></div>
+<h1 id="converting-between-durations" class="section-header"><a href="#converting-between-durations">Converting between <code>Duration</code>s</a></h1>
+<p>Many intra-duration conversions can be done using <code>From</code>/<code>Into</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">seconds</span> <span class="op">=</span> <span class="ident">Seconds</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::from</span>(<span class="number">23_000_u32</span>.<span class="ident">milliseconds</span>());
+<span class="macro">assert_eq!</span>(<span class="ident">seconds</span>.<span class="ident">integer</span>(), <span class="number">23_u32</span>);
+
+<span class="kw">let</span> <span class="ident">seconds</span>: <span class="ident">Seconds</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="number">23_000_u32</span>.<span class="ident">milliseconds</span>().<span class="ident">into</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">seconds</span>.<span class="ident">integer</span>(), <span class="number">23_u32</span>);</pre></div>
+<p>Others require the use of <code>TryFrom</code>/<code>TryInto</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::convert</span>::{<span class="ident">TryInto</span>, <span class="ident">TryFrom</span>};
+
+<span class="kw">let</span> <span class="ident">millis</span> <span class="op">=</span> <span class="ident">Milliseconds</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="number">23_u32</span>.<span class="ident">seconds</span>()).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">millis</span>.<span class="ident">integer</span>(), <span class="number">23_000_u32</span>);
+
+<span class="kw">let</span> <span class="ident">millis</span>: <span class="ident">Milliseconds</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="number">23_u32</span>.<span class="ident">seconds</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">millis</span>.<span class="ident">integer</span>(), <span class="number">23_000_u32</span>);</pre></div>
+<h1 id="converting-to-core-types" class="section-header"><a href="#converting-to-core-types">Converting to <code>core</code> types</a></h1>
+<p>(<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html" title="core::time::Duration"><code>core::time::Duration</code></a>)</p>
+<p><strong>Note</strong>: Due to the inner types used by <code>core::time::Duration</code>, a lot of code bloat occurs when
+it is used.</p>
+<h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">core::convert::TryFrom</span>;
+
+<span class="kw">let</span> <span class="ident">core_duration</span> <span class="op">=</span> <span class="ident">core::time::Duration::try_from</span>(<span class="number">2_569_u32</span>.<span class="ident">milliseconds</span>()).<span class="ident">unwrap</span>();
+
+<span class="macro">assert_eq!</span>(<span class="ident">core_duration</span>.<span class="ident">as_secs</span>(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">core_duration</span>.<span class="ident">subsec_nanos</span>(), <span class="number">569_000_000</span>);</pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">core::convert::TryInto</span>;
+
+<span class="kw">let</span> <span class="ident">core_duration</span>: <span class="ident">core::time::Duration</span> <span class="op">=</span> <span class="number">2_569_u32</span>.<span class="ident">milliseconds</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
+
+<span class="macro">assert_eq!</span>(<span class="ident">core_duration</span>.<span class="ident">as_secs</span>(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">core_duration</span>.<span class="ident">subsec_nanos</span>(), <span class="number">569_000_000</span>);</pre></div>
+<h1 id="converting-from-core-types" class="section-header"><a href="#converting-from-core-types">Converting from <code>core</code> types</a></h1>
+<p>(<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html" title="core::time::Duration"><code>core::time::Duration</code></a>)</p>
+<p><strong>Note</strong>: Due to the inner types used by <code>core::time::Duration</code>, a lot of code bloat occurs when
+it is used.</p>
+<h2 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">core::convert::TryFrom</span>;
+
+<span class="kw">let</span> <span class="ident">core_duration</span> <span class="op">=</span> <span class="ident">core::time::Duration::new</span>(<span class="number">5</span>, <span class="number">730_023_852</span>);
+
+<span class="macro">assert_eq!</span>(<span class="ident">Milliseconds</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">core_duration</span>), <span class="prelude-val">Ok</span>(<span class="number">5_730</span>.<span class="ident">milliseconds</span>()));</pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">duration</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Milliseconds</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">core::time::Duration::new</span>(<span class="number">5</span>, <span class="number">730023852</span>).<span class="ident">try_into</span>();
+
+<span class="macro">assert_eq!</span>(<span class="ident">duration</span>, <span class="prelude-val">Ok</span>(<span class="number">5_730</span>.<span class="ident">milliseconds</span>()));</pre></div>
+<h2 id="errors" class="section-header"><a href="#errors">Errors</a></h2>
+<p><a href="../embedded_time/enum.ConversionError.html#variant.ConversionFailure" title="ConversionError::ConversionFailure"><code>ConversionError::ConversionFailure</code></a> : The duration doesn’t fit in the type specified</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Milliseconds</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::try_from</span>(
+        <span class="ident">core::time::Duration::from_millis</span>((<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="number">1</span>)
+    ),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::ConversionFailure</span>)
+);
+
+<span class="kw">let</span> <span class="ident">duration</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Milliseconds</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span>
+    <span class="ident">core::time::Duration::from_millis</span>((<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="number">1</span>).<span class="ident">try_into</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">duration</span>, <span class="prelude-val">Err</span>(<span class="ident">ConversionError::ConversionFailure</span>));</pre></div>
+<h1 id="converting-from-a-generic-duration" class="section-header"><a href="#converting-from-a-generic-duration">Converting from a <code>Generic</code> <code>Duration</code></a></h1><h2 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="comment">// A generic duration of 2 seconds</span>
+<span class="kw">let</span> <span class="ident">generic_duration</span> <span class="op">=</span> <span class="ident">Generic::new</span>(<span class="number">2_000_u32</span>, <span class="ident">Fraction::new</span>(<span class="number">1</span>, <span class="number">1_000</span>));
+
+<span class="kw">let</span> <span class="ident">secs</span> <span class="op">=</span> <span class="ident">Seconds</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">generic_duration</span>).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">secs</span>.<span class="ident">integer</span>(), <span class="number">2_u64</span>);
+
+<span class="kw">let</span> <span class="ident">secs</span>: <span class="ident">Seconds</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">generic_duration</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">secs</span>.<span class="ident">integer</span>(), <span class="number">2_u64</span>);</pre></div>
+<h2 id="errors-1" class="section-header"><a href="#errors-1">Errors</a></h2>
+<p>Failure will only occur if the provided value does not fit in the selected destination type.</p>
+<hr />
+<p><a href="../embedded_time/enum.ConversionError.html#variant.Unspecified" title="ConversionError::Unspecified"><code>ConversionError::Unspecified</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Seconds</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">Generic::new</span>(<span class="ident">u32::MAX</span>, <span class="ident">Fraction::new</span>(<span class="number">10</span>,<span class="number">1</span>))),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::Unspecified</span>)
+);</pre></div>
+<hr />
+<p><a href="../embedded_time/enum.ConversionError.html#variant.ConversionFailure" title="ConversionError::ConversionFailure"><code>ConversionError::ConversionFailure</code></a> : The <em>integer</em> conversion to that of the
+destination type fails.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Seconds</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">Generic::new</span>(<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">Fraction::new</span>(<span class="number">1</span>,<span class="number">1</span>))),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::ConversionFailure</span>)
+);</pre></div>
+<h1 id="converting-to-a-generic-duration-with-the-same-scaling-factor" class="section-header"><a href="#converting-to-a-generic-duration-with-the-same-scaling-factor">Converting to a <code>Generic</code> <code>Duration</code> with the same <em>scaling factor</em></a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">generic_duration</span> <span class="op">=</span> <span class="ident">Generic</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::from</span>(<span class="number">5_u32</span>.<span class="ident">seconds</span>());
+<span class="kw">let</span> <span class="ident">generic_duration</span>: <span class="ident">Generic</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="number">5_u32</span>.<span class="ident">seconds</span>().<span class="ident">into</span>();
+
+<span class="macro">assert_eq!</span>(<span class="ident">generic_duration</span>.<span class="ident">integer</span>(), <span class="number">5_u32</span>);</pre></div>
+<h1 id="converting-to-a-generic-duration-with-a-different-scaling-factor" class="section-header"><a href="#converting-to-a-generic-duration-with-a-different-scaling-factor">Converting to a <code>Generic</code> <code>Duration</code> with a different <em>scaling factor</em></a></h1>
+<p>See <a href="trait.Duration.html#method.to_generic" title="Duration::to_generic()"><code>Duration::to_generic()</code></a></p>
+<h1 id="converting-to-a-named-rate" class="section-header"><a href="#converting-to-a-named-rate">Converting to a <em>named</em> <code>Rate</code></a></h1>
+<p>See <a href="trait.Duration.html#method.to_rate" title="Duration::to_rate()"><code>Duration::to_rate()</code></a></p>
+<h1 id="addsub" class="section-header"><a href="#addsub">Add/Sub</a></h1>
+<p>The result of the operation is the LHS type</p>
+<h2 id="examples-3" class="section-header"><a href="#examples-3">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="macro">assert_eq!</span>((<span class="ident">Milliseconds</span>(<span class="number">1_u32</span>) <span class="op">+</span> <span class="ident">Seconds</span>(<span class="number">1_u32</span>)),
+    <span class="ident">Milliseconds</span>(<span class="number">1_001_u32</span>));
+
+<span class="macro">assert_eq!</span>((<span class="ident">Milliseconds</span>(<span class="number">2_001_u32</span>) <span class="op">-</span> <span class="ident">Seconds</span>(<span class="number">1_u32</span>)),
+    <span class="ident">Milliseconds</span>(<span class="number">1_001_u32</span>));</pre></div>
+<h2 id="panics" class="section-header"><a href="#panics">Panics</a></h2>
+<p>The same reason the integer operation would panic. Namely, if the result overflows the type.</p>
+
+<div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Seconds</span>(<span class="ident">u32::MAX</span>) <span class="op">+</span> <span class="ident">Seconds</span>(<span class="number">1_u32</span>);</pre></div>
+<h1 id="muldiv" class="section-header"><a href="#muldiv">Mul/Div</a></h1>
+<p>Durations may also be multiplied and divided by integers. The result is of the LHS type. Both
+<em>panicky</em> and <em>checked</em> operations are available.</p>
+<h1 id="comparisons" class="section-header"><a href="#comparisons">Comparisons</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="macro">assert_eq!</span>(<span class="ident">Seconds</span>(<span class="number">2_u32</span>), <span class="ident">Milliseconds</span>(<span class="number">2_000_u32</span>));
+<span class="macro">assert_ne!</span>(<span class="ident">Seconds</span>(<span class="number">2_u32</span>), <span class="ident">Milliseconds</span>(<span class="number">2_001_u32</span>));
+
+<span class="macro">assert!</span>(<span class="ident">Seconds</span>(<span class="number">2_u32</span>) <span class="op">&lt;</span> <span class="ident">Milliseconds</span>(<span class="number">2_001_u32</span>));
+<span class="macro">assert!</span>(<span class="ident">Seconds</span>(<span class="number">2_u32</span>) <span class="op">&gt;</span> <span class="ident">Milliseconds</span>(<span class="number">1_999_u32</span>));</pre></div>
+<h1 id="remainder" class="section-header"><a href="#remainder">Remainder</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="macro">assert_eq!</span>(<span class="ident">Minutes</span>(<span class="number">62_u32</span>) <span class="op">%</span> <span class="ident">Hours</span>(<span class="number">1_u32</span>), <span class="ident">Minutes</span>(<span class="number">2_u32</span>));</pre></div>
+</div><h2 id="provided-methods" class="small-section-header">Provided methods<a href="#provided-methods" class="anchor"></a></h2><div class="methods"><h3 id="method.to_generic" class="method"><code>pub fn <a href="#method.to_generic" class="fnname">to_generic</a>&lt;DestInt&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;scaling_factor: <a class="struct" href="struct.Fraction.html" title="struct rtic_monotonic::Fraction">Fraction</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Generic.html" title="struct rtic_monotonic::Generic">Generic</a>&lt;DestInt&gt;, <a class="enum" href="../embedded_time/enum.ConversionError.html" title="enum embedded_time::ConversionError">ConversionError</a>&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;DestInt: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html" title="trait core::convert::TryFrom">TryFrom</a>&lt;Self::<a class="type" href="trait._.html#associatedtype.T" title="type rtic_monotonic::_::T">T</a>&gt;,&nbsp;</span></code><a class="srclink" href="../src/embedded_time/duration.rs.html#338-344" title="goto source code">[src]</a></h3><div class="docblock"><p>Construct a <code>Generic</code> <code>Duration</code> from a <em>named</em> <code>Duration</code> (eg.
+<a href="struct.Milliseconds.html" title="Milliseconds"><code>Milliseconds</code></a>)</p>
+<h1 id="examples-4" class="section-header"><a href="#examples-4">Examples</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time::duration</span>::<span class="kw-2">*</span>;
+
+<span class="kw">let</span> <span class="ident">millis</span> <span class="op">=</span> <span class="ident">Milliseconds</span>(<span class="number">20_u32</span>);
+
+<span class="comment">// convert into a generic duration with a different _scaling factor_</span>
+<span class="kw">let</span> <span class="ident">generic</span> <span class="op">=</span> <span class="ident">millis</span>.<span class="ident">to_generic</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">Fraction::new</span>(<span class="number">1</span>, <span class="number">2_000</span>)).<span class="ident">unwrap</span>();
+
+<span class="macro">assert_eq!</span>(<span class="ident">generic</span>.<span class="ident">integer</span>(), <span class="number">40_u32</span>);</pre></div>
+<h1 id="errors-2" class="section-header"><a href="#errors-2">Errors</a></h1>
+<p>Failure will only occur if the provided value does not fit in the selected destination type.</p>
+<hr />
+<p><a href="../embedded_time/enum.ConversionError.html#variant.Unspecified" title="ConversionError::Unspecified"><code>ConversionError::Unspecified</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Seconds</span>(<span class="ident">u32::MAX</span>).<span class="ident">to_generic</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">Fraction::new</span>(<span class="number">1</span>, <span class="number">2</span>)),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::Unspecified</span>)
+);</pre></div>
+<hr />
+<p><a href="../embedded_time/enum.ConversionError.html#variant.ConversionFailure" title="ConversionError::ConversionFailure"><code>ConversionError::ConversionFailure</code></a> : The integer conversion to that of the destination
+type fails.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(<span class="ident">Seconds</span>(<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">+</span> <span class="number">1</span>).<span class="ident">to_generic</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">Fraction::new</span>(<span class="number">1</span>, <span class="number">1</span>)),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::ConversionFailure</span>));</pre></div>
+</div><h3 id="method.to_rate" class="method"><code>pub fn <a href="#method.to_rate" class="fnname">to_rate</a>&lt;Rate&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Rate, <a class="enum" href="../embedded_time/enum.ConversionError.html" title="enum embedded_time::ConversionError">ConversionError</a>&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;Rate: <a class="trait" href="../embedded_time/rate/trait.Rate.html" title="trait embedded_time::rate::Rate">Rate</a> + <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;Rate as <a class="trait" href="trait._.html" title="trait rtic_monotonic::_">FixedPoint</a>&gt;::<a class="type" href="trait._.html#associatedtype.T" title="type rtic_monotonic::_::T">T</a>: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html" title="trait core::convert::TryFrom">TryFrom</a>&lt;Self::<a class="type" href="trait._.html#associatedtype.T" title="type rtic_monotonic::_::T">T</a>&gt;,&nbsp;</span></code><a class="srclink" href="../src/embedded_time/duration.rs.html#396-400" title="goto source code">[src]</a></h3><div class="docblock"><p>Convert to <em>named</em> <a href="../embedded_time/rate/trait.Rate.html"><code>Rate</code></a></p>
+<p>(the duration is equal to the reciprocal of the rate)</p>
+<h1 id="examples-5" class="section-header"><a href="#examples-5">Examples</a></h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">rate</span>::<span class="kw-2">*</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Microseconds</span>(<span class="number">500_u32</span>).<span class="ident">to_rate</span>(),
+    <span class="prelude-val">Ok</span>(<span class="ident">Kilohertz</span>(<span class="number">2_u32</span>))
+);</pre></div>
+<h1 id="errors-3" class="section-header"><a href="#errors-3">Errors</a></h1>
+<p>Failure will only occur if the provided value does not fit in the selected destination type.</p>
+<hr />
+<p><a href="../embedded_time/enum.ConversionError.html#variant.Overflow" title="ConversionError::Overflow"><code>ConversionError::Overflow</code></a> : The conversion of the <em>scaling factor</em> causes an overflow.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">rate</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Hours</span>(<span class="ident">u32::MAX</span>).<span class="ident">to_rate</span>::<span class="op">&lt;</span><span class="ident">Megahertz</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::Overflow</span>)
+);</pre></div>
+<hr />
+<p><a href="../embedded_time/enum.ConversionError.html#variant.DivByZero" title="ConversionError::DivByZero"><code>ConversionError::DivByZero</code></a> : The rate is <code>0</code>, therefore the reciprocal is undefined.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">embedded_time</span>::{<span class="ident">duration</span>::<span class="kw-2">*</span>, <span class="ident">rate</span>::<span class="kw-2">*</span>, <span class="ident">ConversionError</span>};
+
+<span class="macro">assert_eq!</span>(
+    <span class="ident">Seconds</span>(<span class="number">0_u32</span>).<span class="ident">to_rate</span>::<span class="op">&lt;</span><span class="ident">Hertz</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+    <span class="prelude-val">Err</span>(<span class="ident">ConversionError::DivByZero</span>)
+);</pre></div>
+</div></div><span class="loading-content">Loading content...</span><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor"></a></h2><div class="item-list" id="implementors-list"><h3 id="impl-Duration" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Generic.html" title="struct rtic_monotonic::Generic">Generic</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#504" title="goto source code">[src]</a></h3><h3 id="impl-Duration-1" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Hours.html" title="struct rtic_monotonic::Hours">Hours</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration-1" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#732" title="goto source code">[src]</a></h3><h3 id="impl-Duration-2" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Microseconds.html" title="struct rtic_monotonic::Microseconds">Microseconds</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration-2" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#736" title="goto source code">[src]</a></h3><h3 id="impl-Duration-3" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Milliseconds.html" title="struct rtic_monotonic::Milliseconds">Milliseconds</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration-3" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#735" title="goto source code">[src]</a></h3><h3 id="impl-Duration-4" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Minutes.html" title="struct rtic_monotonic::Minutes">Minutes</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration-4" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#733" title="goto source code">[src]</a></h3><h3 id="impl-Duration-5" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Nanoseconds.html" title="struct rtic_monotonic::Nanoseconds">Nanoseconds</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration-5" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#737" title="goto source code">[src]</a></h3><h3 id="impl-Duration-6" class="impl"><code class="in-band">impl&lt;T&gt; <a class="trait" href="trait.Duration.html" title="trait rtic_monotonic::Duration">Duration</a> for <a class="struct" href="struct.Seconds.html" title="struct rtic_monotonic::Seconds">Seconds</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a class="trait" href="../embedded_time/time_int/trait.TimeInt.html" title="trait embedded_time::time_int::TimeInt">TimeInt</a>,&nbsp;</span></code><a href="#impl-Duration-6" class="anchor"></a><a class="srclink" href="../src/embedded_time/duration.rs.html#734" title="goto source code">[src]</a></h3></div><span class="loading-content">Loading content...</span><script type="text/javascript" src="../implementors/embedded_time/duration/trait.Duration.js" async></script></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="rtic_monotonic" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+    <script src="../main.js"></script></body></html>
